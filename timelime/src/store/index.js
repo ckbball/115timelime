@@ -2,11 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Vuex from 'vuex'
 
-import permissions from './modules/permissions'
 import auth from './modules/auth'
 import user from './modules/user'
-import locationAdmin from './modules/locationAdmin' 
-import cart from './modules/cart'
 
 import configureModerator  from './modules/store-moderator'
 
