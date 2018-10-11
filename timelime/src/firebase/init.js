@@ -2,12 +2,12 @@ import firebase from 'firebase'
 import firestore from 'firebase/firestore'
 
   var config = {
-    apiKey: "",
-    authDomain: "",
-    databaseURL: "",
-    projectId: "",
+    apiKey: "AIzaSyCQXTmER3-sp1FKGbMCuYaFqtjNtdcaW5c",
+    authDomain: "timelime-96d47.firebaseapp.com",
+    databaseURL: "https://timelime-96d47.firebaseio.com",
+    projectId: "timelime-96d47",
     storageBucket: "",
-    messagingSenderId: ""
+    messagingSenderId: "745633359616"
 };
 const firebaseApp = firebase.initializeApp(config);
 firebaseApp.firestore().settings({ timestampsInSnapshots: true })
