@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "firebase": "^5.5.3",
-    "vue": "^2.5.2",
+    "semantic-ui-css": "^2.4.0",
+    "semantic-ui-vue": "^0.5.0",
+    "vue": "^2.5.17",
     "vue-router": "^3.0.1",
     "vuex": "^3.0.1"
   },
