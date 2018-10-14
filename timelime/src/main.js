@@ -14,6 +14,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context';
 import VueApollo from 'vue-apollo'
 
+import Navbar from '@/components/layout/Navbar'
+
 
 const httpLink = new HttpLink({
   // You should use an absolute URL here
