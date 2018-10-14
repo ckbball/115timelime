@@ -1,57 +1,70 @@
 <template>
-    <div class="sign-up">
-    <p>Let's make a new account!</p>
-        <input type="text" v-model="email" placeholder="Email"><br>
-        <input type="password" v-model="password" placeholder="Password"><br>
-        <button v-on:click="signUp">Sign Up</button>
-        <span>or go back to <router-link to="/login">login</router-link>.</span>
-    </div>
+  <div class="login">
+    <h3>Create a new account!</h3>
+    <input type="text" v-model="email" placeholder="Email"><br>
+    <input type="password" v-model="password" placeholder="Password"><br>
+    <input type="password" v-model="rePassword" placeholder="Re-type Password"><br>
+    <input type="checkbox" v-model="termsCheck">I agree to the <router-link to="/terms-and-conditions">terms & conditions</router-link><br>
+    <button v-on:click="signUp">Sign Up</button>
+    <p>Or go back to the <router-link to="/login">login page</router-link></p>
+  </div>
 </template>
 
 <script>
-    import db from '@/firebase/init'
-    import firebase from 'firebase'
+  import firebase from 'firebase'
 
-    export default {
-        name: 'signUp',
-        data: function() {
-            return{
-                email: '',
-                password: ''
-            }
-        },
-        methods: {
-            signUp: function() {
-                firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(
-                    function(user) {
-                        alert('Your account has been created!')
-                    },
-                    function (err) {
-                        alert('Oops. ' + err.message)
-                    }
-                );
-            }
+  export default {
+    name: 'signUp',
+    data () {
+      return{
+        email: '',
+        password: '',
+        rePassword: '',
+        termsCheck: false
+      }
+    },
+    methods: {
+      signUp () {
+        if (this.password === this.rePassword) {    
+          if (this.termsCheck) {   
+            firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+            .then(user => {
+                alert('Your account has been created!')
+            })
+            .catch(err => {
+                alert('Oops! ' + err.message)
+            })
+          }else{
+            alert('You must agree to the terms & conditions!');
+          }
+        }else{
+          alert('Passwords do not match!');
         }
+      }
     }
+  }
 </script>
 
 <style scoped>
-    .signUp {
-        margin-top: 40px;
-    }
-    input {
-        margin: 10px 0;
-        width: 20%;
-        padding: 15px;
-    }
-    button {
-        margin-top: 10px;
-        width: 10%;
-        cursor: pointer;
-    }
-    span {
-        display: block;
-        margin-top: 20px;
-        font-size: 11px;
-    }
+  .login {
+    margin-top: 40px;
+  }
+  input {
+    margin: 10px 0;
+    width: 20%;
+    padding: 15px;
+  }
+  button {
+    margin-top: 20px;
+    width: 10%;
+    cursor: pointer;
+  }
+  p {
+    margin-top: 40px;
+    font-size: 13px;
+  }
+  a {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 </style>

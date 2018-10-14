@@ -8,6 +8,7 @@ import ShittyExample from '@/components/tests/shittyexample'
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
 import Hello from '@/components/auth/Hello'
+import TermsAndConditions from '@/components/auth/TermsAndConditions'
 
 Vue.use(Router)
 
@@ -53,6 +54,11 @@ const router = new Router({
       path: '/hello',
       name: 'Hello',
       component: Hello
+    },
+    {
+      path: '/terms-and-conditions',
+      name: 'TermsAndConditions',
+      component: TermsAndConditions
     }
   ]
 })
