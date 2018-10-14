@@ -1,7 +1,7 @@
 <template>
-  <div >
+  <div class="post">
     <input v-model="textPost" placeholder="When time gives you limes...">
-    <button v-on:click="submit"></button>Squeeze!</div>
+    <button v-on:click="submit">Squeeze!</button>
   </div>
 </template>
 
@@ -25,8 +25,8 @@ export default {
       .then(docRef => {
         db.collection('posts').doc(docRef.id).update({id: docRef.id})
       })
-      .catch(err =>{
-        console.log(err)
+      .catch(err => {
+        console.log("failed with error: " + err)
       })
     }, 
     getPosts() {
@@ -36,15 +36,27 @@ export default {
           this.posts.push(doc.text)
         })
       })
-      .catch()
+      .catch(err => {
+        console.log("failed with error: " + err)
+      })
     }
+  },
+  created () {
+    this.getPosts()
   }
-  
-  
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+  input {
+    margin: 10px 0;
+    width: 300px;
+    padding: 15px;
+  }
+  button {
+    margin-top: 20px;
+    width: 100px;
+    cursor: pointer;
+  }
 </style>

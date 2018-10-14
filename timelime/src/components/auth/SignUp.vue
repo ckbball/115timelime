@@ -1,12 +1,12 @@
 <template>
-  <div class="login">
+  <div class="account">
     <h3>Create a new account!</h3>
     <input type="text" v-model="email" placeholder="Email"><br>
     <input type="password" v-model="password" placeholder="Password"><br>
     <input type="password" v-model="rePassword" placeholder="Re-type Password"><br>
     <input type="checkbox" v-model="termsCheck">I agree to the <router-link to="/terms-and-conditions">terms & conditions</router-link><br>
     <button v-on:click="signUp">Sign Up</button>
-    <p>Or go back to the <router-link to="/login">login page</router-link></p>
+    <p>Or go back to the <router-link to="/Login">login page</router-link></p>
   </div>
 </template>
 
@@ -14,7 +14,7 @@
   import firebase from 'firebase'
 
   export default {
-    name: 'signUp',
+    name: 'SignUp',
     data () {
       return{
         email: '',
@@ -48,7 +48,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .login {
+  .account {
     margin-top: 40px;
   }
   input:not([type=checkbox]) {

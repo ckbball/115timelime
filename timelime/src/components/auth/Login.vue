@@ -1,5 +1,5 @@
 <template>
-  <div class="login">
+  <div class="account">
     <h3>Sign In</h3>
     <input type="text" v-model="email" placeholder="Email"><br>
     <input type="password" v-model="password" placeholder="Password"><br>
@@ -12,7 +12,7 @@
   import firebase from 'firebase'
 
   export default {
-    name: 'login',
+    name: 'Login',
     data () {
       return{
         email: '',
@@ -24,7 +24,6 @@
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
           this.$router.replace('Hello')
-          alert('Logged in successfully!')
         })
         .catch(err => {
           alert('Oops! ' + err.message)
@@ -36,7 +35,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .login {
+  .account {
     margin-top: 40px;
   }
   input {

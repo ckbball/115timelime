@@ -10,6 +10,7 @@ import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
 import Hello from '@/components/auth/Hello'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'
+import Post from '@/components/posts/Post'
 
 Vue.use(Router)
 
@@ -18,11 +19,11 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: '/login'
+      redirect: '/Login'
     },
     {
       path: '/',
-      redirect: '/login'
+      redirect: '/Login'
     },
     {
       path: '/LikeButton',
@@ -40,22 +41,22 @@ const router = new Router({
       component: UserIcon
     },
     {
-    	path: '/shittyexample',
+    	path: '/ShittyExample',
     	name: 'ShittyExample',
     	component: ShittyExample
     },
     {
-      path: '/login',
+      path: '/Login',
       name: 'Login',
       component: Login
     },
     {
-      path: '/sign-up',
+      path: '/Sign-Up',
       name: 'SignUp',
       component: SignUp
     },
     {
-      path: '/hello',
+      path: '/Hello',
       name: 'Hello',
       component: Hello,
       meta: {
@@ -63,10 +64,18 @@ const router = new Router({
       }
     },
     {
-      path: '/terms-and-conditions',
+      path: '/Terms-and-Conditions',
       name: 'TermsAndConditions',
       component: TermsAndConditions
-    }
+    },
+    {
+      path: '/Post',
+      name: 'Post',
+      component: Post,
+      meta: {
+        requiresAuth: true
+      }
+    },
   ]
 })
 

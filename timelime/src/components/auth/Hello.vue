@@ -16,7 +16,7 @@ export default {
   methods: {
     logout() {
       firebase.auth().signOut().then(() => {
-        this.$router.replace('login')
+        this.$router.replace('Login')
       })
     } 
   } 
@@ -25,25 +25,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .login {
-    margin-top: 40px;
-  }
-  input {
-    margin: 10px 0;
-    width: 300px;
-    padding: 15px;
-  }
-  button {
-    margin-top: 20px;
-    width: 100px;
-    cursor: pointer;
-  }
-  p {
-    margin-top: 40px;
-    font-size: 13px;
-  }
-  p a {
-    text-decoration: underline;
-    cursor: pointer;
-  }
 </style>
