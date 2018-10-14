@@ -23,6 +23,7 @@
       signIn() {
         firebase.auth().signInWithEmailAndPassword(this.email, this.password)
         .then(user => {
+          this.$router.replace('Hello')
           alert('Logged in successfully!')
         })
         .catch(err => {
@@ -40,12 +41,12 @@
   }
   input {
     margin: 10px 0;
-    width: 30%;
+    width: 300px;
     padding: 15px;
   }
   button {
     margin-top: 20px;
-    width: 10%;
+    width: 100px;
     cursor: pointer;
   }
   p {

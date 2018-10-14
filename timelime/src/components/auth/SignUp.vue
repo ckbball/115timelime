@@ -24,12 +24,13 @@
       }
     },
     methods: {
-      signUp () {
+      signUp() {
         if (this.password === this.rePassword) {    
           if (this.termsCheck) {   
             firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
             .then(user => {
-                alert('Your account has been created!')
+              this.$router.replace('Login')
+              alert('Your account has been created!')
             })
             .catch(err => {
                 alert('Oops! ' + err.message)
@@ -45,18 +46,24 @@
   }
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .login {
     margin-top: 40px;
   }
-  input {
+  input:not([type=checkbox]) {
     margin: 10px 0;
-    width: 20%;
+    width: 300px;
+    padding: 15px;
+  }
+  input[type=checkbox]{
+    margin: 10px 0;
+    margin-right: 10px;
     padding: 15px;
   }
   button {
     margin-top: 20px;
-    width: 10%;
+    width: 100px;
     cursor: pointer;
   }
   p {

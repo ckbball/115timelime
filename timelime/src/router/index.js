@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import firebase from 'firebase'
 import HelloWorld from '@/components/HelloWorld'
 import LikeButton from '@/components/user_profile/LikeButton'
 import UserIcon from '@/components/user_profile/UserIcon'
@@ -16,9 +17,12 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
+      path: '*',
+      redirect: '/login'
+    },
+    {
       path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      redirect: '/login'
     },
     {
       path: '/LikeButton',
@@ -53,7 +57,10 @@ const router = new Router({
     {
       path: '/hello',
       name: 'Hello',
-      component: Hello
+      component: Hello,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/terms-and-conditions',
@@ -61,6 +68,15 @@ const router = new Router({
       component: TermsAndConditions
     }
   ]
+})
+
+router.beforeEach((to, from, next) => {
+  let currentUser = firebase.auth().currentUser;
+  let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !currentUser) next('login')
+  else if (!requiresAuth && currentUser) next('hello')
+  else next()
 })
 
 export default router
