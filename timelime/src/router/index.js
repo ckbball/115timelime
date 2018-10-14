@@ -2,15 +2,12 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import firebase from 'firebase'
 import HelloWorld from '@/components/HelloWorld'
-import LikeButton from '@/components/user_profile/LikeButton'
-import UserIcon from '@/components/user_profile/UserIcon'
-import WriteButton from '@/components/user_profile/WriteButton'
-import ShittyExample from '@/components/tests/shittyexample'
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
 import Hello from '@/components/auth/Hello'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'
 import Post from '@/components/posts/Post'
+
 import DonovanTest from '@/components/tests/donovantest'
 import MiaTest from '@/components/tests/miatest'
 import CaesarTest from '@/components/tests/caesartest'
@@ -28,31 +25,13 @@ const router = new Router({
     },
     {
       path: '/',
-      redirect: '/Login'
+      name: 'Home',
+      component: HelloWorld
     },
-    {
-      path: '/LikeButton',
-      name: 'LikeButton',
-      component: LikeButton
-    },
-    {
-      path: '/WriteButton',
-      name: '/WriteButton',
-      component: WriteButton
-    },
-    {
-      path: '/UserIcon',
-      name: '/UserIcon',
-      component: UserIcon
-    },
-    {
-    	path: '/ShittyExample',
-    	name: 'ShittyExample',
-    	component: ShittyExample
-    },
+
     {
       path: '/Login',
-      name: 'Login',
+      name: 'LogIn',
       component: Login
     },
     {

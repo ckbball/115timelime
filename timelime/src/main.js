@@ -3,6 +3,10 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuex from 'vuex'
+import { store } from './store/index.js'
+
+
 import firebase from 'firebase'
 
 import SuiVue from 'semantic-ui-vue'
@@ -14,7 +18,6 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context';
 import VueApollo from 'vue-apollo'
 
-import Navbar from '@/components/layout/Navbar'
 
 
 const httpLink = new HttpLink({
@@ -47,6 +50,7 @@ firebase.auth().onAuthStateChanged(user => {
     /* eslint-disable no-new */
     new Vue({
         el: '#app',
+        store: store,
     	apolloProvider,
         router,
         components: { App },
