@@ -11,6 +11,11 @@ import SignUp from '@/components/auth/SignUp'
 import Hello from '@/components/auth/Hello'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'
 import Post from '@/components/posts/Post'
+import DonovanTest from '@/components/tests/donovantest'
+import MiaTest from '@/components/tests/miatest'
+import CaesarTest from '@/components/tests/caesartest'
+import KenjiTest from '@/components/tests/kenjitest'
+
 
 Vue.use(Router)
 
@@ -76,16 +81,36 @@ const router = new Router({
         requiresAuth: true
       }
     },
+    {
+      path: '/donovantest',
+      name: 'DonovanTest',
+      component: DonovanTest
+    },
+    {
+      path: '/miatest',
+      name: 'MiaTest',
+      component: MiaTest
+    },
+        {
+      path: '/caesartest',
+      name: 'CaesarTest',
+      component: CaesarTest
+    },
+        {
+      path: '/kenjitest',
+      name: 'KenjiTest',
+      component: KenjiTest
+    },
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  let currentUser = firebase.auth().currentUser;
-  let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+// router.beforeEach((to, from, next) => {
+//   let currentUser = firebase.auth().currentUser;
+//   let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-  if (requiresAuth && !currentUser) next('login')
-  else if (!requiresAuth && currentUser) next('hello')
-  else next()
-})
+//   if (requiresAuth && !currentUser) next('login')
+//   else if (!requiresAuth && currentUser) next('hello')
+//   else next()
+// })
 
 export default router
