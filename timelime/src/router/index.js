@@ -5,7 +5,9 @@ import LikeButton from '@/components/user_profile/LikeButton'
 import UserIcon from '@/components/user_profile/UserIcon'
 import WriteButton from '@/components/user_profile/WriteButton'
 import ShittyExample from '@/components/tests/shittyexample'
-
+import Login from '@/components/auth/Login'
+import SignUp from '@/components/auth/SignUp'
+import Hello from '@/components/auth/Hello'
 
 Vue.use(Router)
 
@@ -36,6 +38,21 @@ const router = new Router({
     	path: '/shittyexample',
     	name: 'ShittyExample',
     	component: ShittyExample
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/sign-up',
+      name: 'SignUp',
+      component: SignUp
+    },
+    {
+      path: '/hello',
+      name: 'Hello',
+      component: Hello
     }
   ]
 })
