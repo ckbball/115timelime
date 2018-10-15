@@ -5,7 +5,6 @@ import Home from '@/components/Home'
 
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
-import Hello from '@/components/auth/Hello'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'
 import Post from '@/components/posts/Post'
 
