@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import firebase from 'firebase'
 import HelloWorld from '@/components/HelloWorld'
+
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
 import Hello from '@/components/auth/Hello'
@@ -12,7 +13,6 @@ import DonovanTest from '@/components/tests/donovantest'
 import MiaTest from '@/components/tests/miatest'
 import CaesarTest from '@/components/tests/caesartest'
 import KenjiTest from '@/components/tests/kenjitest'
-
 
 Vue.use(Router)
 

@@ -1,27 +1,18 @@
 <template lang="html">
   <div>
     </object>
-    <sui-button color="red" icon="heart" size="compact">
+    <sui-button color="red" icon="heart" size="small" 
+        @click="likeClick()">
       <a
         is="sui-label"
         slot="label"
         basic
         color="red"
         pointing="left"
-        @click="likeClick"
       >
       {{counter}} <!-- string interpolation-->
       </a>
     </sui-button>
-
-
-
-
-    <input type="text" name="" v-model="input"> 
-
-
-
-
   </div>
 </template>
 
@@ -30,9 +21,8 @@ export default {
   name: 'LikeButton',
   data () {
     return {
-    	input:""
-    	// likeCount:0,
-    	// liked:false
+    	likeCount:0,
+    	liked:false
     }
   },
   props: {
@@ -41,11 +31,9 @@ export default {
   methods: {
 	likeClick: function() {
 		console.log("yooooooo")
-		this.$emit("ah",this.input)
+		this.$emit("likeEvent")
 	}
   } 
-  
-  
 }
 </script>
 
