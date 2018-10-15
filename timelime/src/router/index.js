@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import firebase from 'firebase'
-import HelloWorld from '@/components/HelloWorld'
+import Home from '@/components/Home'
 
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
@@ -26,7 +26,7 @@ const router = new Router({
     {
       path: '/',
       name: 'Home',
-      component: HelloWorld
+      component: Home
     },
 
     {
@@ -38,14 +38,6 @@ const router = new Router({
       path: '/Sign-Up',
       name: 'SignUp',
       component: SignUp
-    },
-    {
-      path: '/Hello',
-      name: 'Hello',
-      component: Hello,
-      meta: {
-        requiresAuth: true
-      }
     },
     {
       path: '/Terms-and-Conditions',
