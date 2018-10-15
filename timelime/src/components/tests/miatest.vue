@@ -1,6 +1,6 @@
 <template>
   <div>
-  	<LikeButton></LikeButton>
+  	<WriteButton></WriteButton>
 
   </div>
 </template>

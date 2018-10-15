@@ -9,8 +9,8 @@
 </template>
 
 <script>
-  import firebase from 'firebase'
-
+  //import firebase from 'firebase'
+  import { mapActions } from 'vuex'
   export default {
     name: 'Login',
     data () {
@@ -20,14 +20,24 @@
       }
     },
     methods: {
+      ...mapActions([
+        'authenticateUser'
+      ]),
       signIn() {
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        .then(user => {
-          this.$router.replace('Hello')
+        this.authenticateUser({email: this.email, password: this.password})
+        .then(() => {
+          console.log('success')
         })
         .catch(err => {
-          alert('Oops! ' + err.message)
+          console.log(err)
         })
+        // firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        // .then(user => {
+        //   this.$router.replace('Hello')
+        // })
+        // .catch(err => {
+        //   alert('Oops! ' + err.message)
+        // })
       }
     }
   }
