@@ -4,7 +4,7 @@
         is="sui-menu-item"
         v-for="item in items"
         :active="isActive(item.route)"
-        :key="item"
+        :key="item.content"
         :content="item.content"
         @click="select(item.route)"
       />
@@ -36,14 +36,10 @@
 <script>
 /*
 
-	add new navbar items to data/ items[]
+	add new navbar items to data/ items
 	item.content is what is displayed on the screen.
 	item.route must correspond to route/index.js route name **case sensitive**
 */
-
-
-
-
 import {mapGetters, mapActions } from 'vuex'
 export default {
 	name: 'Navbar',
