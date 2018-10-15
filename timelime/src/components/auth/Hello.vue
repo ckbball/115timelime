@@ -7,6 +7,7 @@
 
 <script>
 import firebase from 'firebase'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Hello',
@@ -14,9 +15,13 @@ export default {
     return {}
   }, 
   methods: {
+    ...mapActions([
+      'signUserOut'
+    ]),
     logout() {
-      firebase.auth().signOut().then(() => {
-        this.$router.replace('Login')
+      this.signUserOut()
+      .catch(err => {
+        alert('Oops! '+ err.messages)
       })
     } 
   } 

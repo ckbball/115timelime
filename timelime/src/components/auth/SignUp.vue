@@ -12,6 +12,7 @@
 
 <script>
   import firebase from 'firebase'
+  import { mapActions } from 'vuex'
 
   export default {
     name: 'SignUp',
@@ -24,12 +25,14 @@
       }
     },
     methods: {
+      ...mapActions([
+        'registerNewUser'
+      ]),
       signUp() {
         if (this.password === this.rePassword) {    
           if (this.termsCheck) {   
-            firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+            this.registerNewUser({email: this.email, password: this.password})
             .then(user => {
-              this.$router.replace('Login')
               alert('Your account has been created!')
             })
             .catch(err => {
