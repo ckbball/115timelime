@@ -10,6 +10,9 @@
 </template>
 
 <script>
+import db from '@/firebase/init'
+import firebase from 'firebase'
+
 export default {
   name: 'ShittyExample',
   data () {
@@ -30,7 +33,7 @@ export default {
         console.log(err)
       })
     },
-    getreviews () {
+    getreviews() {
       db.collection('movies').where('title', '==', 'jurrassic park').get()
       .then((snapshot) => {
         snapshot.docs.forEach(doc => {

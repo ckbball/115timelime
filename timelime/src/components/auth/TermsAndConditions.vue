@@ -1,12 +1,13 @@
 <template>
-  <div >
-	<h1>Temporary Home Page</h1>
+  <div>
+    <p>Users will not use this website as a means to commit nefarious or otherwise malicious acts</p><br>
+    <p>No outsite food or drink</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'termsAndConditions',
   data () {
     return {
     }

@@ -1,17 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import firebase from 'firebase'
 import HelloWorld from '@/components/HelloWorld'
-import bar from '@/components/general/bar'
-import TopBar from '@/components/general/TopBar'
 
-import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
-import FriendButton from '@/components/user_profile/FriendButton'
-import LikeButton from '@/components/user_profile/LikeButton'
-import PostLikeButton from '@/components/user_profile/PostLikeButton'
-import UserIcon from '@/components/user_profile/UserIcon'
-import WriteButton from '@/components/user_profile/WriteButton'
-import ShittyExample from '@/components/tests/shittyexample'
+import Login from '@/components/auth/Login'
+import SignUp from '@/components/auth/SignUp'
+import Hello from '@/components/auth/Hello'
+import TermsAndConditions from '@/components/auth/TermsAndConditions'
+import Post from '@/components/posts/Post'
 
+import DonovanTest from '@/components/tests/donovantest'
+import MiaTest from '@/components/tests/miatest'
+import CaesarTest from '@/components/tests/caesartest'
+import KenjiTest from '@/components/tests/kenjitest'
 
 Vue.use(Router)
 
@@ -19,56 +20,76 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
+      path: '*',
+      redirect: '/Login'
+    },
+    {
       path: '/',
-      name: 'HelloWorld',
+      name: 'Home',
       component: HelloWorld
     },
+
     {
-      path: '/bar',
-      name: 'bar',
-      component: bar
+      path: '/Login',
+      name: 'LogIn',
+      component: Login
     },
     {
-      path: '/TopBar',
-      name: 'TopBar',
-      component: TopBar
+      path: '/Sign-Up',
+      name: 'SignUp',
+      component: SignUp
     },
     {
-      path: '/EditProfileInfo',
-      name: 'EditProfileInfo',
-      component: EditProfileInfo
+      path: '/Hello',
+      name: 'Hello',
+      component: Hello,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
-      path: '/FriendButton',
-      name: 'FriendButton',
-      component: FriendButton
+      path: '/Terms-and-Conditions',
+      name: 'TermsAndConditions',
+      component: TermsAndConditions
     },
     {
-      path: '/LikeButton',
-      name: 'LikeButton',
-      component: LikeButton
+      path: '/Post',
+      name: 'Post',
+      component: Post,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
-      path: '/PostLikeButton',
-      name: 'PostLikeButton',
-      component: PostLikeButton
+      path: '/donovantest',
+      name: 'DonovanTest',
+      component: DonovanTest
     },
     {
-      path: '/WriteButton',
-      name: '/WriteButton',
-      component: WriteButton
+      path: '/miatest',
+      name: 'MiaTest',
+      component: MiaTest
     },
-    {
-      path: '/UserIcon',
-      name: '/UserIcon',
-      component: UserIcon
+        {
+      path: '/caesartest',
+      name: 'CaesarTest',
+      component: CaesarTest
     },
-    {
-    	path: '/shittyexample',
-    	name: 'ShittyExample',
-    	component: ShittyExample
-    }
+        {
+      path: '/kenjitest',
+      name: 'KenjiTest',
+      component: KenjiTest
+    },
   ]
 })
+
+// router.beforeEach((to, from, next) => {
+//   let currentUser = firebase.auth().currentUser;
+//   let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+//   if (requiresAuth && !currentUser) next('login')
+//   else if (!requiresAuth && currentUser) next('hello')
+//   else next()
+// })
 
 export default router

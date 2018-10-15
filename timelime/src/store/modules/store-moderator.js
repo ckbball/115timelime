@@ -9,7 +9,8 @@ export default function configureModerator (store) {
 	store.subscribe(({type, payload },  state,) => {
 		switch (type) {
 			case 'setAuthenticatedUser': 
-				store.dispatch('fetchUserData', store.getters.getAuthenticatedUser.uid)
+				//store.dispatch('fetchUserData', store.getters.getAuthenticatedUser.uid)
+				router.replace ('Hello')
 				return
 			case '':
 				return
