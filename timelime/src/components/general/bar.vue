@@ -1,34 +1,29 @@
 <template lang="html">
   <div>
-    </object>
-    <sui-button icon="write" @click="writeClick()"/>
+    <sui-card class="raised">
+      <sui-card-content>
+        <sui-button icon="edit"/>
+        <sui-button icon="camera retro"/>
+        <sui-button icon="film"/>
+      </sui-card-content>
+    </sui-card>
   </div>
 </template>
 
-
 <script>
 export default {
-  name: 'WriteButton',
+  name: 'Bar',
   data () {
     return {
       input:""
     }
   },
-  props: {
-    counter: Number,
-  },
   methods: {
-  writeClick: function() {
-    console.log("this shit was CLICKED")
-    this.$emit("edit")
-  }
   } 
-  
-  
 }
 </script>
 
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>

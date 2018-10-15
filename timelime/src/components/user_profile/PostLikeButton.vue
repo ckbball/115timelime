@@ -1,8 +1,8 @@
 <template lang="html">
   <div>
     <LikeButton
-      :counter="counter"
-      v-on:ah="toggleLike($event)"
+      :counter="this.counter"
+      v-on:likeEvent="toggleLike()"
     ></LikeButton>
   </div>
 </template>
@@ -10,7 +10,7 @@
 <script>
 import LikeButton from '@/components/user_profile/LikeButton'
 export default {
-  name: 'WriteButton',
+  name: 'PostLikeButton',
   components: {
     "LikeButton": LikeButton
   },
@@ -18,12 +18,11 @@ export default {
     return {
       counter:0,
       liked:false,
-      numberOfLikes:0
     }
   },
   methods: {
-	toggleLike: function(event)
-	{
+  toggleLike: function()
+  {
     console.log(event)
     if (this.liked){
       this.counter--
@@ -33,7 +32,7 @@ export default {
       this.counter++
       this.liked = true
     }
-	},
+  },
   } 
   
   
