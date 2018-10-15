@@ -9,19 +9,19 @@
         @click="select(item.route)"
       />
       <sui-menu-menu position="right">
-        <a v-if="getUser"
+        <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
           :active="isActive('Logout')"
           content="Logout"
           @click="signUserOut"
         />
-        <a v-if="!getUser"
+        <a v-if="!getAuthenticatedUser"
           is="sui-menu-item"
           :active="isActive('SignUp')"
           content="Sign Up"
           @click="select('SignUp')"
         />
-        <a v-if="!getUser"
+        <a v-if="!getAuthenticatedUser"
           is="sui-menu-item"
           :active="isActive('LogIn')"
           content="Log In"
@@ -56,7 +56,7 @@ export default {
   }, 
   computed: {
   	...mapGetters([
-  		'getUser'
+  		'getAuthenticatedUser'
 		])
   },
 	methods: {
