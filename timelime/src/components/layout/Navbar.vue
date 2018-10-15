@@ -11,10 +11,26 @@
       <sui-menu-menu position="right">
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
-          :active="isActive('Logout')"
-          content="Logout"
-          @click="signUserOut"
-        />
+        >
+          <sui-icon 
+            name="envelope outline"
+            size="big"
+          ></sui-icon>
+        </a>
+
+        <a v-if="getAuthenticatedUser"
+          is="sui-menu-item">
+          <sui-dropdown
+            icon="bars big"
+          >          
+            <sui-dropdown-menu>
+              <sui-dropdown-item @click="signUserOut">
+                <sui-icon 
+                name="hide" 
+                />Log out</sui-dropdown-item>
+            </sui-dropdown-menu>
+          </sui-dropdown>
+        </a>
         <a v-if="!getAuthenticatedUser"
           is="sui-menu-item"
           :active="isActive('SignUp')"
