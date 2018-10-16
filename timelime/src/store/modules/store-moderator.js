@@ -10,14 +10,13 @@ export default function configureModerator (store) {
 		switch (type) {
 			case 'setAuthenticatedUser': 
 				//store.dispatch('fetchUserData', store.getters.getAuthenticatedUser.uid)
-				router.replace ('Hello')
+				router.replace ('Home')
+				return
+			case 'registerNewUser':
+				router.replace('Login')
 				return
 			case '':
 				return
-
-	
-			
-
 		}
 	})
 
@@ -27,7 +26,7 @@ export default function configureModerator (store) {
 				store.commit('unsetAuthenticatedUser')
 				store.commit('unsetUser')
 				
-				return router.push('/')
+				return router.replace('Login')
 			
 
 		}

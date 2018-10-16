@@ -25,19 +25,9 @@
       ]),
       signIn() {
         this.authenticateUser({email: this.email, password: this.password})
-        .then(() => {
-          console.log('success')
-        })
         .catch(err => {
-          console.log(err)
+          alert('Oops! ' + err.message)
         })
-        // firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        // .then(user => {
-        //   this.$router.replace('Hello')
-        // })
-        // .catch(err => {
-        //   alert('Oops! ' + err.message)
-        // })
       }
     }
   }

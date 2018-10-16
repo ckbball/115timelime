@@ -4,24 +4,40 @@
         is="sui-menu-item"
         v-for="item in items"
         :active="isActive(item.route)"
-        :key="item"
+        :key="item.content"
         :content="item.content"
         @click="select(item.route)"
       />
       <sui-menu-menu position="right">
-        <a v-if="getUser"
+        <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
-          :active="isActive('Logout')"
-          content="Logout"
-          @click="signUserOut"
-        />
-        <a v-if="!getUser"
+        >
+          <sui-icon 
+            name="envelope outline"
+            size="big"
+          ></sui-icon>
+        </a>
+
+        <a v-if="getAuthenticatedUser"
+          is="sui-menu-item">
+          <sui-dropdown
+            icon="bars big"
+          >          
+            <sui-dropdown-menu>
+              <sui-dropdown-item @click="signUserOut">
+                <sui-icon 
+                name="hide" 
+                />Log out</sui-dropdown-item>
+            </sui-dropdown-menu>
+          </sui-dropdown>
+        </a>
+        <a v-if="!getAuthenticatedUser"
           is="sui-menu-item"
           :active="isActive('SignUp')"
           content="Sign Up"
           @click="select('SignUp')"
         />
-        <a v-if="!getUser"
+        <a v-if="!getAuthenticatedUser"
           is="sui-menu-item"
           :active="isActive('LogIn')"
           content="Log In"
@@ -36,14 +52,10 @@
 <script>
 /*
 
-	add new navbar items to data/ items[]
+	add new navbar items to data/ items
 	item.content is what is displayed on the screen.
 	item.route must correspond to route/index.js route name **case sensitive**
 */
-
-
-
-
 import {mapGetters, mapActions } from 'vuex'
 export default {
 	name: 'Navbar',
@@ -60,7 +72,7 @@ export default {
   }, 
   computed: {
   	...mapGetters([
-  		'getUser'
+  		'getAuthenticatedUser'
 		])
   },
 	methods: {
