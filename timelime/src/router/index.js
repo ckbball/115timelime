@@ -13,6 +13,8 @@ import MiaTest from '@/components/tests/miatest'
 import CaesarTest from '@/components/tests/caesartest'
 import KenjiTest from '@/components/tests/kenjitest'
 
+import auth from '@/store/modules/auth'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -25,7 +27,10 @@ const router = new Router({
     {
       path: '/',
       name: 'Home',
-      component: Home
+      component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
 
     {
@@ -75,11 +80,9 @@ const router = new Router({
 })
 
 // router.beforeEach((to, from, next) => {
-//   let currentUser = firebase.auth().currentUser;
 //   let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-
-//   if (requiresAuth && !currentUser) next('login')
-//   else if (!requiresAuth && currentUser) next('hello')
+//   if (requiresAuth && !auth.isLoggedIn) next('login')
+//   else if (!requiresAuth && auth.isLoggedIn) next('hello')
 //   else next()
 // })
 

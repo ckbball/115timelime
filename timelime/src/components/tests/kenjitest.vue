@@ -1,11 +1,11 @@
 <template>
   <div>
   	kenji test
-
   </div>
 </template>
 
 <script>
+import post from '@/components/posts/post'
 
 export default {
   name: 'KenjiTest',
