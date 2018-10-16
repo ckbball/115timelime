@@ -2,10 +2,9 @@
   <div>
     <Button 
       :icon="this.icon"
-      v-on:clicked="toggle"
+      v-on:edit="toggle"
     ></Button>
     <sui-modal v-model="open">
-      
       <sui-modal-header>{{Header}}</sui-modal-header>
       <sui-modal-content>
         <sui-modal-description>
@@ -24,7 +23,7 @@
           Save
         </sui-button>
       </sui-modal-actions>
-    
+
     </sui-modal>
   </div>
 </template>
@@ -35,7 +34,7 @@ export default {
   name: 'EditProfileInfo',
   data() {
     return { 
-      icon: "write",
+      icon: "photo",
       open: false,
       text: ""
     };

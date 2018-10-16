@@ -1,26 +1,25 @@
 <template lang="html">
   <div>
     </object>
-    <sui-button icon="write" @click="writeClick()"/>
+    <sui-button v-bind:icon="icon" @click="clickButton()"/>
   </div>
 </template>
 
 
 <script>
 export default {
-  name: 'WriteButton',
+  name: 'Button',
   data () {
     return {
-      input:""
     }
   },
   props: {
-    counter: Number,
+    icon: String,
+    status: Boolean,
   },
   methods: {
-  writeClick: function() {
-    console.log("this shit was CLICKED")
-    this.$emit("edit")
+  clickButton: function() {
+    this.$emit("clicked")
   }
   } 
   

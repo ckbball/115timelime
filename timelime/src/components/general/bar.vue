@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <sui-card class="raised">
+    <sui-card>
       <sui-card-content>
         <sui-button icon="edit"/>
         <sui-button icon="camera retro"/>

@@ -9,39 +9,57 @@
       </sui-card-content>
       <sui-card-content extra>
         <sui-icon name="user"/>
-        22 Friends</sui-card-content>
+        {{Friends}}
+      </sui-card-content>
+
+      <sui-card-content>
+        <div class="ui grid">
+          <!-- so which ever one is in front will cause a unique error when you click on the first icon, the second one lights up -->
+          <!-- should find a possible solution to this, perhaps not use grid? -->
+          <div class="two wide column">
+             <EditProfileInfo 
+              class= "editInfo"
+              :Header="this.Header" 
+              v-on:inputEvent="setBio($event)" /> 
+          </div>
+          <div class="two wide column">
+            <EditProfilePicture
+              class="editImage"
+            /> 
+          </div>
+        </div>
+      </sui-card-content>
+
+
+
     </sui-card>
-    <WriteButton 
-      class="editInfo"
-      v-on:edit="editProfileText()"
-    ></WriteButton>
-    <WriteButton 
-      class="editImage"
-      v-on:edit="editProfileImage()"
-    ></WriteButton>
   </div>
 </template>
 
 <script>
-  import WriteButton from '@/components/user_profile/WriteButton'
+  import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
+  import EditProfilePicture from '@/components/user_profile/EditProfilePicture'
   export default {
   name: 'UserIcon',
   components: {
-    "WriteButton": WriteButton,
+    "EditProfileInfo": EditProfileInfo,
+    "EditProfilePicture": EditProfilePicture,
   },
   data () {
     return {
       Name:"Kristy",
-      Bio: "Kristy is an art director living in New York."
+      Bio: "Kristy is an art director living in New York.",
+      Header: "Bio",
+      Friends: 0
     }
   },
   methods: {
-    editProfileText: function(){
-      console.log("request to edit changes to profile")
-    },
     editProfileImage: function(){
       console.log("request to change profile picture")
     },
+    setBio: function(text){
+      this.Bio = text
+    }
   } 
   
   
@@ -53,18 +71,16 @@
 .ProfilePicture{
   width: 300px;
   height: 300px;
-    object-fit: cover;
+  object-fit: cover;
 }
 .editInfo{
-  position: relative;
-  margin-right: 350px;
-  top: -143px;
   z-index: 2;
+  position: relative;
+  margin-left: 85px;
 }
 .editImage{
   position: relative;
-  margin-right: 350px;
-  top: -480px;
+  margin-left: 95px;
   z-index: 2;
 }
 </style>

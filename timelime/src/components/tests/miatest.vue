@@ -1,7 +1,6 @@
 <template>
   <div>
-  	<WriteButton></WriteButton>
-
+  	<UserIcon></UserIcon>
   </div>
 </template>
 
@@ -12,18 +11,22 @@
 3. register the component in the components: { .... section
 4. Now you can use the component in the <template> section and you'll be able to see in by going to this page
 */
+
+
+import bar from '@/components/general/bar'
+import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import LikeButton from '@/components/user_profile/LikeButton'
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
 import UserIcon from '@/components/user_profile/UserIcon'
-import WriteButton from '@/components/user_profile/WriteButton'
 
 export default {
   name: 'MiaTest',
   components: {
+    'bar': bar,
+    'EditProfileInfo': EditProfileInfo,
   	'LikeButton': LikeButton,
   	'PostLikeButton': PostLikeButton,
   	'UserIcon': UserIcon,
-  	'WriteButton': WriteButton,
   },
   data () {
     return {}
