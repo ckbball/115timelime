@@ -6,7 +6,7 @@ import Home from '@/components/Home'
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'
-import Post from '@/components/posts/Post'
+import Post from '@/components/posts/PostText'
 
 import DonovanTest from '@/components/tests/donovantest'
 import MiaTest from '@/components/tests/miatest'

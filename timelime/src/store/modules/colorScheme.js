@@ -1,32 +1,25 @@
 
 
 const state = {
-	primaryColor: 'teal',
-	secondaryColor: 'blue',
-	tertiaryColor: 'violet',
+	colors: ['teal', 'blue', 'violet'],
+	colorsIndex: {
+		primary: 0,
+		secondary: 1,
+		tertiary:2
+	}
 
 }
 const getters = {
-	getPrimaryColor: (state) => {
-		return state.primaryColor
-	},
-	getSecondaryColor: (state) => {
-		return state.secondaryColor
-	},
-	getTertiaryColor: (state) => {
-		return state.tertiaryColor
-	},
+	getColor: (state) => (color) => {
+		console.log(state.colorsIndex[color])
+		return state.colors[state.colorsIndex[color]]
+	}
 
 }
 const mutations = {
-	setPrimaryColor: (state, payload) => {
-		state.PrimaryColor = payload
-	},
-	setPrimaryColor: (state, payload) => {
-		state.SecondaryColor = payload
-	},
-	setPrimaryColor: (state, payload) => {
-		state.TertiaryColor = payload
+
+	setColor: (state, {index, newColor}) => {
+		state.colors[state.colorsIndex[index]] = newColor
 	}
 
 }

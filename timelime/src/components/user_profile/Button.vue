@@ -2,7 +2,7 @@
   <div>
     </object>
     <sui-button v-bind:icon="icon" @click="clickButton()"
-    :color="getPrimaryColor"
+    :color="getColor('primary')"
     />
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getPrimaryColor'
+      'getColor'
     ])
   } 
   

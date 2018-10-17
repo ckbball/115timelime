@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import post from '@/components/posts/post'
+import post from '@/components/posts/PostText'
 
 export default {
   name: 'KenjiTest',
