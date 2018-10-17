@@ -1,6 +1,6 @@
 <template>
   <div class="account">
-    <h3>Sign In</h3>
+    <h3>Log In</h3>
     <input type="text" v-model="email" placeholder="Email"><br>
     <input type="password" v-model="password" placeholder="Password"><br>
     <button v-on:click="signIn">Squeeze!</button>
