@@ -1,12 +1,15 @@
 <template lang="html">
   <div>
     </object>
-    <sui-button v-bind:icon="icon" @click="clickButton()"/>
+    <sui-button v-bind:icon="icon" @click="clickButton()"
+    :color="getPrimaryColor"
+    />
   </div>
 </template>
 
 
 <script>
+  import { mapGetters } from 'vuex'
 export default {
   name: 'Button',
   data () {
@@ -18,9 +21,14 @@ export default {
     status: Boolean,
   },
   methods: {
-  clickButton: function() {
-    this.$emit("clicked")
-  }
+    clickButton: function() {
+      this.$emit("clicked")
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'getPrimaryColor'
+    ])
   } 
   
   

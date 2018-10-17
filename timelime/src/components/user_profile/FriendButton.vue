@@ -2,7 +2,7 @@
   <div>
     <sui-card class="raised">
       <sui-card-content>
-        <sui-button  fluid content="friends"/>
+        <sui-button content="friends"/>
       </sui-card-content>
     </sui-card>
   </div>

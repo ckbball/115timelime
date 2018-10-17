@@ -2,18 +2,11 @@
   <div>
     <Button 
       :icon="this.icon"
-      v-on:edit="toggle"
+      v-on:clicked="toggle"
     ></Button>
     <sui-modal v-model="open">
       <sui-modal-header>{{Header}}</sui-modal-header>
-      <sui-modal-content>
-        <sui-modal-description>
-            <sui-input 
-            fluid
-            v-model="text"
-            />
-        </sui-modal-description>
-      </sui-modal-content>
+     
       
       <sui-modal-actions>
         <sui-button negative @click.native="toggle">

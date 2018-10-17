@@ -1,6 +1,6 @@
 <template>
   <div>
-  	<UserIcon></UserIcon>
+  	<UserSideBar/>
   </div>
 </template>
 
@@ -18,6 +18,7 @@ import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import LikeButton from '@/components/user_profile/LikeButton'
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
 import UserIcon from '@/components/user_profile/UserIcon'
+import UserSideBar from '@/components/user_profile/UserSideBar'
 
 export default {
   name: 'MiaTest',
@@ -27,6 +28,7 @@ export default {
   	'LikeButton': LikeButton,
   	'PostLikeButton': PostLikeButton,
   	'UserIcon': UserIcon,
+    'UserSideBar': UserSideBar,
   },
   data () {
     return {}
