@@ -6,8 +6,6 @@
     ></Button>
     <sui-modal v-model="open">
       <sui-modal-header>{{Header}}</sui-modal-header>
-     
-      
       <sui-modal-actions>
         <sui-button negative @click.native="toggle">
           Cancel

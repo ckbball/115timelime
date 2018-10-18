@@ -1,31 +1,15 @@
 <template lang="html">
-
-
-
-  <sui-grid :columns="2" :centered=false divided>
-    <sui-grid-column :width="11">
-      <Post fluid/>
-    </sui-grid-column>
-
-    <sui-grid-column  :width="5">
-      <UserSideBar/>
-    </sui-grid-column>
-    
-  </sui-grid>
-
-
+  <div>
+   <UserIcon/>
+   <FriendButton class="FriendButton"/>
+   <bar class="PostButtons"/>
+  </div>
 </template>
 
 <script>
-export default {
-  name: 'CelledExample',
-};
-</script>
-
-<script>
-import Post from '@/components/posts/Post'
-import UserSideBar from '@/components/user_profile/UserSideBar'
+import UserIcon from '@/components/user_profile/UserIcon'
 import FriendButton from '@/components/user_profile/FriendButton'
+import bar from '@/components/general/bar'
 export default {
   name: 'EditProfileInfo',
   data() {
@@ -36,9 +20,9 @@ export default {
     };
   },
   components: {
-    "UserSideBar": UserSideBar,
+    "UserIcon": UserIcon,
     "FriendButton": FriendButton,
-    "Post": Post,
+    "bar": bar,
   },
   props: {
     Header: String,

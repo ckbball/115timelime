@@ -1,6 +1,7 @@
 <template>
   <div>
-  	<UserSideBar/>
+  	<!-- <UserSideBar/> -->
+    <UserProfile/>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import LikeButton from '@/components/user_profile/LikeButton'
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
 import UserIcon from '@/components/user_profile/UserIcon'
+import UserProfile from '@/components/user_profile/UserProfile'
 import UserSideBar from '@/components/user_profile/UserSideBar'
 
 export default {
@@ -28,6 +30,7 @@ export default {
   	'LikeButton': LikeButton,
   	'PostLikeButton': PostLikeButton,
   	'UserIcon': UserIcon,
+    'UserProfile': UserProfile,
     'UserSideBar': UserSideBar,
   },
   data () {

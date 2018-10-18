@@ -6,9 +6,10 @@
       <a
         is="sui-label"
         slot="label"
-        basic
+        :basic="!this.liked"
         color="red"
         pointing="left"
+        @click="likeClick()"
       >
       {{counter}} <!-- string interpolation-->
       </a>
@@ -30,7 +31,7 @@ export default {
   },
   methods: {
 	likeClick: function() {
-		console.log("yooooooo")
+		this.liked=!this.liked
 		this.$emit("likeEvent")
 	}
   } 
