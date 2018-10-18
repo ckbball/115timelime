@@ -16,7 +16,7 @@
 
 import bar from '@/components/general/bar'
 import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
-import LikeButton from '@/components/user_profile/LikeButton'
+import Button from '@/components/user_profile/Button'
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
 import UserIcon from '@/components/user_profile/UserIcon'
 import UserProfile from '@/components/user_profile/UserProfile'
@@ -27,7 +27,7 @@ export default {
   components: {
     'bar': bar,
     'EditProfileInfo': EditProfileInfo,
-  	'LikeButton': LikeButton,
+  	'Button': Button,
   	'PostLikeButton': PostLikeButton,
   	'UserIcon': UserIcon,
     'UserProfile': UserProfile,

@@ -1,11 +1,10 @@
 <template lang="html">
   <div>
-    <Button 
+    <ButtonColor 
       :icon="this.icon"
       v-on:clicked="toggle"
-    ></Button>
+    ></ButtonColor>
     <sui-modal v-model="open">
-      
       <sui-modal-header>{{Header}}</sui-modal-header>
       <sui-modal-content>
         <sui-modal-description>
@@ -15,7 +14,7 @@
             />
         </sui-modal-description>
       </sui-modal-content>
-      
+
       <sui-modal-actions>
         <sui-button negative @click.native="toggle">
           Cancel
@@ -29,8 +28,9 @@
   </div>
 </template>
 
+
 <script>
-import Button from '@/components/user_profile/Button'
+import ButtonColor from '@/components/user_profile/ButtonColor'
 export default {
   name: 'EditProfileInfo',
   data() {
@@ -41,7 +41,7 @@ export default {
     };
   },
   components: {
-    "Button": Button,
+    "ButtonColor": ButtonColor,
   },
   props: {
     Header: String,

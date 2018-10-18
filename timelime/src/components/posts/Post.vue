@@ -4,7 +4,7 @@
     <sui-grid :columns="2" :centered=false>
       <sui-grid-column  :width="3">
         <PostLikeButton class= "Button1"/>
-        <PostLikeButton class= "Button2"/>
+        <PostCommentButton class= "Button2"/>
       </sui-grid-column>
       
       <sui-grid-column :width="13" >
@@ -17,6 +17,7 @@
 
 <script>
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
+import PostCommentButton from '@/components/user_profile/PostCommentButton'
 import PostText from '@/components/posts/Post'
 export default {
   name: 'EditProfileInfo',
@@ -26,6 +27,7 @@ export default {
   },
   components: {
     "PostLikeButton": PostLikeButton,
+    "PostCommentButton": PostCommentButton,
     "PostText": PostText,
   },
   props: {

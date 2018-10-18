@@ -1,41 +1,46 @@
 <template lang="html">
   <div>
     </object>
-    <sui-button v-bind:icon="icon" @click="clickButton()"
-    :color="getColor('primary')"
-    />
+    <sui-button :color="color" :icon="icon" size="small" :basic="this.pressed"
+        @click="clicked()">
+      <a
+        is="sui-label"
+        slot="label"
+        :basic="!this.pressed"
+        :color="color"
+        pointing="left"
+        @click="clicked()"
+      >
+      {{counter}} <!-- string interpolation-->
+      </a>
+    </sui-button>
   </div>
 </template>
 
-
 <script>
-  import { mapGetters } from 'vuex'
 export default {
-  name: 'Button',
+  name: 'LikeButton',
   data () {
     return {
+    	likeCount:0,
+    	pressed:false
     }
   },
   props: {
-    icon: String,
-    status: Boolean,
+  	color: String,
+  	icon: String,
+  	counter: Number,
   },
   methods: {
-    clickButton: function() {
-      this.$emit("clicked")
-    }
-  },
-  computed: {
-    ...mapGetters([
-      'getColor'
-    ])
+	clicked: function() {
+		this.pressed=!this.pressed
+		this.$emit("clickEvent")
+	}
   } 
-  
-  
 }
 </script>
 
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>

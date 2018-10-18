@@ -12,7 +12,7 @@
 <script>
 import Button from '@/components/user_profile/Button'
 export default {
-  name: 'PostLikeButton',
+  name: 'PostCommentButton',
   components: {
     "Button": Button
   },
@@ -20,8 +20,8 @@ export default {
     return {
       counter:0,
       liked:false,
-      color:"red",
-      icon:"heart",
+      color:"blue",
+      icon:"comment",
     }
   },
   methods: {

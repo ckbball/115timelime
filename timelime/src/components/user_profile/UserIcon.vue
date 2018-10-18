@@ -8,11 +8,11 @@
              <EditProfileInfo 
               class= "editInfo"
               :Header="this.Header" 
-              v-on:inputEvent="setBio($event)" /> 
+              v-on:inputEvent="setBio($event)"/> 
           </div>
           <div class="two wide column">
             <EditProfilePicture
-              class="editImage"
+              class="editImage" 
             /> 
           </div>
         </div>
