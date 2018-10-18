@@ -22,7 +22,7 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: '/Login'
+      redirect: '/'
     },
     {
       path: '/',
@@ -47,14 +47,6 @@ const router = new Router({
       path: '/Terms-and-Conditions',
       name: 'TermsAndConditions',
       component: TermsAndConditions
-    },
-    {
-      path: '/Post',
-      name: 'Post',
-      component: Post,
-      meta: {
-        requiresAuth: true
-      }
     },
     {
       path: '/donovantest',

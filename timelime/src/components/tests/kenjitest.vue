@@ -1,6 +1,6 @@
 <template>
   <div>
-  	kenji test
+    <post/>
   </div>
 </template>
 
@@ -9,6 +9,9 @@ import post from '@/components/posts/PostText'
 
 export default {
   name: 'KenjiTest',
+  components: {
+    'post': post
+  },
   data () {
     return {}
   }, 
