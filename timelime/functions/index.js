@@ -1,17 +1,26 @@
-const functions = require('firebase-functions');
-const express = require('express');
-const cors = require('cors');
-const axios = require('axios');
+const functions = require('firebase-functions')
+const express = require('express')
+const bodyParser = require('body-parser')
+const cors = require('cors')
+const axios = require('axios')
+const { server } = require('./graphQLServer')
+
 
 const app = express()
-app.use(cors({ origin: true }));
+app.use(bodyParser.json())
 
-app.get('/timestamp', (request, response) => {
-	response.send('kahflkjhlkfhasd');
-})
 
-const main = express();
-main.use('/api', app );
+server.applyMiddleware({ 
+	app, 
+	gui: {
+		endpoint: '/graphql'
+	}
+});
+  
+
+
+const main = express()
+main.use('/api', app )
 
 exports.main = functions.https.onRequest(main);
 
@@ -26,10 +35,10 @@ exports.testfunc= functions.https.onRequest((request, response) => {
 exports.helloWorld = functions.https.onRequest((request, response) => {
 	axios.get('http://xkcd.com/614/info.0.json')
 	.then(res => {
-		response.send(res.data);
+		response.send(res.data)
 	})
 	.catch(()=> {
-		response.send('didnt work');
+		response.send('didnt work')
 	})
 
 });
