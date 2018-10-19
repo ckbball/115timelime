@@ -7,15 +7,15 @@
     <sui-modal v-model="open">
       <sui-modal-header>{{Header}}</sui-modal-header>
       <sui-modal-content>
+
         <sui-modal-description>
-            <sui-input 
-            fluid
-            v-model="text"
-            />
+          <textarea 
+            v-model="newBio"  class="fucku" maxlength="200"/>
         </sui-modal-description>
       </sui-modal-content>
-
+        
       <sui-modal-actions>
+        Characters remaining: {{textRemaining}}
         <sui-button negative @click.native="toggle">
           Cancel
         </sui-button>
@@ -37,8 +37,15 @@ export default {
     return { 
       icon: "write",
       open: false,
-      text: ""
+      text: "",
+      maxlength: 200,
+      newBio: this.Bio
     };
+  },
+  computed: {
+    textRemaining: function(){
+        return 200 - this.newBio.length
+      },
   },
   components: {
     "ButtonColor": ButtonColor,
@@ -46,6 +53,7 @@ export default {
   props: {
     Header: String,
     Bio: String,
+    Prexisting: String,
   },
   methods: {
     toggle() {
@@ -53,13 +61,21 @@ export default {
       this.text = ""
     },
     savePost(){
-      this.$emit("inputEvent", this.text)
+      this.$emit("inputEvent", this.newBio)
       this.open = !this.open;
       this.text = ""
+    },
+    calculateRemaining() {
+      console.log("fuck u")
+      // this.remaining = this.maxlength - val.value.length;
     },
   },
 };
 </script>
 
-<style lang="css">
+<style scoped>
+.fucku{
+  width: 100%;
+  height: 100%
+}
 </style>

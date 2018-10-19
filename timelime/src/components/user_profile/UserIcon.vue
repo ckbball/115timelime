@@ -8,6 +8,7 @@
              <EditProfileInfo 
               class= "editInfo"
               :Header="this.Header" 
+              :Bio="Bio"
               v-on:inputEvent="setBio($event)"/> 
           </div>
           <div class="two wide column">
@@ -59,7 +60,7 @@
   data () {
     return {
       Name:"Kristy",
-      Bio: "Kristy is an art director living in New York.",
+      Bio: "My experiences in both academia and the workplace have been extremely fulfilling, yet I feel far from satisfied. Learning about security measures in my operating system course was enthralling.",//"Kristy is an art director living in New York.",
       Header: "Bio",
       Friends: 0
     }

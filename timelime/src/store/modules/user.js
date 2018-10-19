@@ -1,7 +1,11 @@
 import db from '@/firebase/init'
 
 const state = {
-	user: null,
+	user: {
+		Name: "Mia Potato",
+		Bio: "hey fuckface",
+		Photo: "https://images.pexels.com/photos/1466845/pexels-photo-1466845.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260",
+	},
 
 }
 const getters = {
