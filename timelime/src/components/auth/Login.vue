@@ -7,47 +7,42 @@
           Log In
         </div>
       </h2>
-      <form class="ui large form error">
-        <div class="ui stacked segment">
-          <div class="field error">
+      <form class="ui large form">
+        <div class="ui segment loginForm">
+          <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i> 
-              <input type="text" name="email" v-model="vemail" placeholder="Email">
+              <input type="text" v-model="email" placeholder="Email">
             </div>
           </div>
-          <div class="field error">
+          <div class="field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" name="password" v-model="vpassword" placeholder="Password">
+              <input type="password" v-model="password" placeholder="Password">
             </div>  
           </div>
-          <div class="ui fluid large grey submit button">
+          <button class="ui large fluid grey button" type="button" v-on:click="signIn">
             Squeeze!
-          </div>
+          </button>
         </div>
 
-        <div class="ui error message">
-          <ul class="list">
-            <li>Please enter your e-mail</li>
-            <li>Please enter a valid e-mail</li>
-            <li>Please enter your password</li>
-            <li>Your password must be at least 6 characters</li>
-          </ul>
+        <div class="ui red message loginForm" v-if="invalidEmail || invalidPassword">
+          <p v-if="invalidEmail">Please enter a valid email</p>
+          <p v-if="invalidPassword">Incorrect password</p>
         </div>
       </form>
       
-      <div class="ui message">
+      <div class="ui message new">
         New to TimeLime? You can <router-link to="/sign-up">create a new account!</router-link>
       </div>
 
-      <!-- <button class="ui secondary button" v-on:click="signIn">Squeeze!</button> -->
     </div>
   </div>
 </template>
 
 <script>
-  //import firebase from 'firebase'
   import { mapActions } from 'vuex'
+  
   export default {
     name: 'Login',
     data () {
@@ -56,7 +51,9 @@
         password: '',
         images: {
           lemon: require('@/assets/lemon.png')
-        }
+        },
+        invalidEmail: false,
+        invalidPassword: false
       }
     },
     methods: {
@@ -66,44 +63,25 @@
       signIn() {
         this.authenticateUser({email: this.email, password: this.password})
         .catch(err => {
-          alert('Oops! ' + err.message)
+          if (err.code === "auth/invalid-email") this.invalidEmail = true
+          if (err.code === "auth/wrong-password") this.invalidPassword = true
         })
       }
     }
   }
 
-// $('.ui.form')
-//   .form({
-//     fields: {
-//       email    : 'empty',
-//       password   : 'empty',
-//     }
-//   })
-// ;
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .account {
-    margin-top: 40px;
-  }
-  input {
-    margin: 10px 0;
-    width: 300px;
-    padding: 15px;
-  }
-  button {
-    margin-top: 20px;
-    width: 100px;
-    cursor: pointer;
-  }
-  p {
-    margin-top: 40px;
-    font-size: 13px;
-  }
-  p a {
-    text-decoration: underline;
-    cursor: pointer;
-  }
+.loginForm {
+  width: 300px;
+  margin: auto;
+  margin-bottom: 20px;
+}
+.new {
+  width: 300px;
+  margin: auto;
+  margin-top: 20px;
+}
 </style>
