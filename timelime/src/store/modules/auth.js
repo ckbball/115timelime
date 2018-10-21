@@ -26,7 +26,7 @@ const mutations = {
 	}
 
 }
-const actions = {	
+const actions = {
 	authenticateUser: ({commit}, {email, password}) => {
 		return new Promise((resolve, reject) => {
 			firebase.auth().signInWithEmailAndPassword(email, password)
@@ -41,18 +41,21 @@ const actions = {
 		})
 	},
 	registerNewUser: ({commit}, {email, password}) => {
-		firebase.auth().createUserWithEmailAndPassword(email, password)
-		.then(cred => {
-			commit('setAuthenticatedUser', cred.user)
-			db.collection('users').add({
-				user_id: cred.user.uid,
-				user_email: email
+		return new Promise((resolve, reject) => {	
+			firebase.auth().createUserWithEmailAndPassword(email, password)
+			.then(cred => {
+				commit('setAuthenticatedUser', cred.user)
+				db.collection('users').add({
+					user_id: cred.user.uid,
+					user_email: email
+				})
+				resolve(cred)
+			})
+			.catch(err => {
+				console.log(err)
+				reject(err)
 			})
 		})
-		.catch(err => {
-			console.log(err)
-		})
-
 
 	},
 	signUserOut: ({commit}) => {
