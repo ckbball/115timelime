@@ -1,17 +1,14 @@
 <template lang="html">
 
-
-
   <sui-grid :columns="2" :centered=false divided>
     <sui-grid-column :width="11">
       <Post fluid/>
     </sui-grid-column>
-
     <sui-grid-column  :width="5">
       <UserSideBar/>
     </sui-grid-column>
-    
   </sui-grid>
+
 
 
 </template>
@@ -23,9 +20,10 @@ export default {
 </script>
 
 <script>
-import Post from '@/components/posts/Post'
-import UserSideBar from '@/components/user_profile/UserSideBar'
-import FriendButton from '@/components/user_profile/FriendButton'
+  import {mapGetters, mapMutations} from 'vuex'
+  import Post from '@/components/posts/Post'
+  import UserSideBar from '@/components/user_profile/UserSideBar'
+  import FriendButton from '@/components/user_profile/FriendButton'
 export default {
   name: 'EditProfileInfo',
   data() {
@@ -39,6 +37,9 @@ export default {
     "UserSideBar": UserSideBar,
     "FriendButton": FriendButton,
     "Post": Post,
+  },
+  computed: {
+    ...mapGetters(['getUser'])
   },
   props: {
     Header: String,
@@ -54,6 +55,7 @@ export default {
       this.open = !this.open;
       this.text = ""
     },
+     ...mapMutations(['setUser']),
   },
 };
 

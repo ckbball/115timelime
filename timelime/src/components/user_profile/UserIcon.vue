@@ -8,7 +8,7 @@
              <EditProfileInfo 
               class= "editInfo"
               :Header="this.Header" 
-              :Bio="Bio"
+              :Bio="getUser.Bio"
               v-on:inputEvent="setBio($event)"/> 
           </div>
           <div class="two wide column">
@@ -17,38 +17,16 @@
             /> 
           </div>
         </div>
-        <sui-card-header>{{Name}}</sui-card-header>
+        <sui-card-header>{{getUser.Name}}</sui-card-header>
         <sui-card-meta>Joined in 2013</sui-card-meta>
-        <sui-card-description>{{Bio}}</sui-card-description>
+        <sui-card-description>{{getUser.Bio}}</sui-card-description>
       </sui-card-content>
-
-      
-        
-
-
-<!--       <sui-card-content>
-        <div class="ui grid">
-          <div class="two wide column">
-             <EditProfileInfo 
-              class= "editInfo"
-              :Header="this.Header" 
-              v-on:inputEvent="setBio($event)" /> 
-          </div>
-          <div class="two wide column">
-            <EditProfilePicture
-              class="editImage"
-            /> 
-          </div>
-        </div>
-      </sui-card-content> -->
-
-
-
     </sui-card>
   </div>
 </template>
 
 <script>
+  import {mapGetters, mapMutations} from 'vuex'
   import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
   import EditProfilePicture from '@/components/user_profile/EditProfilePicture'
   export default {
@@ -59,19 +37,21 @@
   },
   data () {
     return {
-      Name:"Kristy",
-      Bio: "My experiences in both academia and the workplace have been extremely fulfilling, yet I feel far from satisfied. Learning about security measures in my operating system course was enthralling.",//"Kristy is an art director living in New York.",
       Header: "Bio",
       Friends: 0
     }
+  },
+   computed: {
+    ...mapGetters(['getUser'])
   },
   methods: {
     editProfileImage: function(){
       console.log("request to change profile picture")
     },
+    ...mapMutations(['updateUser']),
     setBio: function(text){
-      this.Bio = text
-    }
+      this.$store.commit('updateUser')
+    },
   } 
   
   
