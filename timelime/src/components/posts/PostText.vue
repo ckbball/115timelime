@@ -2,7 +2,35 @@
   <div class="post">
     <input v-model="textPost" placeholder="When time gives you limes...">
     <button v-on:click="submit">Squeeze!</button>
+  
+
+  <div v-for="post in posts">
+
+      <sui-card>
+        <sui-card-content>
+          <sui-card-header>Post
+            <sui-icon class="right floated" size="small" name="like" />
+            <sui-icon class="right floated" size="small" name="star" />
+          </sui-card-header>
+          <p>Here goes the post text</p>
+
+          {{ post.text }}
+        </sui-card-content>
+        <sui-card-content extra>
+          <span>
+            <sui-icon name="heart" /> Like
+          </span>
+          <span slot="right">
+            <sui-icon name="star" /> Favorite
+          </span>
+        </sui-card-content>
+      </sui-card>
+
   </div>
+
+</div>
+
+
 </template>
 
 <script>
@@ -31,18 +59,24 @@ export default {
     }, 
     getPosts() {
       db.collection('posts').get()
-      .then((snapshot) => {
-        snapshot.docs.forEach(doc => {
-          this.posts.push(doc.text)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          let data = {
+            'id': doc.id,
+            'text': doc.data().text
+          }
+          this.posts.push(data)
         })
       })
       .catch(err => {
         console.log("failed with error: " + err)
       })
+      console.log(this.posts)
     }
   },
   created () {
     this.getPosts()
+    console.log(this.posts[0])
   }
 }
 </script>
