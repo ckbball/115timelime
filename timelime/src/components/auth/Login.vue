@@ -63,8 +63,12 @@
       signIn() {
         this.authenticateUser({email: this.email, password: this.password})
         .catch(err => {
-          if (err.code === "auth/invalid-email") this.invalidEmail = true
-          if (err.code === "auth/wrong-password") this.invalidPassword = true
+          this.invalidEmail = false
+          this.invalidPassword = false
+          if (err.code == "auth/invalid-email")
+            this.invalidEmail = true
+          else if (err.code == "auth/wrong-password")
+            this.invalidPassword = true
         })
       }
     }
@@ -74,14 +78,14 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.loginForm {
-  width: 300px;
-  margin: auto;
-  margin-bottom: 20px;
-}
-.new {
-  width: 300px;
-  margin: auto;
-  margin-top: 20px;
-}
+  .loginForm {
+    width: 300px;
+    margin: auto;
+    margin-bottom: 20px;
+  }
+  .new {
+    width: 300px;
+    margin: auto;
+    margin-top: 20px;
+  }
 </style>
