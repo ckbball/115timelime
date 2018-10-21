@@ -63,8 +63,10 @@
       signIn() {
         this.authenticateUser({email: this.email, password: this.password})
         .catch(err => {
-          if (err.code === "auth/invalid-email") this.invalidEmail = true
-          if (err.code === "auth/wrong-password") this.invalidPassword = true
+          this.invalidEmail = false
+          this.invalidPassword = false
+          if (err.code == "auth/invalid-email") this.invalidEmail = true
+          else if (err.code == "auth/wrong-password") this.invalidPassword = true
         })
       }
     }
