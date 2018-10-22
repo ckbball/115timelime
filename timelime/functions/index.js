@@ -9,7 +9,6 @@ const { server } = require('./graphQLServer')
 const app = express()
 app.use(bodyParser.json())
 
-
 server.applyMiddleware({ 
 	app, 
 	gui: {
