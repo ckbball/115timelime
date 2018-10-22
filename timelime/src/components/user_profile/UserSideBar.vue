@@ -1,6 +1,9 @@
 <template lang="html">
   <div>
-   <UserIcon/>
+   <UserIcon
+    @editBio="changeBio()"
+    @editPhoto="changeProfileImage()"
+    />
    <FriendButton class="FriendButton"/>
    <bar class="PostButtons"/>
   </div>
@@ -24,19 +27,14 @@ export default {
     "FriendButton": FriendButton,
     "bar": bar,
   },
-  props: {
-    Header: String,
-    Bio: String,
-  },
   methods: {
-    toggle() {
-      this.open = !this.open;
-      this.text = ""
+    changeBio: function(){
+      console.log("hey! someone REALLY REALLY wants to edit this profile! :)")
+      this.$emit("editBio")
     },
-    savePost(){
-      this.$emit("inputEvent", this.text)
-      this.open = !this.open;
-      this.text = ""
+    changeProfileImage: function(){
+      console.log("hey! someone REALLY REALLY wants to edit this profile photo! :)")
+      this.$emit("editPhoto")
     },
   },
 };

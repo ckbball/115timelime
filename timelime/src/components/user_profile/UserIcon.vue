@@ -5,14 +5,13 @@
       <sui-card-content>
         <div class="ui grid">
           <div class="two wide column">
-             <EditProfileInfo 
-              class= "editInfo"
-              :Header="this.Header" 
-              :Bio="getUser.Bio"
-              v-on:inputEvent="setBio($event)"/> 
+             <EditProfileInfo
+              @editBio="changeBio()"
+              class= "editInfo"/> 
           </div>
           <div class="two wide column">
             <EditProfilePicture
+              @editPhoto="changeProfileImage()"
               class="editImage" 
             /> 
           </div>
@@ -48,10 +47,19 @@
     editProfileImage: function(){
       console.log("request to change profile picture")
     },
+    changeProfileImage: function(){
+      console.log("hey! someone REALLY wants to edit this profile picture :)")
+      this.$emit("editPhoto")
+    },
+    changeBio: function(){
+      console.log("hey! someone REALLY wants to edit this profile! :)")
+      this.$emit("editBio")
+    },
     ...mapMutations(['updateUser']),
     setBio: function(text){
       this.$store.commit('updateUser')
     },
+
   } 
   
   

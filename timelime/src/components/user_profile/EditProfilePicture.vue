@@ -2,20 +2,9 @@
   <div>
     <ButtonColor 
       :icon="this.icon"
-      v-on:clicked="toggle"
+      v-on:clicked="open"
     ></ButtonColor>
-    <sui-modal v-model="open">
-      <sui-modal-header>{{Header}}</sui-modal-header>
-      <sui-modal-actions>
-        <sui-button negative @click.native="toggle">
-          Cancel
-        </sui-button>
-        <sui-button positive @click.native="savePost">
-          Save
-        </sui-button>
-      </sui-modal-actions>
-
-    </sui-modal>
+    
   </div>
 </template>
 
@@ -26,26 +15,15 @@ export default {
   data() {
     return { 
       icon: "photo",
-      open: false,
-      text: ""
     };
   },
   components: {
     "ButtonColor": ButtonColor,
   },
-  props: {
-    Header: String,
-    Bio: String,
-  },
   methods: {
-    toggle() {
-      this.open = !this.open;
-      this.text = ""
-    },
-    savePost(){
-      this.$emit("inputEvent", this.text)
-      this.open = !this.open;
-      this.text = ""
+    open() {
+      console.log("hey! someone wants to edit this profile photo! :)")
+      this.$emit("editPhoto")
     },
   },
 };
