@@ -6,8 +6,8 @@ import router from './router'
 import Vuex from 'vuex'
 import { store } from './store/index.js'
 
-
 import firebase from 'firebase'
+import VueLodash from 'vue-lodash'
 
 import SuiVue from 'semantic-ui-vue'
 import 'semantic-ui-css/semantic.min.css';
@@ -41,6 +41,9 @@ const apolloProvider = new VueApollo({
   defaultClient: apolloClient,
 })
 
+const options = {name: 'lodash'}
+
+Vue.use(VueLodash, options)
 Vue.use(SuiVue)
 Vue.use(VueApollo)
 

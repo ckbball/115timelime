@@ -8,6 +8,17 @@
         :content="item.content"
         @click="select(item.route)"
       />
+
+
+
+        <NavbarSearchBar v-on:searchReturned="onSearchReturned($event)">
+        </NavbarSearchBar>
+<!--         <NavbarSearchResults 
+          v-if="searchResults" 
+          :items="searchResults"
+        ></NavbarSearchResults> -->
+ 
+
       <sui-menu-menu position="right">
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
@@ -57,17 +68,23 @@
 	item.route must correspond to route/index.js route name **case sensitive**
 */
 import {mapGetters, mapActions } from 'vuex'
+import NavbarSearchBar from '@/components/layout/NavbarSearchBar'
+
 export default {
 	name: 'Navbar',
-  		data () {
-    		return {
-    			items:[
-    			{
-    				content: 'Home',
-    				route: 'Home'
-    			}
-    			],
-    			active:'Home',
+  components: {
+    'NavbarSearchBar': NavbarSearchBar,
+  },
+	data () {
+		return {
+			items:[
+  			{
+				content: 'Home',
+				route: 'Home'
+  			}
+			],
+			active:'Home',
+      searchResults: null,
     }
   }, 
   computed: {
@@ -79,6 +96,9 @@ export default {
 		...mapActions([
 			'signUserOut'
 		]),
+    onSearchReturned(event) {
+      this.searchResults = event
+    },
 
 		navigateTo(route) {
 			this.$router.push({ name:route })
