@@ -1,31 +1,42 @@
 <template>
-  <div>
+
   <sui-dropdown 
     item
     :icon="icon"
     floating
-    >
+    labeled>
+
     <sui-input
       inverted
       v-model="searchText"
       placeholder="Search...."
     ></sui-input>
+
     <sui-dropdown-menu >
+
       <sui-dropdown-item v-for="item in items.slice(0,6)"
         :key="item.id"
        @click="test(item.id)">
-
         <sui-image src="https://images.pexels.com/photos/1466845/pexels-photo-1466845.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>
         {{item.firstName}} {{item.lastName}}
+      </sui-dropdown-item>
+              
+      <sui-dropdown-item v-if="isLoading == true">
+        Loading...
+      </sui-dropdown-item>
 
+      <sui-dropdown-item v-else-if="!isLoading && entries.length > 0"
+        @click="test('id')">
+
+        See more
+      </sui-dropdown-item>
+
+      <sui-dropdown-item v-else="">
+        Type to search users
       </sui-dropdown-item>
 
     </sui-dropdown-menu>
   </sui-dropdown>
-
-
-
-</div>
 
 </template>
 
@@ -83,7 +94,7 @@ export default {
        this.setLoading(false)
 
 
-      },10000)
+      },1000)
 
     },
     test: function(id) {
