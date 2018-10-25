@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import firebase from 'firebase'
 import Home from '@/components/Home'
 
+
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'

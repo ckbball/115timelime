@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import auth from './modules/auth'
 import user from './modules/user'
 import colorScheme from './modules/colorScheme'
+import search from './modules/search'
 
 import configureModerator  from './modules/store-moderator'
 
@@ -20,6 +21,7 @@ export const store = new Vuex.Store({
 	modules: {
 		auth: auth,
 		user: user,
+		search: search,
 		colorScheme: colorScheme,
 		configureModerator
 

@@ -8,6 +8,8 @@ import { store } from './store/index.js'
 
 import firebase from 'firebase'
 import VueLodash from 'vue-lodash'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 import SuiVue from 'semantic-ui-vue'
 import 'semantic-ui-css/semantic.min.css';
@@ -46,9 +48,11 @@ const apolloProvider = new VueApollo({
 
 const options = {name: 'lodash'}
 
+Vue.use(VueAxios, axios)
 Vue.use(VueLodash, options)
 Vue.use(SuiVue)
 Vue.use(VueApollo)
+
 
 Vue.config.productionTip = false
 

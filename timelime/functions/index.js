@@ -6,7 +6,9 @@ const serviceAccount = require('./firebaseServiceAccount.json')
 /* -------- Express stuff ------------ */
 const express = require('express')
 const bodyParser = require('body-parser')
-const cors = require('cors')
+const cors = require('cors')({
+  origin: true
+});
 /* ----------------------------------- */
 
 
@@ -50,6 +52,10 @@ exports.main = functions.https.onRequest(main);
 
 
 
+
+
+
+
 /* ----- Write new Firebase functions down here ---- */
 exports.testfunc= functions.https.onRequest((request, response) => {
 	response.send('hey this worked')
@@ -70,30 +76,31 @@ exports.addUserToFirestoreAfterAccountCreation = functions.auth.user().onCreate(
 })
 
 exports.searchUsers = functions.https.onRequest((req, res) => {
-	let users = []
-	let promise = new Promise((resolve, reject) => {
-		db.collection('users')
-		//.where('searchableName', '>=', req)
-		//.where('searchableName', '<', req + '\uf8ff')
-		.get()
-		.then((snapshot) => {
-		snapshot.docs.forEach(doc => {
-			let user = {
-				firstName: doc.data().firstName || null,
-				lastName: doc.data().lastName || null, 
-			}
-			users.push(user)
-		})
-		//resolve(res.send(users))
-			resolve(res.send(req.body.key))
-		})
-		.catch(err => {
-			console.log(err)
-			reject(res.status(500).send(err))
+	cors(req, res, () => {
+		let search = req.query.name
+		let users = []
+		let promise = new Promise((resolve, reject) => {
+			console.log('asdasd',search)
+			db.collection('users')
+			.where('searchableName', '>=', search)
+			.where('searchableName', '<', search + '\uf8ff')
+			.get()
+			.then((snapshot) => {
+			snapshot.docs.forEach(doc => {
+				let user = {
+					firstName: doc.data().firstName || '',
+					lastName: doc.data().lastName || '', 
+				}
+				users.push(user)
+			})
+			resolve(res.send(users))
+			})
+			.catch(err => {
+				console.log(err)
+				reject(res.status(500).send(err))
+			})
 		})
 	})
-
-
 });
 
 

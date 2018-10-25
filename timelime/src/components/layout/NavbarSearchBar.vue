@@ -25,7 +25,7 @@
         Loading...
       </sui-dropdown-item>
 
-      <sui-dropdown-item v-else-if="!isLoading && entries.length > 0"
+      <sui-dropdown-item v-else-if="!isLoading && getResults.length > 0"
         @click="test('id')">
 
         See more
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import {mapMutations, mapGetters} from 'vuex'
 export default {
   name: 'NavbarSearchBar',
   components: {
@@ -51,7 +52,7 @@ export default {
       isLoading: false,
       icon:'search',
       count: null,
-      entries: [],
+      //entries: [],
       descriptionLimit: 60,
 
     }
@@ -66,35 +67,45 @@ export default {
     this.debouncedGetSearchResults = this.lodash.debounce(this.getSearchResults, 500)
   },
   methods: {
+    ...mapMutations([
+      'setResults'
+    ]),
     setLoading: function(bool) {
-      console.log(bool)
       this.isLoading = bool
       if (this.isLoading == true) {
         this.icon = 'spinner loading'
-        console.log(this.icon)    
       }
       else
         this.icon = 'search'
 
     },
     getSearchResults: function() {
-      if (this.entries.length > 0) return; // data already loaded
+      if (this.getResults.length > 0) return; // data already loaded
       if (this.isLoading) return; // data already requested 
 
       this.setLoading(true)
+      this.setResults([])
 
-      setTimeout(() => { 
-       //simulate return from getter 
-       this.entries = [
-        {id: 1, firstName: 'donovan', lastName: 'rost'},
-        {id: 2, firstName: 'mia', lastName: 'altieri'},
-        {id: 3, firstName: 'kenji', lastName: 'takeshi'},
-        {id: 5, firstName: 'caesar', lastName: 'landon'},
-        ]
-       this.setLoading(false)
+      this.axios.get('http://localhost:5001/timelime-96d47/us-central1/searchUsers/', {
+        params: {
+          name: this.searchText
+        }
+      })
+      .then(response => {
+        let results = []
+        response.data.forEach(datum => {
+          results.push(datum)
+          console.log(datum)
 
-
-      },1000)
+        })
+        this.setResults(results)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      .finally(()=> {
+        this.setLoading(false)
+      })
 
     },
     test: function(id) {
@@ -102,8 +113,11 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'getResults'
+    ]),
     items () {
-      return this.entries.filter(entry => {
+      return this.getResults.filter(entry => {
         return (entry.firstName.substring(0, this.searchText.length) == this.searchText) || (entry.lastName.substring(0, this.searchText.length) == this.searchText)
       })
     }
