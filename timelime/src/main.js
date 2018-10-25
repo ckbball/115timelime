@@ -19,7 +19,7 @@ import { setContext } from 'apollo-link-context';
 import VueApollo from 'vue-apollo'
 
 
-
+/* ----- Delete this Apollo Bullshit ------ */
 const httpLink = new HttpLink({
   // You should use an absolute URL here
   uri: 'https://api.graph.cool/simple/v1/cjn578p2i1ctr0195zwtbg1st',
@@ -41,6 +41,9 @@ const apolloProvider = new VueApollo({
   defaultClient: apolloClient,
 })
 
+/* ----------------------------------------- */
+
+
 const options = {name: 'lodash'}
 
 Vue.use(VueLodash, options)
@@ -51,12 +54,12 @@ Vue.config.productionTip = false
 
 firebase.auth().onAuthStateChanged(user => {
     /* eslint-disable no-new */
-    new Vue({
-        el: '#app',
-        store: store,
-    	apolloProvider,
-        router,
-        components: { App },
-        template: '<App/>'
-    })
+  new Vue({
+    el: '#app',
+    store: store,
+  	apolloProvider,
+    router,
+    components: { App },
+    template: '<App/>'
+  })
 })
