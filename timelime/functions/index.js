@@ -89,7 +89,8 @@ exports.searchUsers = functions.https.onRequest((req, res) => {
 			snapshot.docs.forEach(doc => {
 				let user = {
 					firstName: doc.data().firstName || '',
-					lastName: doc.data().lastName || '', 
+					lastName: doc.data().lastName || '',
+					image: doc.data().image || '' 
 				}
 				users.push(user)
 			})
