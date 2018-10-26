@@ -17,7 +17,7 @@
       <sui-dropdown-item v-for="item in items.slice(0,6)"
         :key="item.id"
        @click="test(item.id)">
-        <sui-image src="https://images.pexels.com/photos/1466845/pexels-photo-1466845.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"/>
+        <sui-image :src="item.image"/>
         {{item.firstName}} {{item.lastName}}
       </sui-dropdown-item>
               
@@ -59,6 +59,9 @@ export default {
   },
   watch: {
     searchText: function() {
+      if (this.searchText.length == 0)
+        this.setResults([])
+
       this.debouncedGetSearchResults()
       
     }
@@ -82,6 +85,8 @@ export default {
     getSearchResults: function() {
       if (this.getResults.length > 0) return; // data already loaded
       if (this.isLoading) return; // data already requested 
+      if (this.searchText.length == 0) return // param on which to query
+
 
       this.setLoading(true)
       this.setResults([])
