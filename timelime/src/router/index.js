@@ -8,6 +8,7 @@ import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'
 import Post from '@/components/posts/PostText'
+import SearchPage from '@/components/searchpage/SearchPage'
 
 import DonovanTest from '@/components/tests/donovantest'
 import MiaTest from '@/components/tests/miatest'
@@ -48,6 +49,11 @@ const router = new Router({
       path: '/Terms-and-Conditions',
       name: 'TermsAndConditions',
       component: TermsAndConditions
+    },
+    {
+      path: '/search',
+      name: 'SearchPage',
+      component: SearchPage
     },
     {
       path: '/donovantest',

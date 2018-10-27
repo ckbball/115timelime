@@ -85,7 +85,7 @@ export default {
     getSearchResults: function() {
       if (this.getResults.length > 0) return; // data already loaded
       if (this.isLoading) return; // data already requested 
-      if (this.searchText.length == 0) return // param on which to query
+      if (this.searchText.length == 0) return // param on which to query is none
 
 
       this.setLoading(true)
