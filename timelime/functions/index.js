@@ -78,6 +78,7 @@ exports.addUserToFirestoreAfterAccountCreation = functions.auth.user().onCreate(
 exports.searchUsers = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
 		let search = req.query.name
+		let type = req.query.type
 		let users = []
 		let promise = new Promise((resolve, reject) => {
 			console.log('asdasd',search)

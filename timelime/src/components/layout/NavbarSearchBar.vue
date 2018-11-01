@@ -18,7 +18,8 @@
         :key="item.id"
        @click="test(item.id)">
         <sui-image :src="item.image"/>
-        {{item.firstName}} {{item.lastName}}
+        {{lodash.capitalize(item.firstName)}} 
+        {{lodash.capitalize(item.lastName)}}
       </sui-dropdown-item>
               
       <sui-dropdown-item v-if="isLoading == true">
@@ -26,8 +27,8 @@
       </sui-dropdown-item>
 
       <sui-dropdown-item v-else-if="!isLoading && getResults.length > 0"
-        @click="test('id')">
-
+       @click="toSearchPage()" 
+      >
         See more
       </sui-dropdown-item>
 
@@ -41,7 +42,7 @@
 </template>
 
 <script>
-import {mapMutations, mapGetters} from 'vuex'
+import {mapMutations, mapGetters, mapActions} from 'vuex'
 export default {
   name: 'NavbarSearchBar',
   components: {
@@ -73,11 +74,13 @@ export default {
     ...mapMutations([
       'setResults'
     ]),
+    ...mapActions([
+      'fetchSearchResult'
+    ]),
     setLoading: function(bool) {
       this.isLoading = bool
-      if (this.isLoading == true) {
+      if (this.isLoading == true) 
         this.icon = 'spinner loading'
-      }
       else
         this.icon = 'search'
 
@@ -91,9 +94,10 @@ export default {
       this.setLoading(true)
       this.setResults([])
 
-      this.axios.get('http://localhost:5001/timelime-96d47/us-central1/searchUsers/', {
+      this.axios.get('http://localhost:5001/timelime-96d47/us-central1/searchUsers/',{
         params: {
-          name: this.searchText
+          name: this.searchText,
+          type: 'mini'
         }
       })
       .then(response => {
@@ -113,9 +117,11 @@ export default {
       })
 
     },
-    test: function(id) {
-      console.log('test ', id)
+    toSearchPage: function() {
+      this.$router.push({path: '/search'})
     }
+
+
   },
   computed: {
     ...mapGetters([

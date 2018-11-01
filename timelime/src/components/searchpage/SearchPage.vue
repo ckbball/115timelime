@@ -1,9 +1,28 @@
 <template>
-  <SearchPageResult></SearchPageResult>
+  <sui-grid container>
+    <sui-grid-row centered>
+      <sui-grid-column :width="8">
+        <sui-table>
+          <sui-table-header celled>
+            <sui-table-header-cell>
+              People
+            </sui-table-header-cell>
+          </sui-table-header>
+          <sui-table-body>
+            <sui-table-row v-for="result in getResults">
+              <SearchPageResult :result="result">
+              </SearchPageResult>
+
+            </sui-table-row>
+          </sui-table-body>
+        </sui-table>
+      </sui-grid-column>
+    </sui-grid-row>
+  </sui-grid>
 </template>
 
 <script>
-import {mapMutations, mapGetters} from 'vuex'
+import {mapMutations, mapGetters, mapActions} from 'vuex'
 import SearchPageResult from '@/components/searchpage/SearchPageResult'
 export default {
   name: 'SearchPage',
@@ -19,6 +38,11 @@ export default {
   computed: {
     ...mapGetters([
       'getResults'
+    ])
+  },
+  methods: {
+    ...mapActions([
+
     ])
   }
 

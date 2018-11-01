@@ -12,16 +12,7 @@ const mutations = {
 		state.searchResults = payload
 	}
 }
-const actions = {	
-	fetchSearchResults: (context, payload) => {
-		this.axios.get('http://localhost:5001/timelime-96d47/us-central1/searchUsers/?name=dono')
-		.then(response => {
-			console.log('asd', response)
-		})
-		.catch(err => {
-			console.log(err)
-		})
-	}
+const actions = {
 
 }
 
