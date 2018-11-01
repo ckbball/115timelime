@@ -45,10 +45,6 @@ const actions = {
 			firebase.auth().createUserWithEmailAndPassword(email, password)
 			.then(cred => {
 				commit('setAuthenticatedUser', cred.user)
-				db.collection('users').add({
-					user_id: cred.user.uid,
-					user_email: email
-				})
 				resolve(cred)
 			})
 			.catch(err => {

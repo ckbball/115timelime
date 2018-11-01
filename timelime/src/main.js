@@ -6,8 +6,10 @@ import router from './router'
 import Vuex from 'vuex'
 import { store } from './store/index.js'
 
-
 import firebase from 'firebase'
+import VueLodash from 'vue-lodash'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 import SuiVue from 'semantic-ui-vue'
 import 'semantic-ui-css/semantic.min.css';
@@ -19,7 +21,7 @@ import { setContext } from 'apollo-link-context';
 import VueApollo from 'vue-apollo'
 
 
-
+/* ----- Delete this Apollo Bullshit ------ */
 const httpLink = new HttpLink({
   // You should use an absolute URL here
   uri: 'https://api.graph.cool/simple/v1/cjn578p2i1ctr0195zwtbg1st',
@@ -41,19 +43,27 @@ const apolloProvider = new VueApollo({
   defaultClient: apolloClient,
 })
 
+/* ----------------------------------------- */
+
+
+const options = {name: 'lodash'}
+
+Vue.use(VueAxios, axios)
+Vue.use(VueLodash, options)
 Vue.use(SuiVue)
 Vue.use(VueApollo)
+
 
 Vue.config.productionTip = false
 
 firebase.auth().onAuthStateChanged(user => {
     /* eslint-disable no-new */
-    new Vue({
-        el: '#app',
-        store: store,
-    	apolloProvider,
-        router,
-        components: { App },
-        template: '<App/>'
-    })
+  new Vue({
+    el: '#app',
+    store: store,
+  	apolloProvider,
+    router,
+    components: { App },
+    template: '<App/>'
+  })
 })

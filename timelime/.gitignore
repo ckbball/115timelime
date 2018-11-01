@@ -16,4 +16,4 @@ yarn-error.log*
 
 #Environment
 .env
-*/firebaseServiceAccount.js
+*/firebaseServiceAccount.json
