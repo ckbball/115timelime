@@ -37,7 +37,13 @@ export default {
       this.liked = true
     }
   },
-  } 
+
+  },
+  props: {
+    user: Object,
+    uid: String,
+    pid: String
+  }
   
   
 }

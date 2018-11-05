@@ -5,7 +5,10 @@
       </sui-grid-column>
 
       <sui-grid-column :width="7">
-        <UserFeed fluid/>
+        <UserFeed fluid
+        v-bind:user="user"
+        v-bind:uid="uid"
+        />
       </sui-grid-column>
       <sui-grid-column  :width="5">
         <UserSideBar

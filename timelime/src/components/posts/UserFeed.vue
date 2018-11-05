@@ -5,6 +5,9 @@
       <Post
       :content="post.text"
       name="Name Name"
+      v-bind:user="user"
+      v-bind:uid="uid"
+      v-bind:pid="post.id"
       />
   </div>
 
@@ -61,6 +64,10 @@ export default {
   created () {
     this.getPosts()
     // console.log(this.posts[0])
+  },
+  props: {
+    user: Object,
+    uid: String
   }
 }
 </script>
