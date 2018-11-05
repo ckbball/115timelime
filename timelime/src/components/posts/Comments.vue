@@ -3,7 +3,10 @@
     <h3 is="sui-header" align="left" dividing>Comments</h3>
 
     <sui-comment align="left">
-      <sui-comment-avatar src="static/images/avatar/small/matt.jpg" />
+      <!-- <sui-comment-avatar src="static/images/avatar/small/matt.jpg" /> -->
+      <CommentAvatarButton
+      ></CommentAvatarButton>
+
       <sui-comment-content>
         <a is="sui-comment-author">Matt</a>
         <sui-comment-metadata>
@@ -20,7 +23,11 @@
 </template>
 
 <script>
+import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
 export default {
   name: 'Comments',
+  components: {
+    'CommentAvatarButton': CommentAvatarButton,
+  },
 };
 </script>
