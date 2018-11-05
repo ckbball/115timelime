@@ -2,7 +2,10 @@
   <div>
     <sui-card class="raised">
       <sui-card-content>
-        <sui-button content="friends"/>
+        <sui-button 
+        v-on:click="open">
+        friends
+      </sui-button>
       </sui-card-content>
     </sui-card>
   </div>
@@ -17,6 +20,10 @@ export default {
     }
   },
   methods: {
+    open() {
+      console.log("hey! someone wants to see their friends :)")
+      this.$emit("showFriends")
+    },
   } 
 }
 </script>

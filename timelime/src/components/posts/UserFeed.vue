@@ -41,6 +41,7 @@ export default {
       })
     }, 
     getPosts() {
+      console.log('gettting this users posts....')
       db.collection('posts').get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {

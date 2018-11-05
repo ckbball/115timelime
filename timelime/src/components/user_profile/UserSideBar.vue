@@ -4,7 +4,9 @@
     @editBio="changeBio()"
     @editPhoto="changeProfileImage()"
     />
-   <FriendButton class="FriendButton"/>
+   <FriendButton class="FriendButton"
+    @showFriends="showFriends()"
+   />
    <bar class="PostButtons"/>
   </div>
 </template>
@@ -35,6 +37,10 @@ export default {
     changeProfileImage: function(){
       console.log("hey! someone REALLY REALLY wants to edit this profile photo! :)")
       this.$emit("editPhoto")
+    },
+    showFriends: function(){
+      console.log("hey! someone REALLY REALLY wants to see their friends! :)")
+      this.$emit("showFriends")
     },
   },
 };
