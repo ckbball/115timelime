@@ -4,7 +4,7 @@
   <div class="posts" v-for="post in posts">
       <Post
       :content="post.text"
-      name="Name Name"
+      :name="post.author"
       v-bind:user="user"
       v-bind:uid="uid"
       v-bind:pid="post.id"
@@ -50,7 +50,8 @@ export default {
         querySnapshot.forEach((doc) => {
           let data = {
             'id': doc.id,
-            'text': doc.data().text
+            'text': doc.data().content,
+            "author": doc.data().author_name,
           }
           this.posts.push(data)
         })
