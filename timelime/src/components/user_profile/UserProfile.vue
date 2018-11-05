@@ -168,32 +168,28 @@ export default {
 
 
     getFriends() {
-      console.log("fiding friends...")
+      console.log("finding friends...")
 
-      db.collection('relations').where('uid_0GkbOriyJFaYUupbZhin', '==', true).get() //'uid_'+this.getAuthenticatedUser.uid, '==', 'true').get()
+      db.collection('relations').where('uid_'+this.getAuthenticatedUser.uid, '==', true).get() //'uid_0GkbOriyJFaYUupbZhin', '==', 'true').get()
       .then((snapshot) =>  {
         snapshot.docs.forEach(doc  => {
           console.log(doc)
           // need to check if the other one is true 
           //    if it is set otherUserUID to whateva that value is break it up at the _ and grab that second part 
-          //var relation = snapshot.child(doc).val();
           var relation = doc.data();
           //console.log('~~~~~~~~~~~~~~~~~',relation)
           var otherUserUID = "";
-          var thisUserUID = 'uid_0GkbOriyJFaYUupbZhin';//'uid_'+this.getAuthenticatedUser.uid;
-          let notFriends = false;
-
+          var thisUserUID = 'uid_'+this.getAuthenticatedUser.uid; // 'uid_0GkbOriyJFaYUupbZhin'
+          let friends = false;
 
           for (var property1 in relation) {
             if (property1 == thisUserUID){
               continue;
             } else {
-              //console.log("looooooking at:",property1,"with value", relation[property1])
               if (relation[property1] == true){
-                //console.log('===========',property1)
                 otherUserUID = property1.substring(4);
+                friends = true;
               } else {
-                notFriends = true;
               }
               continue;
             }
@@ -201,37 +197,31 @@ export default {
           
           console.log(thisUserUID);
           console.log(otherUserUID);
-          console.log(notFriends);
+          console.log(friends);
 
-      db.collection('users').where('uid', '==', otherUserUID).get()
-      .then((querySnapshot) => {
-        querySnapshot.docs.forEach((doc) => {
-          let data = {
-            'name': doc.data().firstName + ' ' + doc.data().lastName,
-            'photo': doc.data().image
-           }
-           this.friends.push(data)
-           console.log("************************users name",data.name)
-        })
-      })
-      .catch(err => {
-        console.log("failed with error: " + err)
-      })
+          if (friends === true){
+            db.collection('users').where('uid', '==', otherUserUID).get()
+            .then((querySnapshot) => {
+              querySnapshot.docs.forEach((doc) => {
+                let data = {
+                  'name': doc.data().firstName + ' ' + doc.data().lastName,
+                  'photo': doc.data().image
+                 }
+                 this.friends.push(data)
+                 console.log("************************users name",data.name)
+              })
+            })
+            .catch(err => {
+              console.log("failed with error: " + err)
+            })
+          }
 
       console.log("========================these are all of this users friends",this.friends)
 
 
          //  // if it is grab the other uid, and look through the users to find the friend
          //  // once friend is found then grab name and photo
-         //  db.collection('users').doc().where('uid', '==', otherUserUID).get()
-         // .then((snapshot) => {
-         //   // snapshot.forEach((doc)  => {
-         //   let data = {
-         //     'name': doc.firstName() + ' ' + doc.lastName(),
-         //     'photo': doc.image()
-         //   }
-         //   this.friends.push(data)
-         //  })
+
         })
       })
       .catch(err => {
