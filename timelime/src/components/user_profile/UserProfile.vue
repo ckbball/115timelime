@@ -132,6 +132,9 @@ export default {
     };
   },
   computed: {
+    ...mapGetters([
+      'getAuthenticatedUser'
+    ]),
     textRemaining: function(){
         return 200 - this.newBio.length
       },

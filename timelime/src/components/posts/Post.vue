@@ -14,12 +14,12 @@
       <sui-card class="UserPost">
 
         <sui-card-content>
-          <sui-card-header align="left">{{name}}</sui-card-header>
+          <sui-card-header align="left">{{post.author_name}}</sui-card-header>
           <sui-card-description align="right">Posted: 4/20/69 </sui-card-description>
         </sui-card-content>
 
         <sui-card-content>
-          <sui-card-description align="left">{{content}}</sui-card-description>
+          <sui-card-description align="left">{{post.content}}</sui-card-description>
         </sui-card-content>
 
         <sui-card-content>
@@ -54,8 +54,12 @@ export default {
     "Comments": Comments,
   },
   props: {
-    name: String,
-    content: String,
+    // name: String,
+    // content: String,
+    post: {
+      type: Object,
+      required: true,
+    }
   },
 };
 

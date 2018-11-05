@@ -1,10 +1,9 @@
 <template>
   <div >
 
-  <div class="posts" v-for="post in posts">
+  <div class="posts" v-for="(post, n) in posts" :key="n">
       <Post
-      :content="post.text"
-      name="Name Name"
+      :post="post"
       />
   </div>
 
@@ -23,6 +22,7 @@ export default {
     return {
       textPost: '',
       posts: [],
+      uid: '0GkbOriyJFaYUupbZhin',
     }
   }, 
   components: {
@@ -40,26 +40,38 @@ export default {
         console.log("failed with error: " + err)
       })
     }, 
-    getPosts() {
-      console.log('gettting this users posts....')
-      db.collection('posts').get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          let data = {
-            'id': doc.id,
-            'text': doc.data().text
-          }
-          this.posts.push(data)
+    // getPosts() {
+    //   console.log('gettting this users posts....')
+    //   db.collection('posts').get()
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       let data = {
+    //         'id': doc.id,
+    //         'text': doc.data().text
+    //       }
+    //       this.posts.push(data)
+    //     })
+    //   })
+    //   .catch(err => {
+    //     console.log("failed with error: " + err)
+    //   })
+    //   // console.log(this.posts)
+    // },
+    fetchPosts() {
+      console.log('fetch called')
+      db.collection('posts').where('parent_id', '==', this.uid).get()
+      .then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          this.posts.push(doc.data())
         })
       })
       .catch(err => {
-        console.log("failed with error: " + err)
+        console.log(err)
       })
-      // console.log(this.posts)
     }
   },
   created () {
-    this.getPosts()
+    this.fetchPosts()
     // console.log(this.posts[0])
   }
 }
