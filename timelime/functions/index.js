@@ -66,6 +66,7 @@ exports.addUserToFirestoreAfterAccountCreation = functions.auth.user().onCreate(
 	db.collection('users').doc(uid).set({
 		email: email,
 		uid: uid
+
 	})
 	.then(() => {
 		console.log('User Successfully Added')
@@ -125,9 +126,27 @@ users.forEach(user => {
 
 })
 res.send('done')
-
-
 }) 
+
+exports.santizeUsers = functions.https.onRequest((req, res) =>{
+	db.collection('users').get()
+	.then((snapshot) => {
+		snapshot.docs.forEach(doc => {
+			if(!doc.data().uid)(
+				db.collection('users').doc(doc.id).delete()
+				
+
+			)
+		})
+	})
+	.catch(err => {
+		console.log(err)
+	})
+
+	res.send('done')
+
+
+})
 
 
 

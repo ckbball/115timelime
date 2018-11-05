@@ -9,7 +9,7 @@
             </sui-table-header-cell>
           </sui-table-header>
           <sui-table-body>
-            <sui-table-row v-for="result in getResults">
+            <sui-table-row v-for="(n,result) in getResults" :key="n">
               <SearchPageResult :result="result">
               </SearchPageResult>
 
