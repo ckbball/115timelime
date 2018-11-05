@@ -135,7 +135,6 @@ exports.santizeUsers = functions.https.onRequest((req, res) =>{
 			if(!doc.data().uid)(
 				db.collection('users').doc(doc.id).delete()
 				
-
 			)
 		})
 	})

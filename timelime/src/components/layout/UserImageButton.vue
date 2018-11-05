@@ -2,8 +2,7 @@
   <router-link :to="{path: '/'}">
     <sui-image 
       :src="image"
-      :size="size"
-      
+      :size="size"      
       >
 
     </sui-image>
@@ -30,6 +29,11 @@ export default {
           type: String, 
           required: true,
       },
+      avatar: {
+          type: Boolean,
+          default: false,
+          required: false,
+      }
   },
   data () {
     return {

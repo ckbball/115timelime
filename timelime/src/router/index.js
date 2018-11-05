@@ -27,12 +27,12 @@ const router = new Router({
       redirect: 'Login'
     },
     {
-      path: '/Home',
+      path: '/home',
       name: 'Home',
       component: Home,
     },
     {
-      path: '/User/:uid',
+      path: '/user/:uid',
       name: 'User',
       component: User,
       meta: {
@@ -41,17 +41,17 @@ const router = new Router({
       props: true
     },
     {
-      path: '/Login',
+      path: '/login',
       name: 'LogIn',
       component: Login
     },
     {
-      path: '/Sign-Up',
+      path: '/sign-Up',
       name: 'SignUp',
       component: SignUp
     },
     {
-      path: '/Terms-and-Conditions',
+      path: '/terms-and-Conditions',
       name: 'TermsAndConditions',
       component: TermsAndConditions
     },
