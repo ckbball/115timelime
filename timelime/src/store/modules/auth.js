@@ -1,5 +1,6 @@
 import * as firebase from 'firebase'
 import db from '@/firebase/init'
+import router from '@/router/index'
 
 const state = {
 	authenticatedUser: null,
@@ -20,6 +21,7 @@ const getters = {
 const mutations = {
 	setAuthenticatedUser: (state, payload) => {
 		state.authenticatedUser = payload
+		router.replace('User/' + state.authenticatedUser.uid)
 	},
 	unsetAuthenticatedUser: (state) => {
 		state.authenticatedUser = null

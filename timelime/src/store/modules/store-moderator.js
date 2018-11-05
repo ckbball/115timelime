@@ -10,7 +10,7 @@ export default function configureModerator (store) {
 		switch (type) {
 			case 'setAuthenticatedUser': 
 				//store.dispatch('fetchUserData', store.getters.getAuthenticatedUser.uid)
-				router.replace('Home')
+				// router.replace('KenjiTest/' + state.authenticatedUser.uid)
 				return
 			case 'registerNewUser':
 				router.replace('Login')
@@ -24,15 +24,8 @@ export default function configureModerator (store) {
 		switch(type) {
 			case 'signUserOut': 
 				store.commit('unsetAuthenticatedUser')
-				store.commit('unsetUser')
-				
+				store.commit('unsetUser')		
 				return router.replace('Login')
-			
-
 		}
 	})
-
-
-
-
 }

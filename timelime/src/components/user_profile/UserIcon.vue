@@ -1,9 +1,9 @@
 <template lang="html">
   <div>
     <sui-card class="raised">
-      <sui-image src="https://images.pexels.com/photos/1466845/pexels-photo-1466845.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class=ProfilePicture />
+      <sui-image :src="user.image" class=ProfilePicture />
       <sui-card-content>
-        <div class="ui grid">
+        <div v-if="isAuthUser" class="ui grid">
           <div class="two wide column">
              <EditProfileInfo
               @editBio="changeBio()"
@@ -12,23 +12,22 @@
           <div class="two wide column">
             <EditProfilePicture
               @editPhoto="changeProfileImage()"
-              class="editImage" 
-            /> 
+              class="editImage"/> 
           </div>
         </div>
-        <sui-card-header>{{getUser.Name}}</sui-card-header>
-        <sui-card-meta>Joined in 2013</sui-card-meta>
-        <sui-card-description>{{getUser.Bio}}</sui-card-description>
+        <sui-card-header>{{this.user.firstName}} {{this.user.lastName}}</sui-card-header>
+        <sui-card-meta>Joined {{this.user.joinedDate}}</sui-card-meta>
+        <sui-card-description>{{this.user.bio}}</sui-card-description>
       </sui-card-content>
     </sui-card>
   </div>
 </template>
 
 <script>
-  import {mapGetters, mapMutations} from 'vuex'
-  import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
-  import EditProfilePicture from '@/components/user_profile/EditProfilePicture'
-  export default {
+import {mapGetters, mapMutations} from 'vuex'
+import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
+import EditProfilePicture from '@/components/user_profile/EditProfilePicture'
+export default {
   name: 'UserIcon',
   components: {
     "EditProfileInfo": EditProfileInfo,
@@ -36,12 +35,10 @@
   },
   data () {
     return {
-      Header: "Bio",
-      Friends: 0
+      images: {
+        user_lemon: require('@/assets/user_lemon.png')
+      }
     }
-  },
-   computed: {
-    ...mapGetters(['getUser'])
   },
   methods: {
     editProfileImage: function(){
@@ -59,10 +56,11 @@
     setBio: function(text){
       this.$store.commit('updateUser')
     },
-
-  } 
-  
-  
+  },
+  props: {
+    isAuthUser: Boolean,
+    user: Object
+  }  
 }
 </script>
 
