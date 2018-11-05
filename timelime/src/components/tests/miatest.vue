@@ -1,6 +1,7 @@
 <template>
   <div>
   	<!-- <UserSideBar/> -->
+    
     <UserProfile/>
   </div>
 </template>
@@ -18,6 +19,7 @@ import bar from '@/components/general/bar'
 import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import Button from '@/components/user_profile/Button'
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
+import Navbar from '@/components/layout/Navbar'
 import UserIcon from '@/components/user_profile/UserIcon'
 import UserProfile from '@/components/user_profile/UserProfile'
 import UserSideBar from '@/components/user_profile/UserSideBar'
@@ -28,6 +30,7 @@ export default {
     'bar': bar,
     'EditProfileInfo': EditProfileInfo,
   	'Button': Button,
+    'Navbar': Navbar,
   	'PostLikeButton': PostLikeButton,
   	'UserIcon': UserIcon,
     'UserProfile': UserProfile,

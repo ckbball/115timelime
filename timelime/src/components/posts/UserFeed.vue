@@ -41,6 +41,7 @@ export default {
       })
     }, 
     getPosts() {
+      console.log('gettting this users posts....')
       db.collection('posts').get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -54,12 +55,12 @@ export default {
       .catch(err => {
         console.log("failed with error: " + err)
       })
-      console.log(this.posts)
+      // console.log(this.posts)
     }
   },
   created () {
     this.getPosts()
-    console.log(this.posts[0])
+    // console.log(this.posts[0])
   }
 }
 </script>

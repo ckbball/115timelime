@@ -29,7 +29,9 @@
           </div>
           <div class="field">
             <div class="ui left icon input">  
-              <input type="checkbox" v-model="termsCheck">I agree to the <router-link to="/terms-and-conditions">terms & conditions</router-link>
+              <input type="checkbox" v-model="termsCheck">
+              I agree to the&nbsp;
+              <router-link to="/terms-and-conditions"> terms & conditions</router-link>
             </div>
           </div>
           <button class="ui large fluid grey button" type="button" v-on:click="signUp">

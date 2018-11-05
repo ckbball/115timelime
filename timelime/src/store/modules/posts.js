@@ -21,6 +21,7 @@ const actions = {
 			console.log(err)
 		})
 	},
+
 	addPost: ({commit}, {email, password}) => {
 		firebase.auth().createUserWithEmailAndPassword(email, password)
 		.then(cred => {

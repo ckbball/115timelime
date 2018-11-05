@@ -1,25 +1,39 @@
 <template>
   <div>
-    <post/>
+    <UserProfile v-bind:uid="uid"/>
   </div>
 </template>
 
 <script>
-import post from '@/components/posts/PostText'
+import bar from '@/components/general/bar'
+import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
+import Button from '@/components/user_profile/Button'
+import PostLikeButton from '@/components/user_profile/PostLikeButton'
+import UserIcon from '@/components/user_profile/UserIcon'
+import UserProfile from '@/components/user_profile/UserProfile'
+import UserSideBar from '@/components/user_profile/UserSideBar'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'KenjiTest',
   components: {
-    'post': post
+    'bar': bar,
+    'EditProfileInfo': EditProfileInfo,
+    'Button': Button,
+    'PostLikeButton': PostLikeButton,
+    'UserIcon': UserIcon,
+    'UserProfile': UserProfile,
+    'UserSideBar': UserSideBar,
   },
   data () {
     return {}
-  }, 
-  
-   
+  },
+  methods: {},
+  props: {
+    uid: String
+  }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>
