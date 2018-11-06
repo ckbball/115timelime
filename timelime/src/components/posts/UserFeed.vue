@@ -4,7 +4,10 @@
   <div class="posts" v-for="post in posts">
       <Post
       :content="post.text"
-      name="Name Name"
+      :name="post.author"
+      v-bind:user="user"
+      v-bind:uid="uid"
+      v-bind:pid="post.id"
       />
   </div>
 
@@ -47,7 +50,8 @@ export default {
         querySnapshot.forEach((doc) => {
           let data = {
             'id': doc.id,
-            'text': doc.data().text
+            'text': doc.data().content,
+            "author": doc.data().author_name,
           }
           this.posts.push(data)
         })
@@ -55,12 +59,16 @@ export default {
       .catch(err => {
         console.log("failed with error: " + err)
       })
-      console.log(this.posts)
+      // console.log(this.posts)
     }
   },
   created () {
     this.getPosts()
-    console.log(this.posts[0])
+    // console.log(this.posts[0])
+  },
+  props: {
+    user: Object,
+    uid: String
   }
 }
 </script>

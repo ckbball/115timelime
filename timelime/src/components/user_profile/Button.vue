@@ -34,10 +34,10 @@ export default {
   	counter: Number,
   },
   methods: {
-	clicked: function() {
-		this.pressed=!this.pressed
-		this.$emit("clickEvent")
-	}
+  	clicked: function() {
+  		this.pressed=!this.pressed
+  		this.$emit("clickEvent")
+  	}
   } 
 }
 </script>

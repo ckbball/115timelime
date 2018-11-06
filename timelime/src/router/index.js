@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import firebase from 'firebase'
+
 import Home from '@/components/Home'
-
-
+import User from '@/components/User'
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'
@@ -24,29 +24,34 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: '/'
+      redirect: 'Login'
     },
     {
-      path: '/',
+      path: '/home',
       name: 'Home',
       component: Home,
+    },
+    {
+      path: '/user/:uid',
+      name: 'User',
+      component: User,
       meta: {
         requiresAuth: true
-      }
+      },
+      props: true
     },
-
     {
-      path: '/Login',
+      path: '/login',
       name: 'LogIn',
       component: Login
     },
     {
-      path: '/Sign-Up',
+      path: '/sign-Up',
       name: 'SignUp',
       component: SignUp
     },
     {
-      path: '/Terms-and-Conditions',
+      path: '/terms-and-Conditions',
       name: 'TermsAndConditions',
       component: TermsAndConditions
     },
@@ -70,18 +75,19 @@ const router = new Router({
       name: 'CaesarTest',
       component: CaesarTest
     },
-        {
-      path: '/kenjitest',
+    {
+      path: '/kenjitest/:uid',
       name: 'KenjiTest',
-      component: KenjiTest
+      component: KenjiTest,
+      props: true
     },
   ]
 })
 
 // router.beforeEach((to, from, next) => {
 //   let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-//   if (requiresAuth && !auth.isLoggedIn) next('login')
-//   else if (!requiresAuth && auth.isLoggedIn) next('hello')
+//   if (requiresAuth && !auth.isLoggedIn) next('Login')
+//   else if (!requiresAuth && auth.isLoggedIn) next('Home')
 //   else next()
 // })
 

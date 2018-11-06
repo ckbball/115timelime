@@ -5,10 +5,15 @@
       </sui-grid-column>
 
       <sui-grid-column :width="7">
-        <UserFeed fluid/>
+        <UserFeed fluid
+        v-bind:user="user"
+        v-bind:uid="uid"
+        />
       </sui-grid-column>
       <sui-grid-column  :width="5">
         <UserSideBar
+        v-bind:user="user"
+        v-bind:uid="uid"
         @editBio="toggle()"
         @editPhoto="togglePhoto()"
         @showFriends="toggleFriends()"
@@ -106,8 +111,7 @@ export default {
 </script>
 
 <script>
-  import {mapActions, mapGetters, mapMutations} from 'vuex'
-
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 import UserFeed from '@/components/posts/UserFeed'
 import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import EditProfilePicture from '@/components/user_profile/EditProfileInfo'
@@ -126,12 +130,11 @@ export default {
       open: false,
       openPhoto: false,
       openFriends: false,
-      newBio: "getUser.Bio",
-      friends: []
+      friends: [],
+      newBio: "this.user.bio"
     };
   },
   computed: {
-    ...mapGetters(['getUser']),
     textRemaining: function(){
         return 200 - this.newBio.length
       },
@@ -243,6 +246,10 @@ db.collection('relations').doc().where('uid_'+this.getAuthenticatedUser.uid, '==
   created () {
     this.getFriends()
     console.log(this.friends[0])
+  },
+  props: {
+    user: Object,
+    uid: String
   }
 };
 
