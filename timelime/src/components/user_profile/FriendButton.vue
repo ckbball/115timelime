@@ -1,5 +1,5 @@
 <template lang="html">
-  <div v-if="!isAuthUser">
+  <div>
     <sui-card class="raised">
       <sui-card-content>
         <sui-button 
@@ -45,7 +45,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getAuthenticatedUser'])
+    ...mapGetters(['getUserInfo'])
   },
   methods: {
     open() {
@@ -53,18 +53,18 @@ export default {
       this.$emit("showFriends")
     },
     changeFriendStatus() {
-      if (this.getAuthenticatedUser !== null) {
-        var us1 = 'uid_'+this.getAuthenticatedUser.uid
-        var us2 = 'uid_'+this.uid
+      if (this.getUserInfo !== null) {
+        var us1 = 'uid_'+this.getUserInfo.uid
+        var us2 = 'uid_'+this.userInfo.uid
         if (this.isFriend === "false") {
           db.collection('relations').doc()
           .set({
             type: "friend",
-            [us1]: true,
-            [us2]: false
+            [us1]: 'true',
+            [us2]: 'false'
           })
         } else if (this.isFriend === "true") {
-          db.collection('relations').where(us1, "==", true).where(us2, "==", true).get()
+          db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'true').get()
           .then((snapshot) => {
             snapshot.forEach((doc) => {
               doc.ref.delete()
@@ -74,7 +74,7 @@ export default {
             console.log(err)
           })
         } else {
-          db.collection('relations').where(us1, "==", true).where(us2, "==", false).get()
+          db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'false').get()
           .then((snapshot) => {
             snapshot.forEach((doc) => {
               doc.ref.delete()
@@ -88,9 +88,8 @@ export default {
     }
   },
   props: {
-    isAuthUser: Boolean,
     isFriend: String,
-    uid: String
+    userInfo: Object
   } 
 }
 </script>

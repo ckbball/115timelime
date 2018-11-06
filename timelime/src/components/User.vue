@@ -46,7 +46,7 @@ export default {
       db.collection('users').doc(this.uid).get()
         .then((doc) => {
             this.otherUsersInfo = doc.data()
-            console.log(doc.data())
+            // console.log(doc.data())
           })
     },
     // getUser() {

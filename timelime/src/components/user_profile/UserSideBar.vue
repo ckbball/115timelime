@@ -17,8 +17,7 @@
         ></sui-button>
       </sui-card-content>
     </sui-card>
-
-
+    <FriendButton v-bind:userInfo="userInfo" v-bind:isFriend="isFriend"/>
   </div>
 </template>
 
@@ -114,30 +113,29 @@ export default {
   //   }
     areFriends: function() {
       this.getFriends.forEach(friend => {
-        if (friend['uid_'+this.userInfo.uid], '==', 'true') {
+        if (friend.data()['uid_'+this.userInfo.uid], '==', 'true') {
           this.setFriendshipStatus('true')
         } else if (friend['uid_'+this.user_info.uid], '==', 'false') {
           this.setFriendshipStatus('pending')
         } else {
           this.setFriendshipStatus('false')
         }
- 
       })
     },
     setFriendshipStatus: function(status) {
       if(status === 'true') {
-        this.isFriend = true
+        this.isFriend = 'true'
         this.icon='check'
         this.content='friends'
 
       }
       if(status === 'pending') {
-        this.isFriend = false
+        this.isFriend = 'false'
         this.icon='clock outline'
         this.content='pending'
       }
       if (status === 'false') {
-        this.isFriend = false
+        this.isFriend = 'false'
         this.icon='user plus'
         this.content='add'
       }
