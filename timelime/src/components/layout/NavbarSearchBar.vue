@@ -16,7 +16,7 @@
 
       <sui-dropdown-item v-for="item in items.slice(0,6)"
         :key="item.id"
-       @click="test(item.id)">
+       @click="toUser(item.uid)">
         <sui-image :src="item.image"/>
         {{lodash.capitalize(item.firstName)}} 
         {{lodash.capitalize(item.lastName)}}
@@ -49,7 +49,7 @@ export default {
   },
   data () {
     return {
-      searchText: null,
+      searchText: '',
       isLoading: false,
       icon:'search',
       count: null,
@@ -119,6 +119,9 @@ export default {
     },
     toSearchPage: function() {
       this.$router.push({path: '/search'})
+    },
+    toUser: function(uid) {
+      this.$router.push({path: '/user/'+uid})
     }
 
 

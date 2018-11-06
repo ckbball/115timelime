@@ -5,6 +5,7 @@
                 <sui-grid-column :width="1" floated="left">
                     <CommentAvatarButton
                     :image="comment.author_image"
+                    :uid="comment.author_uid"
                     ></CommentAvatarButton>
                 </sui-grid-column>
 

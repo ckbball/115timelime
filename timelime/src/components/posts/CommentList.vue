@@ -36,6 +36,7 @@ import db from '@/firebase/init'
 import Comment from '@/components/posts/Comment'
 import CommentsHeader from '@/components/posts/CommentsHeader'
 import CommentsFooter from '@/components/posts/CommentsFooter'
+import { mapGetters } from 'vuex'
 export default {
   name: 'CommentList',
   components: {
@@ -57,6 +58,9 @@ export default {
         comments: [],
     }
   }, 
+  computed:{
+      ...mapGetters(['getUserInfo'])
+  },
   methods: {
       setVisibility: function(bool) {
           this.isVisible = !this.isVisible

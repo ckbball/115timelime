@@ -4,7 +4,8 @@
             <sui-grid-row>
                 <sui-grid-column :width="1">
                     <CommentAvatarButton
-                        
+                       :uid="getUserInfo.uid" 
+                       :image="getUserInfo.image"
                     ></CommentAvatarButton>
                    
                 </sui-grid-column>
@@ -38,7 +39,8 @@ export default {
       post_id: {
           type: String,
           required: true
-      }
+      },
+
 
   },
   data () {
@@ -50,19 +52,18 @@ export default {
   methods: {
       submitComment: function() {
         if(this.commentText.length == 0) return;
-            console.log(this.post_id, ' ', this.commentText,' ', this.getAuthenticatedUser.uid)
+            console.log(this.post_id, ' ', this.commentText,' ', this.getUserInfo.uid)
+            console.log(this.getUserInfo.image, this.getUserInfo.firstName + this.getUserInfo.lastName )
 
         this.axios.post('http://localhost:5001/timelime-96d47/us-central1/addNewComment', {
             parent_id: this.post_id,
-            author_uid: this.getAuthenticatedUser.uid,
-            author_image: '',
-            author_name: '',
+            author_uid: this.getUserInfo.uid,
+            author_image: this.getUserInfo.image,
+            author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName,
             content: this.commentText,
-
-
         })
         .then(response => {
-            this.commentText.length = 0
+            this.commentText = ''
         })
         .catch(err => {
             console.log(err)
@@ -82,7 +83,7 @@ export default {
   },
   computed: {
       ...mapGetters([
-        'getAuthenticatedUser',  
+        'getUserInfo',  
     ]),
       nrows: function() {
           return (Math.floor(this.commentText.length / 44)) + 1

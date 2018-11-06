@@ -20,7 +20,6 @@ const getters = {
 			return false
 	},
 	getUserInfo: (state) => {
-		console.log("userInfo.uid: ", state.userInfo.uid)
 		return state.userInfo
 	},
 	getFriendRequests: (state) => {
@@ -71,7 +70,6 @@ const actions = {
 		db.collection('relations').where('uid_'+payload, '>=', 'a')
 		.onSnapshot({includeMetadataChanges: true}, (snapshot) => {
             snapshot.docChanges().forEach(change => {
-				console.log('change: ', change)
                 if (change.type === 'added') {
                     context.commit('pushToFriends', change.doc)
 				}
@@ -86,7 +84,6 @@ const actions = {
 		db.collection('relations').where('uid_'+payload, '==', 'false')
 		.onSnapshot({includeMetadataChanges: true}, (snapshot) => {
             snapshot.docChanges().forEach(change => {
-				console.log('change: ', change)
                 if (change.type === 'added') {
                     context.commit('pushToFriendRequests', change.doc)
 				}

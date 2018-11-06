@@ -148,7 +148,8 @@ exports.searchUsers = functions.https.onRequest((req, res) => {
 				let user = {
 					firstName: doc.data().firstName || '',
 					lastName: doc.data().lastName || '',
-					image: doc.data().image || '' 
+					image: doc.data().image || '',
+					uid: doc.data().uid 
 				}
 				users.push(user)
 			})

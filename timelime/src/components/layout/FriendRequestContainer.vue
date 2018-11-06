@@ -8,7 +8,7 @@
                 <FriendRequestItem
                     :item="req.data()"
                 ></FriendRequestItem>
-            </sui-dropdown-item> 
+            </sui-dropdown-item>
         </sui-dropdown-menu>    
     </sui-dropdown>
  

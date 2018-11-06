@@ -4,27 +4,6 @@
       :icon="this.icon"
       v-on:clicked="open"
     ></ButtonColor>
-   <!--  <sui-modal v-model="open">
-      <sui-modal-header>{{Header}}</sui-modal-header>
-      <sui-modal-content>
-
-        <sui-modal-description>
-          <textarea 
-            v-model="newBio"  class="fucku" maxlength="200"/>
-        </sui-modal-description>
-      </sui-modal-content>
-        
-      <sui-modal-actions>
-        Characters remaining: {{textRemaining}}
-        <sui-button negative @click.native="toggle">
-          Cancel
-        </sui-button>
-        <sui-button positive @click.native="savePost">
-          Save
-        </sui-button>
-      </sui-modal-actions>
-    
-    </sui-modal> -->
   </div>
 </template>
 

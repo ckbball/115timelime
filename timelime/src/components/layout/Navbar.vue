@@ -24,7 +24,7 @@
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
         >
-          <sui-button class="requestButton">
+          <!-- <sui-button class="requestButton">
             <sui-label color="red" floating circular size="mini" class="friendNotif">
               22
             </sui-label>        
@@ -37,8 +37,8 @@
             <sui-dropdown-menu  
               class="left menu dropMenuReq" scrolling=true >
               <sui-dropdown-header content="Friend Requests:"/>
-<!--                 
-                <div class="posts" v-for="(req,n) in friendReqs" :key="n">
+                
+                <div class="posts" v-for="(req,n) in getFriendRequests" :key="n">
                       <FriendRequest
                       class="friendreq"
                       :name='req.name'
@@ -46,13 +46,13 @@
                       :requester='req.UserID'
                       v-on:response="handelResponse($event)"
                       />
-                </div> -->
+                </div>
                <FriendRequest v-for="(request,n) in getFriendRequests" :key="n"
                ></FriendRequest>
                 
               </sui-dropdown-menu>
             </sui-dropdown>
-          </sui-button>
+          </sui-button> -->
 
           <sui-icon 
             name="envelope outline"

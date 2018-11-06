@@ -114,9 +114,9 @@ export default {
   //   }
     areFriends: function() {
       this.getFriends.forEach(friend => {
-        if (friend['uid_'+this.user_info.uid].data() == 'true') {
+        if (friend['uid_'+this.userInfo.uid], '==', 'true') {
           this.setFriendshipStatus('true')
-        } else if (friend[uid_+this.user_info.uid].data() == 'false') {
+        } else if (friend['uid_'+this.user_info.uid], '==', 'false') {
           this.setFriendshipStatus('pending')
         } else {
           this.setFriendshipStatus('false')

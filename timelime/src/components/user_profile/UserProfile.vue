@@ -6,7 +6,7 @@
 
       <sui-grid-column :width="7">
         <UserFeed fluid
-        v-bind:uid="uid"
+          :uid="otherUsersInfo.uid"
         />
       </sui-grid-column>
       <sui-grid-column  :width="5">
@@ -17,8 +17,8 @@
       </sui-grid-column>
     </sui-grid>
     <FriendsListModal
-     :uid="uid"
-     :openFriends="openFriends" 
+      :uid="otherUsersInfo.uid"
+      :openFriends="openFriends" 
     ></FriendsListModal>
 
 
@@ -45,7 +45,7 @@ import db from '@/firebase/init'
 export default {
   name: 'UserProfile',
   props: {
-    uid: String
+    otherUsersInfo: Object
   },
   components: {
     "UserSideBar": UserSideBar,
@@ -54,7 +54,7 @@ export default {
   },
   data() {
       return{
-        otherUsersInfo: {},
+        //otherUsersInfo: {},
         openFriends: false
 
       }
@@ -64,20 +64,20 @@ export default {
     ...mapGetters([
       'getUserInfo'
     ]),
-    textRemaining: function(){
-        return 200 - this.newBio.length
-    },
+    // textRemaining: function(){
+    //     return 200 - this.newBio.length
+    // },
   },
 
   methods: {
     ...mapActions(['updateUserBio']),
 
-    fetchOtherUsersInfo: function() {
-      db.collection('users').doc(this.uid).get()
-      .then((doc) => {
-        this.otherUsersInfo = doc.data()
-      })
-    },
+    // fetchOtherUsersInfo: function() {
+    //   db.collection('users').doc(this.uid).get()
+    //   .then((doc) => {
+    //     this.otherUsersInfo = doc.data()
+    //   })
+    // },
 
     toggleFriendsModal: function(){
       this.openFriends = !this.openFriends;
@@ -150,9 +150,14 @@ db.collection('relations').doc().where('uid_'+this.getAuthenticatedUser.uid, '==
 }) */
 
   },
-  mounted() {
-    this.fetchOtherUsersInfo()
-  }
+  // mounted() {
+  //   this.fetchOtherUsersInfo()
+  // },
+  // watch: {
+  //   uid: function() {
+  //     this.fetchOtherPersonsUsersInfo
+  //   }
+  // }
 
 
 }

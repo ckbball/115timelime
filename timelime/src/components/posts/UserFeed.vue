@@ -19,7 +19,7 @@ export default {
   props: {
     uid: {
       type: String,
-      required: true
+      //required: true
     }
   },
   data () {
@@ -44,7 +44,6 @@ export default {
       })
     }, 
     fetchPosts() {
-      console.log('fetch called')
       db.collection('posts').where('parent_id', '==', this.uid).get()
       .then((snapshot) => {
         snapshot.docs.forEach(doc => {
@@ -56,9 +55,14 @@ export default {
       })
     }
   },
-  created () {
-    this.fetchPosts()
-    // console.log(this.posts[0])
+  // mounted () {
+  //   this.fetchPosts()
+  //   // console.log(this.posts[0])
+  // }
+  watch: {
+    uid: function() {
+      this.fetchPosts()
+    }
   }
 }
 </script>
