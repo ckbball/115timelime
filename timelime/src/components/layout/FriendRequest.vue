@@ -2,11 +2,11 @@
 	<sui-card class="uglyfoot">
 	  <sui-card-content>
 	    <sui-image 
-	    src="https://images.pexels.com/photos/1466845/pexels-photo-1466845.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" 
+	    :src="photo"
 	    
 	    class="squarePhoto"
 	    />
-	    <span class="username">Temporary Home</span>
+	    <span class="username">{{name}}</span>
 <!-- 	    <span class="username">Name Name</span> -->
 	    <sui-button id="togglee1" :disabled="answered" class="squareButton" icon="remove" size="tiny" @click="decline()"/> 
 	     <!-- v-if="!answered" -->
@@ -33,22 +33,25 @@ export default {
 	          color: "red"
 		    };
     },
-  //   props: {
-  //   name: String,
-  // 	accepted: Boolean,
-  // },
+    props: {
+	    name: String,
+	    photo: String,
+	    requester: String,
+  },
   	methods: {
 	    accept(){
 	    	this.accepted = true
 	    	// accepted = true
 	    	this.answered = true
 	    	this.result = "Accepted!"
+	    	this.$emit("response", [true, this.requester])
 	    },
 	    decline(){
 	    	this.accepted = false
 	    	// accepted = false
 	    	this.answered = true
 	    	this.result = "Declined!"
+	    	this.$emit("response", [false, this.requester])
 		}
  	},
 };
