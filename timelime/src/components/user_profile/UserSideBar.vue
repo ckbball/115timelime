@@ -1,26 +1,24 @@
 <template lang="html">
   <div>
    <UserIcon 
-      @editBio="changeBio()"
-      @editPhoto="changeProfileImage()"
-      v-bind:isAuthUser="isAuthUser"
-      v-bind:user="user"
+      :userInfo="userInfo"
     />
-    <FriendButton 
-      class="FriendButton" 
-      v-bind:isAuthUser="isAuthUser" 
-      v-bind:isFriend="isFriend"
-      v-bind:uid="uid"
-    />
-    <bar 
-      class="PostButtons"
-      v-bind:isAuthUser="isAuthUser"
-      v-bind:isFriend="isFriend"
-    />
-   <FriendButton class="FriendButton"
-    @showFriends="showFriends()"
-   />
-   <bar class="PostButtons"/>
+    <sui-card>
+      <sui-card-content>
+        <sui-button
+          icon="users"
+          content="friends"
+          @click="$emit('showFriends')"
+        ></sui-button>
+        <sui-button 
+          @click="friendshipChangeHandler()"         
+          :content="content"
+          :icon="icon"
+        ></sui-button>
+      </sui-card-content>
+    </sui-card>
+
+
   </div>
 </template>
 
@@ -28,74 +26,126 @@
 import { mapGetters } from 'vuex'
 import UserIcon from '@/components/user_profile/UserIcon'
 import FriendButton from '@/components/user_profile/FriendButton'
-import bar from '@/components/general/bar'
 import * as firebase from 'firebase'
 import db from '@/firebase/init'
 export default {
-  name: 'EditProfileInfo',
-  data() {
-    return { 
-      icon: "photo",
-      open: false,
-      text: "",
-      isAuthUser: false,
-      isFriend: 'false'
-    };
-  },
-  computed: {
-    ...mapGetters(['getAuthenticatedUser'])
+  name: 'UserSideBar',
+  props: {
+    userInfo: Object,
   },
   components: {
     "UserIcon": UserIcon,
     "FriendButton": FriendButton,
-    "bar": bar,
   },
+  data() {
+    return { 
+      icon: 'user plus',
+      content: 'add',
+      open: false,
+      text: "",
+      isFriend: 'false',
+      relation_id: null
+    };
+  },
+  computed: {
+    ...mapGetters([
+      'getFriends',
+      'getUserInfo'
+      ])
+  },
+
   methods: {
-    changeBio: function(){
-      console.log("hey! someone REALLY REALLY wants to edit this profile! :)")
-      this.$emit("editBio")
+    requestFriendship: function({my_id, their_id}){
+      db.collection('relations').add({
+        ['uid_'+my_id]: 'true',
+        ['uid_'+their_id]: 'false'
+      })
+      .then(docRef => {
+        this.relation_id = docRef.id
+        this.setFriendshipStatus('pending')
+      })
+      .catch(err => {
+        console.log(err)
+      })
     },
-    changeProfileImage: function(){
-      console.log("hey! someone REALLY REALLY wants to edit this profile photo! :)")
-      this.$emit("editPhoto")
+    cancelFriendship: function(doc_id) {
+      db.collection('relations').doc(doc_id).delete()
+      .then(() => {
+        this.setFriendshipStatus('false')
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
     },
+    friendshipChangeHandler: function() {
+      if(this.isFriend === 'false'){
+        this.requestFriendship({my_id: this.getUserInfo.uid, their_id: this.userInfo.uid})
+      } else {
+        this.cancelFriendship(this.relation_id)
+      }
+
+    },
+
     showFriends: function(){
       console.log("hey! someone REALLY REALLY wants to see their friends! :)")
       this.$emit("showFriends")
     },
-    checkUser: function(){
-      if (this.getAuthenticatedUser !== null && this.getAuthenticatedUser.uid === this.uid)
-        this.isAuthUser = true
+
+  //   areFriends: function(){
+  //     if (this.getAuthenticatedUser !== null) {
+  //       var us1 = 'uid_'+this.getAuthenticatedUser.uid
+  //       var us2 = 'uid_'+this.uid
+  //       db.collection('relations').where(us1, "==", true).where(us2, "==", true)
+  //       .onSnapshot((snapshot) => {
+  //         if (snapshot.size != 0)
+  //           this.isFriend = 'true'
+  //         else {
+  //           db.collection('relations').where(us1, "==", true).where(us2, "==", false)
+  //           .onSnapshot((snapshot) => {
+  //             if (snapshot.size != 0)
+  //               this.isFriend = 'pending'
+  //             else 
+  //               this.isFriend = 'false'
+  //           })
+  //         }
+  //       })
+  //     }
+  //   }
+    areFriends: function() {
+      this.getFriends.forEach(friend => {
+        if (friend['uid_'+this.user_info.uid].data() == 'true') {
+          this.setFriendshipStatus('true')
+        } else if (friend[uid_+this.user_info.uid].data() == 'false') {
+          this.setFriendshipStatus('pending')
+        } else {
+          this.setFriendshipStatus('false')
+        }
+ 
+      })
     },
-    areFriends: function(){
-      if (this.getAuthenticatedUser !== null) {
-        var us1 = 'uid_'+this.getAuthenticatedUser.uid
-        var us2 = 'uid_'+this.uid
-        db.collection('relations').where(us1, "==", true).where(us2, "==", true)
-        .onSnapshot((snapshot) => {
-          if (snapshot.size != 0)
-            this.isFriend = 'true'
-          else {
-            db.collection('relations').where(us1, "==", true).where(us2, "==", false)
-            .onSnapshot((snapshot) => {
-              if (snapshot.size != 0)
-                this.isFriend = 'pending'
-              else 
-                this.isFriend = 'false'
-            })
-          }
-        })
+    setFriendshipStatus: function(status) {
+      if(status === 'true') {
+        this.isFriend = true
+        this.icon='check'
+        this.content='friends'
+
+      }
+      if(status === 'pending') {
+        this.isFriend = false
+        this.icon='clock outline'
+        this.content='pending'
+      }
+      if (status === 'false') {
+        this.isFriend = false
+        this.icon='user plus'
+        this.content='add'
       }
     }
   },
-  created() {
-    this.checkUser()
+  mounted() {
     this.areFriends()
   },
-  props: {
-    user: Object,
-    uid: String
-  }
 };
 
 </script>

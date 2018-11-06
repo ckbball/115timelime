@@ -56,14 +56,25 @@ Vue.use(VueApollo)
 
 Vue.config.productionTip = false
 
+let app = null
+
 firebase.auth().onAuthStateChanged(user => {
-    /* eslint-disable no-new */
-  new Vue({
-    el: '#app',
-    store: store,
-  	apolloProvider,
-    router,
-    components: { App },
-    template: '<App/>'
-  })
+  if(!app) {  
+    app =  new Vue({
+      el: '#app',
+      store: store,
+      apolloProvider,
+      router,
+      components: { App },
+      template: '<App/>'
+    })
+  }
+  store.commit('setAuthenticatedUser', user)
+  
+
+  
+
+
+
+
 })

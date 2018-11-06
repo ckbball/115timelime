@@ -9,17 +9,21 @@
         @click="select(item.route)"
       />
 
-
-
-        <NavbarSearchBar 
-          v-on:searchReturned="onSearchReturned($event)"
-        ></NavbarSearchBar>
+      <NavbarSearchBar 
+        v-on:searchReturned="onSearchReturned($event)"
+      ></NavbarSearchBar>
 
  
       <sui-menu-menu position="right">
+
+        <FriendRequestContainer
+        ></FriendRequestContainer>
+
+
+
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
-          >
+        >
           <sui-button class="requestButton">
             <sui-label color="red" floating circular size="mini" class="friendNotif">
               22
@@ -33,7 +37,7 @@
             <sui-dropdown-menu  
               class="left menu dropMenuReq" scrolling=true >
               <sui-dropdown-header content="Friend Requests:"/>
-                
+<!--                 
                 <div class="posts" v-for="(req,n) in friendReqs" :key="n">
                       <FriendRequest
                       class="friendreq"
@@ -42,8 +46,9 @@
                       :requester='req.UserID'
                       v-on:response="handelResponse($event)"
                       />
-                </div>
-               
+                </div> -->
+               <FriendRequest v-for="(request,n) in getFriendRequests" :key="n"
+               ></FriendRequest>
                 
               </sui-dropdown-menu>
             </sui-dropdown>
@@ -98,7 +103,8 @@
 */
 import { mapGetters, mapActions } from 'vuex'
 
-import FriendRequest from '@/components/layout/FriendRequest' 
+import FriendRequest from '@/components/layout/FriendRequest'
+import FriendRequestContainer from '@/components/layout/FriendRequestContainer' 
 import NavbarSearchBar from '@/components/layout/NavbarSearchBar'
 
 import firebase from 'firebase'
@@ -108,7 +114,8 @@ export default {
   name: 'Navbar',
   components: {
     'NavbarSearchBar': NavbarSearchBar,
-    "FriendRequest": FriendRequest
+    'FriendRequest': FriendRequest,
+    'FriendRequestContainer': FriendRequestContainer,
   },
       data () {
         return {
@@ -125,7 +132,8 @@ export default {
   }, 
   computed: {
     ...mapGetters([
-      'getAuthenticatedUser'
+      'getAuthenticatedUser',
+      'getFriendRequests'
     ])
   },
 
@@ -175,50 +183,50 @@ export default {
       })
     },
 
-    getFriendRequests() {
-      var thisUserUID = 'uid_'+this.getAuthenticatedUser.uid;
-      db.collection('relations').where(thisUserUID, '==', false).get() //'uid_'+this.getAuthenticatedUser.uid, '==', 'false').get()
-      .then((snapshot) =>  {
-        snapshot.docs.forEach(doc  => {
-          var relation = doc.data();
-          var otherUserUID = "";
+  //   getFriendRequests() {
+  //     var thisUserUID = 'uid_'+this.getAuthenticatedUser.uid;
+  //     db.collection('relations').where(thisUserUID, '==', false).get() //'uid_'+this.getAuthenticatedUser.uid, '==', 'false').get()
+  //     .then((snapshot) =>  {
+  //       snapshot.docs.forEach(doc  => {
+  //         var relation = doc.data();
+  //         var otherUserUID = "";
           
 
-          for (var property1 in relation) {
-            if (property1 == thisUserUID){
-              continue;
-            } else {
-              otherUserUID = property1.substring(4);
-              continue;
-            }
-          }
+  //         for (var property1 in relation) {
+  //           if (property1 == thisUserUID){
+  //             continue;
+  //           } else {
+  //             otherUserUID = property1.substring(4);
+  //             continue;
+  //           }
+  //         }
           
-          db.collection('users').where('uid', '==', otherUserUID).get()
-          .then((querySnapshot) => {
-            querySnapshot.docs.forEach((doc) => {
-              let data = {
-                'name': doc.data().firstName + ' ' + doc.data().lastName,
-                'photo': doc.data().image,
-                'UserID': 'uid_'+otherUserUID
-               }
-               this.friendReqs.push(data)
-            })
-          })
-          .catch(err => {
-            console.log("failed with error: " + err)
-          })
+  //         db.collection('users').where('uid', '==', otherUserUID).get()
+  //         .then((querySnapshot) => {
+  //           querySnapshot.docs.forEach((doc) => {
+  //             let data = {
+  //               'name': doc.data().firstName + ' ' + doc.data().lastName,
+  //               'photo': doc.data().image,
+  //               'UserID': 'uid_'+otherUserUID
+  //              }
+  //              this.friendReqs.push(data)
+  //           })
+  //         })
+  //         .catch(err => {
+  //           console.log("failed with error: " + err)
+  //         })
 
 
-        })
-      })
-      .catch(err => {
-        console.log("failed with error: " + err)
-      })
-  },
+  //       })
+  //     })
+  //     .catch(err => {
+  //       console.log("failed with error: " + err)
+  //     })
+  // },
 
   },
   created () {
-    this.getFriendRequests() 
+    //this.getFriendRequests() 
   }
    
 }
@@ -255,7 +263,7 @@ export default {
   right: 0;
 }
 .hide {
-  display: this.added;
+  /* display: this.added; */
 }
 .friendship {
   position: absolute;

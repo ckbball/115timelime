@@ -16,11 +16,16 @@ import db from '@/firebase/init'
 
 export default {
   name: 'UserFeed',
+  props: {
+    uid: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       textPost: '',
       posts: [],
-      uid: '0GkbOriyJFaYUupbZhin',
     }
   }, 
   components: {

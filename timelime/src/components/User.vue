@@ -1,16 +1,22 @@
 <template>
   <div>
-    <UserProfile v-bind:user="user" v-bind:uid="uid"/>
+    <MyProfile v-if="uid === getUserInfo.uid"></MyProfile>
+    <UserProfile v-else :uid="uid"/>
   </div>
 </template>
 
 <script>
 import router from '@/router/index'
 import UserProfile from '@/components/user_profile/UserProfile'
+import MyProfile from '@/components/MyProfile'
 import db from '@/firebase/init'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'User',
+  props: {
+    uid: String
+  },
   data () {
     return {
       user: {
@@ -25,7 +31,13 @@ export default {
     }
   }, 
   components : {
-    'UserProfile': UserProfile
+    'UserProfile': UserProfile,
+    'MyProfile': MyProfile
+  },
+  computed: {
+    ...mapGetters([
+      'getUserInfo'
+    ])
   },
   methods: {
     getUser() {
@@ -48,9 +60,7 @@ export default {
       })
     },  
   },
-  props: {
-    uid: String
-  },
+
   created() {
     this.getUser()
   }
