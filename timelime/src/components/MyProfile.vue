@@ -72,16 +72,45 @@
 
 
       <sui-modal v-model="openFriends" size="mini">
-        <sui-modal-header>Friends</sui-modal-header>
+        <sui-modal-header>Friends!</sui-modal-header>
         <sui-modal-content scrolling > 
           <!-- scrolling image  -->
           <sui-modal-description>
-        <div class="friends" v-for="f in friends">
-              <Friend
-                  :name="f.name"
-                  :image="f.photo"
-                />
-          </div>
+            <sui-table>
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell>
+                    <sui-form>
+                      <sui-form-fields>
+                        <input
+                          placeholder="search"
+                        ></input>
+                      </sui-form-fields>
+                    </sui-form>
+                  </sui-table-header-cell>
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row v-for="(friend, n) in getFriends" :key="n">
+                  <sui-table-cell>
+                    <sui-grid>
+                      <sui-grid-row>
+                        <sui-grid-column :width="4">
+                          <CommentAvatarButton
+                            :image="friend.image"
+                            :uid="friend.uid"
+                          ></CommentAvatarButton>
+                        </sui-grid-column>
+                        <sui-grid-column :width="12">
+                          {{friend.name}}
+                        </sui-grid-column>
+                      </sui-grid-row>
+                    </sui-grid>
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+
+            </sui-table>
 
           </sui-modal-description>
         </sui-modal-content>
@@ -107,6 +136,7 @@ import EditProfilePicture from '@/components/user_profile/EditProfileInfo'
 import MySideBar from '@/components/MySideBar'
 import Friend from '@/components/user_profile/Friend'
 import FriendButton from '@/components/user_profile/FriendButton'
+import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -118,7 +148,8 @@ export default {
     "EditProfileInfo": EditProfileInfo,
     "Friend": Friend,
     "FriendButton": FriendButton,
-    "UserFeed": UserFeed
+    "UserFeed": UserFeed,
+    'CommentAvatarButton': CommentAvatarButton
   },
   data() {
     return {
@@ -132,7 +163,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getUserInfo'
+      'getUserInfo',
+      'getFriends'
     ]),
     textRemaining: function(){
         return 200 - this.newBio.length

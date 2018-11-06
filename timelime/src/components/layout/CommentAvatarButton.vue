@@ -2,8 +2,7 @@
   <router-link :to="{path: '/user/'+uid}">
     <sui-comment-avatar 
       :src="image"
-      >
-
+    >
     </sui-comment-avatar>
   </router-link>
 
