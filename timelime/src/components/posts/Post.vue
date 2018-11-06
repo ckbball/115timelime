@@ -4,7 +4,9 @@
     <sui-grid :columns="2" :centered=false>
 
       <sui-grid-column :width="2">
-        <PostLikeButton align="left" class= "Button1"/>
+        <PostLikeButton align="left" class= "Button1"
+        :post_id="post.post_id"
+        />
         <PostCommentButton align="left" class= "Button2"/>
       </sui-grid-column>
       
