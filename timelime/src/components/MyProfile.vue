@@ -4,8 +4,6 @@
       <sui-grid-column :width="3">
       </sui-grid-column>
 
-      
-      
       <sui-grid-column :width="7">
         <UserFeed fluid
             :uid="getUserInfo.uid"
@@ -23,15 +21,17 @@
     </sui-grid>
 
 
-    <sui-modal 
-    v-model="open"
-    >
+    <sui-modal v-model="open" >
       <sui-modal-header> Edit Bio </sui-modal-header>
       <sui-modal-content>
         <sui-modal-description>
-          <textarea 
-           v-model="newBio" class="fucku" maxlength="200"
-           />
+          <sui-form>
+            <sui-form-field>
+            <textarea 
+            v-model="newBio" class="fucku" maxlength="200"
+            />
+            </sui-form-field>
+          </sui-form>
         </sui-modal-description>
       </sui-modal-content>
         
@@ -40,7 +40,7 @@
         <sui-button negative @click.native="toggle">
           Cancel
         </sui-button>
-        <sui-button positive @click.native="savePost">
+        <sui-button positive @click.native="saveNewBio">
           Save
         </sui-button>
       </sui-modal-actions>
@@ -48,9 +48,7 @@
     </sui-modal>
 
 
-    <sui-modal 
-    v-model="openPhoto"
-    >
+    <sui-modal v-model="openPhoto">
       <sui-modal-header> Change Profile Photo </sui-modal-header>
       <sui-modal-content>
         <sui-modal-description>
@@ -78,12 +76,12 @@
         <sui-modal-content scrolling > 
           <!-- scrolling image  -->
           <sui-modal-description>
-<div class="friends" v-for="f in friends">
-       <Friend
-          :name="f.name"
-          :image="f.photo"
-        />
-  </div>
+        <div class="friends" v-for="f in friends">
+              <Friend
+                  :name="f.name"
+                  :image="f.photo"
+                />
+          </div>
 
           </sui-modal-description>
         </sui-modal-content>
@@ -143,12 +141,19 @@ export default {
 
   methods: {
     toggle: function(){
+      this.newBio = this.getUserInfo.bio
       this.open = !this.open;
     },
-    ...mapActions(['updateUserBio']),
-    savePost(){
-      this.updateUserBio(this.newBio)
-      this.open = !this.open;
+
+    saveNewBio(){
+      db.collection('users').doc(this.getUserInfo.uid).update({bio: this.newBio})
+      .then(() =>{
+              this.open = !this.open;
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
     },
     togglePhoto: function(){
       this.openPhoto = !this.openPhoto;
