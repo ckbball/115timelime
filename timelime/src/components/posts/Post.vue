@@ -26,9 +26,10 @@
           <sui-card-description align="right">Time Remaining: 4 mins</sui-card-description>
         </sui-card-content>
 
-        <sui-card-content>
-          <Comments/>
-        </sui-card-content>
+        <!-- <sui-card-content extra> -->
+          <!-- <Comments/> -->
+          <CommentList></CommentList>
+        <!-- </sui-card-content> -->
         
       </sui-card>
 
@@ -42,6 +43,7 @@
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
 import PostCommentButton from '@/components/user_profile/PostCommentButton'
 import Comments from '@/components/posts/Comments'
+import CommentList from '@/components/posts/CommentList'
 export default {
   name: 'EditProfileInfo',
   data() {
@@ -52,6 +54,7 @@ export default {
     "PostLikeButton": PostLikeButton,
     "PostCommentButton": PostCommentButton,
     "Comments": Comments,
+    "CommentList": CommentList
   },
   props: {
 

@@ -22,7 +22,7 @@ export default {
       uid: {
           type: String, 
           required: true,
-          default: 'lakjsdhflkjahs'
+          
       },
 
   },

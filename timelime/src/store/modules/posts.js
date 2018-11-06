@@ -9,19 +9,10 @@ const getters = {
 
 }
 const mutations = {
-	
+
+
 }
 const actions = {	
-	getPost: ({commit}, {email, password}) => {
-		firebase.auth().signInWithEmailAndPassword(email, password)
-		.then(cred => {
-			commit('setAuthenticatedUser', cred.user)
-		})
-		.catch(err => {
-			console.log(err)
-		})
-	},
-
 
 }
 

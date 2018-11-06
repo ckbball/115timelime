@@ -4,7 +4,7 @@
     <button v-on:click="submit">Squeeze!</button>
   
 
-  <div v-for="post in posts">
+  <div v-for="(post, n) in posts" :key="n">
 
       <sui-card>
         <sui-card-content>
