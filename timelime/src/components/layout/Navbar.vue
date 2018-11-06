@@ -11,14 +11,11 @@
 
 
 
-        <NavbarSearchBar v-on:searchReturned="onSearchReturned($event)">
-        </NavbarSearchBar>
-<!--         <NavbarSearchResults 
-          v-if="searchResults" 
-          :items="searchResults"
-        ></NavbarSearchResults> -->
- 
+        <NavbarSearchBar 
+          v-on:searchReturned="onSearchReturned($event)"
+        ></NavbarSearchBar>
 
+ 
       <sui-menu-menu position="right">
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
@@ -37,7 +34,7 @@
               class="left menu dropMenuReq" scrolling=true >
               <sui-dropdown-header content="Friend Requests:"/>
                 
-                <div class="posts" v-for="req in friendReqs">
+                <div class="posts" v-for="(req,n) in friendReqs" :key="n">
                       <FriendRequest
                       class="friendreq"
                       :name='req.name'
@@ -99,7 +96,7 @@
   item.content is what is displayed on the screen.
   item.route must correspond to route/index.js route name **case sensitive**
 */
-import {mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 import FriendRequest from '@/components/layout/FriendRequest' 
 import NavbarSearchBar from '@/components/layout/NavbarSearchBar'
@@ -138,7 +135,6 @@ export default {
     ]),
 
     handelResponse: function(resp) {
-      console.log('handleing response.........')
       this.respondRequest(resp[1], resp[0])
     },
 

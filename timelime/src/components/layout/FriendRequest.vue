@@ -89,7 +89,7 @@ export default {
   right: 0;
 }
 .hide {
-  display: this.added;
+  /* display: this.added; */
 }
 .squareButton {
   float: right;

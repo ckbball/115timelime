@@ -38,23 +38,6 @@ export default {
         console.log("failed with error: " + err)
       })
     }, 
-    // getPosts() {
-    //   console.log('gettting this users posts....')
-    //   db.collection('posts').get()
-    //   .then((querySnapshot) => {
-    //     querySnapshot.forEach((doc) => {
-    //       let data = {
-    //         'id': doc.id,
-    //         'text': doc.data().text
-    //       }
-    //       this.posts.push(data)
-    //     })
-    //   })
-    //   .catch(err => {
-    //     console.log("failed with error: " + err)
-    //   })
-    //   // console.log(this.posts)
-    // },
     fetchPosts() {
       console.log('fetch called')
       db.collection('posts').where('parent_id', '==', this.uid).get()
