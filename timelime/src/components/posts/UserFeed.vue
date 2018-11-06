@@ -1,14 +1,8 @@
 <template>
   <div >
 
-  <div class="posts" v-for="post in posts">
-      <Post
-      :content="post.text"
-      :name="post.author"
-      v-bind:user="user"
-      v-bind:uid="uid"
-      v-bind:pid="post.id"
-      />
+  <div class="posts" v-for="(post, n) in posts" :key="n">
+      <Post :post="post"/>
   </div>
 
 </div>
@@ -26,6 +20,7 @@ export default {
     return {
       textPost: '',
       posts: [],
+      uid: '0GkbOriyJFaYUupbZhin',
     }
   }, 
   components: {
@@ -43,32 +38,39 @@ export default {
         console.log("failed with error: " + err)
       })
     }, 
-    getPosts() {
-      console.log('gettting this users posts....')
-      db.collection('posts').get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          let data = {
-            'id': doc.id,
-            'text': doc.data().content,
-            "author": doc.data().author_name,
-          }
-          this.posts.push(data)
+    // getPosts() {
+    //   console.log('gettting this users posts....')
+    //   db.collection('posts').get()
+    //   .then((querySnapshot) => {
+    //     querySnapshot.forEach((doc) => {
+    //       let data = {
+    //         'id': doc.id,
+    //         'text': doc.data().text
+    //       }
+    //       this.posts.push(data)
+    //     })
+    //   })
+    //   .catch(err => {
+    //     console.log("failed with error: " + err)
+    //   })
+    //   // console.log(this.posts)
+    // },
+    fetchPosts() {
+      console.log('fetch called')
+      db.collection('posts').where('parent_id', '==', this.uid).get()
+      .then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          this.posts.push(doc.data())
         })
       })
       .catch(err => {
-        console.log("failed with error: " + err)
+        console.log(err)
       })
-      // console.log(this.posts)
     }
   },
   created () {
-    this.getPosts()
+    this.fetchPosts()
     // console.log(this.posts[0])
-  },
-  props: {
-    user: Object,
-    uid: String
   }
 }
 </script>

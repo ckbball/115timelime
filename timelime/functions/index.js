@@ -57,8 +57,33 @@ exports.main = functions.https.onRequest(main);
 
 
 /* ----- Write new Firebase functions down here ---- */
-exports.testfunc= functions.https.onRequest((request, response) => {
-	response.send('hey this worked')
+exports.addNewPost = functions.https.onRequest((req, res) => {
+	cors(req, res, () => {
+		let parent_id = req.query.parent_id
+		let author_uid = req.query.author_uid
+		let author_image = req.query.author_image
+		let author_name = req.query.author_name
+		let content = req.query.content
+
+		let promise = new Promise ((resolve, reject) => {
+			db.collection('posts').add({
+				parent_id: parent_id,
+				author_uid: author_uid,
+				author_image: author_image,
+				author_name: author_name,
+				content: content
+			})
+			.then(docRef => {
+				console.log(docRef.id)
+				resolve(res.send('post added'))
+			})
+			.catch(err => {
+				console.log(err)
+				reject(res.status(500).send(err))
+			})
+		})
+
+	})
 })
 exports.addUserToFirestoreAfterAccountCreation = functions.auth.user().onCreate((user) => {
 	const email = user.email

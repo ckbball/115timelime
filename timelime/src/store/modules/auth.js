@@ -21,7 +21,6 @@ const getters = {
 const mutations = {
 	setAuthenticatedUser: (state, payload) => {
 		state.authenticatedUser = payload
-		router.replace('User/' + state.authenticatedUser.uid)
 	},
 	unsetAuthenticatedUser: (state) => {
 		state.authenticatedUser = null

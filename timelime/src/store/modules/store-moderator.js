@@ -11,6 +11,8 @@ export default function configureModerator (store) {
 			case 'setAuthenticatedUser': 
 				//store.dispatch('fetchUserData', store.getters.getAuthenticatedUser.uid)
 				// router.replace('KenjiTest/' + state.authenticatedUser.uid)
+				router.replace('user/' + store.getters.getAuthenticatedUser.uid)
+
 				return
 			case 'registerNewUser':
 				router.replace('Login')

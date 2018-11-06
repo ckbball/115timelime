@@ -4,11 +4,7 @@
     <sui-grid :columns="2" :centered=false>
 
       <sui-grid-column :width="2">
-        <PostLikeButton align="left" class= "Button1"
-        v-bind:user="user"
-        v-bind:uid="uid"
-        v-bind:pid="pid"
-        />
+        <PostLikeButton align="left" class= "Button1"/>
         <PostCommentButton align="left" class= "Button2"/>
       </sui-grid-column>
       
@@ -18,24 +14,20 @@
       <sui-card class="UserPost">
 
         <sui-card-content>
-          <sui-card-header align="left">{{name}}</sui-card-header>
+          <sui-card-header align="left">{{post.author_name}}</sui-card-header>
           <sui-card-description align="right">Posted: 4/20/69 </sui-card-description>
         </sui-card-content>
 
         <sui-card-content>
-          <sui-card-description align="left">{{content}}</sui-card-description>
+          <sui-card-description align="left">{{post.content}}</sui-card-description>
         </sui-card-content>
 
         <sui-card-content>
-          <sui-card-description align="right">4 minutes remaining</sui-card-description>
+          <sui-card-description align="right">Time Remaining: 4 mins</sui-card-description>
         </sui-card-content>
 
         <sui-card-content>
-          <Comments
-          v-bind:user="user"
-          v-bind:uid="uid"
-          v-bind:pid="pid"
-          />
+          <Comments/>
         </sui-card-content>
         
       </sui-card>
@@ -62,11 +54,11 @@ export default {
     "Comments": Comments,
   },
   props: {
-    name: String,
-    content: String,
-    uid: String,
-    user: Object,
-    pid: String,
+
+    post: {
+      type: Object,
+      required: true,
+    }
   },
 };
 
