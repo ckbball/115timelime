@@ -1,9 +1,9 @@
 <template>
   <div >
 
-  <div class="posts" v-for="(post, n) in posts" :key="n">
-      <Post :post="post"/>
-  </div>
+    <div class="posts" v-for="(post, n) in posts" :key="n">
+        <Post :post="post"/>
+    </div>
 
 </div>
 

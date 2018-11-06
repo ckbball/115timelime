@@ -57,6 +57,37 @@ exports.main = functions.https.onRequest(main);
 
 
 /* ----- Write new Firebase functions down here ---- */
+
+exports.addNewComment = functions.https.onRequest((req, res) => {
+	cors(req, res, () => {
+		let parent_id = req.body.parent_id
+		let author_uid = req.body.author_uid
+		let author_image = req.body.author_image
+		let author_name = req.body.author_name
+		let content = req.body.content
+
+		let promise = new Promise ((resolve, reject) => {
+			db.collection('comments').add({
+				parent_id: parent_id,
+				author_uid: author_uid,
+				author_image: author_image,
+				author_name: author_name,
+				content: content
+			})
+			.then(docRef => {
+				console.log(docRef.id)
+				//db.collection('comments').doc(docRef.id).update({comment_id: docRef.id})
+				resolve(res.send('comment added'))
+			})
+			.catch(err => {
+				console.log(err)
+				reject(res.status(500).send(err))
+			})
+		})
+	})
+})
+
+
 exports.addNewPost = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
 		let parent_id = req.query.parent_id
@@ -75,6 +106,7 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 			})
 			.then(docRef => {
 				console.log(docRef.id)
+				db.collection('posts').doc(docRef.id).update({post_id: docRef.id})
 				resolve(res.send('post added'))
 			})
 			.catch(err => {

@@ -28,7 +28,9 @@
 
         <!-- <sui-card-content extra> -->
           <!-- <Comments/> -->
-          <CommentList></CommentList>
+          <CommentList
+          :post_id="post.post_id"
+          ></CommentList>
         <!-- </sui-card-content> -->
         
       </sui-card>
@@ -42,28 +44,33 @@
 <script>
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
 import PostCommentButton from '@/components/user_profile/PostCommentButton'
-import Comments from '@/components/posts/Comments'
+// import Comments from '@/components/posts/Comments'
 import CommentList from '@/components/posts/CommentList'
 export default {
   name: 'EditProfileInfo',
-  data() {
-    return { 
-    };
-  },
   components: {
     "PostLikeButton": PostLikeButton,
     "PostCommentButton": PostCommentButton,
-    "Comments": Comments,
+    // "Comments": Comments,
     "CommentList": CommentList
   },
   props: {
-
     post: {
       type: Object,
       required: true,
     }
   },
-};
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+
+  }
+
+
+}
 
 </script>
 
