@@ -20,14 +20,23 @@ export default {
   components: {
     "Button": Button
   },
+  props: {
+    post_id: {
+      type: String,
+      required: true,
+    }
+  },
   data () {
     return {
       counter:0,
       liked:false,
       color:"red",
       icon:"heart",
-      docid: "",
+      docid: ""
     }
+  },
+  computed:{
+      ...mapGetters(['getUserInfo'])
   },
   methods: {
     toggleLike: function(){
@@ -35,76 +44,44 @@ export default {
       if (this.liked){
         this.counter--
         this.liked = false
-        this.delLike()
+        this.deleteLike()
       } 
       else {
         this.counter++
         this.liked = true
-        this.postLike()
+        this.addLike()
       }
     },
-    postLike() {
-      var day = Date()
-      db.collection('likes').add({
-        postId: this.pid,
-        date: day.toLocaleString("en-US"),
-        uid: this.uid
+    addLike: function() {
+      this.axios.post('http://localhost:5001/timelime-96d47/us-central1/addLike', {
+          parent_id: this.post_id,
+          author_uid: this.getUserInfo.uid,
+          author_image: this.getUserInfo.image,
+          author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName,
       })
       .then(docRef => {
-        db.collection('likes').doc(docRef.id).update({id: docRef.id})
-        this.docid = docRef.id
-        console.log(this.docid)
+          db.collection('likes').doc(docRef.id).update({likeid: docRef.id})
+          this.docid = docRef.id
       })
       .catch(err => {
         console.log("failed with error: " + err)
       })
     },
-    delLike() {
-      var postid = this.pid
-      console.log("Just checked postid")
-      var userid = this.uid
-      db.collection('likes').where('postId', '==', postid).where('uid', '==', userid).get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                  db.collection('likes').doc(doc.id).delete().then(function() {
-                    console.log("Like successfully removed")
-                  })
-                  .catch(err => {
-                    console.log("Error removing like: " + err)
-                  })
-
-                })
-            })
-            .catch(err => {
-              console.log("failed with error: " + err)
-            })
-
-    },
-    getDate() {
-      db.collection('likes').get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          let data = {
-            'id': doc.id,
-            'date': doc.data().date,
-            'post': doc.data().postId,
-            'uid': doc.data().uid,
-          }
-          this.likes.push(data)
-        })
+    deleteLike() {
+      this.axios.post('http://localhost:5001/timelime-96d47/us-central1/removeLike', {
+          author_uid: this.getUserInfo.uid,
+          parent_id: this.post_id
+      })
+      .then(docRef => {
+        console.log("like deleted")
       })
       .catch(err => {
         console.log("failed with error: " + err)
       })
-    }
+
+    },
 
   },
-  props: {
-    user: Object,
-    uid: String,
-    pid: String
-  }
-  
   
 }
 </script>
