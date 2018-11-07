@@ -5,11 +5,10 @@
       @editPhoto="changeProfileImage()"
       :userInfo="userInfo"
     />
-        <sui-card class="raised">
+    <sui-card class="raised">
       <sui-card-content>
         <sui-button 
-            @showFriends="showFriends()"
-            v-on:click="open">
+            v-on:click="showFriends()">
             friends
         </sui-button>
       </sui-card-content>
@@ -23,8 +22,6 @@
 
 
     </sui-card>
-
-
   </div>
 </template>
 
