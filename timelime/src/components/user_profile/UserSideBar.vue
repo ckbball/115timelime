@@ -10,14 +10,19 @@
           content="friends"
           @click="$emit('showFriends')"
         ></sui-button>
-        <sui-button 
+<!--         <sui-button 
           @click="friendshipChangeHandler()"         
           :content="content"
           :icon="icon"
-        ></sui-button>
+        ></sui-button> -->
       </sui-card-content>
     </sui-card>
-    <FriendButton v-bind:userInfo="userInfo" v-bind:isFriend="isFriend"/>
+    <FriendButton 
+    v-bind:userInfo="userInfo" 
+    v-bind:isFriend="isFriend"
+    v-on:pendFriend="setFriendshipStatus('pending')"
+    v-on:notFriend="setFriendshipStatus('false')"
+    />
   </div>
 </template>
 
@@ -54,90 +59,91 @@ export default {
   },
 
   methods: {
-    requestFriendship: function({my_id, their_id}){
-      db.collection('relations').add({
-        ['uid_'+my_id]: 'true',
-        ['uid_'+their_id]: 'false'
-      })
-      .then(docRef => {
-        this.relation_id = docRef.id
-        this.setFriendshipStatus('pending')
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    },
-    cancelFriendship: function(doc_id) {
-      db.collection('relations').doc(doc_id).delete()
-      .then(() => {
-        this.setFriendshipStatus('false')
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    // requestFriendship: function({my_id, their_id}){
+    //   db.collection('relations').add({
+    //     ['uid_'+my_id]: 'true',
+    //     ['uid_'+their_id]: 'false'
+    //   })
+    //   .then(docRef => {
+    //     this.relation_id = docRef.id
+    //     this.setFriendshipStatus('pending')
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
+    // },
+    // cancelFriendship: function(doc_id) {
+    //   db.collection('relations').doc(doc_id).delete()
+    //   .then(() => {
+    //     this.setFriendshipStatus('false')
+    //   })
+    //   .catch(err => {
+    //     console.log(err)
+    //   })
 
-    },
-    friendshipChangeHandler: function() {
-      if(this.isFriend === 'false'){
-        this.requestFriendship({my_id: this.getUserInfo.uid, their_id: this.userInfo.uid})
-      } else {
-        this.cancelFriendship(this.relation_id)
-      }
-
-    },
+    // },
+    // friendshipChangeHandler: function() {
+    //   if(this.isFriend === 'false'){
+    //     this.requestFriendship({my_id: this.getUserInfo.uid, their_id: this.userInfo.uid})
+    //   } else {
+    //     this.cancelFriendship(this.relation_id)
+    //   }
+    // },
 
     showFriends: function(){
       console.log("hey! someone REALLY REALLY wants to see their friends! :)")
       this.$emit("showFriends")
     },
 
-  //   areFriends: function(){
-  //     if (this.getAuthenticatedUser !== null) {
-  //       var us1 = 'uid_'+this.getAuthenticatedUser.uid
-  //       var us2 = 'uid_'+this.uid
-  //       db.collection('relations').where(us1, "==", true).where(us2, "==", true)
-  //       .onSnapshot((snapshot) => {
-  //         if (snapshot.size != 0)
-  //           this.isFriend = 'true'
-  //         else {
-  //           db.collection('relations').where(us1, "==", true).where(us2, "==", false)
-  //           .onSnapshot((snapshot) => {
-  //             if (snapshot.size != 0)
-  //               this.isFriend = 'pending'
-  //             else 
-  //               this.isFriend = 'false'
-  //           })
-  //         }
-  //       })
-  //     }
-  //   }
+    // areFriends: function(){
+    //   if (this.getUserInfo !== null) {
+    //     var us1 = 'uid_'+this.getUserInfo.uid
+    //     var us2 = 'uid_'+this.userInfo.uid
+    //     db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'true')
+    //     .onSnapshot((snapshot) => {
+    //       if (snapshot.size != 0)
+    //         this.isFriend = 'true'
+    //       else {
+    //         db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'false')
+    //         .onSnapshot((snapshot) => {
+    //           if (snapshot.size != 0)
+    //             this.isFriend = 'pending'
+    //           else 
+    //             this.isFriend = 'false'
+    //         })
+    //       }
+    //     })
+    //   }
+    // },
     areFriends: function() {
       this.getFriends.forEach(friend => {
-        if (friend.data()['uid_'+this.userInfo.uid], '==', 'true') {
-          this.setFriendshipStatus('true')
-        } else if (friend['uid_'+this.user_info.uid], '==', 'false') {
-          this.setFriendshipStatus('pending')
-        } else {
-          this.setFriendshipStatus('false')
+        var accepted = friend.data()['uid_'+this.userInfo.uid]
+        if (accepted !== undefined) {
+          if (accepted == 'true') {
+            this.setFriendshipStatus('true')
+          } else if (accepted == 'false') {
+            this.setFriendshipStatus('pending')
+          } else {
+            this.setFriendshipStatus('false')
+          }
         }
       })
     },
     setFriendshipStatus: function(status) {
       if(status === 'true') {
         this.isFriend = 'true'
-        this.icon='check'
-        this.content='friends'
-
+        // this.icon='check'
+        // this.content='friends'
       }
       if(status === 'pending') {
-        this.isFriend = 'false'
-        this.icon='clock outline'
-        this.content='pending'
+        this.isFriend = 'pending'
+        // this.icon='clock outline'
+        // this.content='pending'
       }
       if (status === 'false') {
         this.isFriend = 'false'
-        this.icon='user plus'
-        this.content='add'
+        // this.icon='user plus'
+        // this.content='add'
       }
     }
   },

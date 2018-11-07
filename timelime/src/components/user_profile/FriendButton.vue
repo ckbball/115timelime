@@ -2,10 +2,6 @@
   <div>
     <sui-card class="raised">
       <sui-card-content>
-        <sui-button 
-        v-on:click="open">
-        friends
-      </sui-button>
         <div is="sui-button" animated="fade" v-on:click="changeFriendStatus">
             <sui-button-content visible v-if="isFriend == 'true'">
               Remove Friend
@@ -45,13 +41,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getUserInfo'])
+    ...mapGetters([
+      'getUserInfo'
+      ])
   },
   methods: {
-    open() {
-      console.log("hey! someone wants to see their friends :)")
-      this.$emit("showFriends")
-    },
     changeFriendStatus() {
       if (this.getUserInfo !== null) {
         var us1 = 'uid_'+this.getUserInfo.uid
@@ -63,12 +57,14 @@ export default {
             [us1]: 'true',
             [us2]: 'false'
           })
+          this.$emit('pendFriend')
         } else if (this.isFriend === "true") {
           db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'true').get()
           .then((snapshot) => {
             snapshot.forEach((doc) => {
               doc.ref.delete()
             })
+            this.$emit('notFriend')
           })
           .catch((err) => {
             console.log(err)
@@ -79,6 +75,7 @@ export default {
             snapshot.forEach((doc) => {
               doc.ref.delete()
             })
+            this.$emit('notFriend')
           })
           .catch((err) => {
             console.log(err)
