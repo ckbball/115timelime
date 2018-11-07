@@ -16,7 +16,7 @@
     </sui-card>
     <sui-card class="raised">
       <sui-card-content>
-        <sui-button icon="pencil alternate"></sui-button>
+        <sui-button icon="pencil alternate" @click="clickWriteButton()"></sui-button>
         <sui-button icon="camera retro"></sui-button>
         <sui-button icon="film"></sui-button>
       </sui-card-content>
@@ -69,6 +69,9 @@ export default {
       console.log("hey! someone REALLY REALLY wants to see their friends! :)")
       this.$emit("showFriends")
     },
+    clickWriteButton: function() {
+      this.$emit("writePost")
+    }
 
 
   },

@@ -18,6 +18,7 @@
             @editBio="toggle()"
             @editPhoto="togglePhoto()"
             @showFriends="toggleFriends()"
+            @writePost="toggleWritePost()"
         />
       </sui-grid-column>
     </sui-grid>
@@ -71,6 +72,9 @@
     </sui-modal>
 
 
+    <sui-modal v-model="openWritePost">
+      <CreateNewPostModal @ContinueTextPost="toggleWritePost" :userInfo="getUserInfo" />
+    </sui-modal>
 
 
       <sui-modal v-model="openFriends" size="mini">
@@ -100,15 +104,16 @@
 </template>
 
 
-
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
 import UserFeed from '@/components/posts/UserFeed'
 import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import EditProfilePicture from '@/components/user_profile/EditProfileInfo'
 import MySideBar from '@/components/MySideBar'
+import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
 import Friend from '@/components/user_profile/Friend'
 import FriendButton from '@/components/user_profile/FriendButton'
+
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -117,6 +122,7 @@ export default {
   name: 'MyProfile',
     components: {
     "MySideBar": MySideBar,
+    "CreateNewPostModal": CreateNewPostModal,
     "EditProfileInfo": EditProfileInfo,
     "Friend": Friend,
     "FriendButton": FriendButton,
@@ -128,8 +134,8 @@ export default {
         newBio:'', 
         openPhoto: false,
         openFriends: false,
+        openWritePost: false,
         friends: [],
-
     }
   },
   computed: {
@@ -159,8 +165,9 @@ export default {
     toggleFriends: function(){
       this.openFriends = !this.openFriends;
     },
-
-
+    toggleWritePost: function(){
+      this.openWritePost = !this.openWritePost;
+    },
     getFriends() {
 
       db.collection('relations').where('uid_'+this.getUserInfo.uid, '==', true).get() //'uid_0GkbOriyJFaYUupbZhin', '==', 'true').get()
