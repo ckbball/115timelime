@@ -147,8 +147,10 @@ export default {
       }
     }
   },
-  mounted() {
-    this.areFriends()
+  watch: {
+    getFriends: function () {
+      this.areFriends()
+    }
   },
 };
 
