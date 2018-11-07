@@ -4,8 +4,6 @@
       <sui-grid-column :width="3">
       </sui-grid-column>
 
-      
-      
       <sui-grid-column :width="7">
         <UserFeed fluid
             :uid="getUserInfo.uid"
@@ -18,20 +16,23 @@
             @editBio="toggle()"
             @editPhoto="togglePhoto()"
             @showFriends="toggleFriends()"
+            @writePost="toggleWritePost()"
         />
       </sui-grid-column>
     </sui-grid>
 
 
-    <sui-modal 
-    v-model="open"
-    >
+    <sui-modal v-model="open" >
       <sui-modal-header> Edit Bio </sui-modal-header>
       <sui-modal-content>
         <sui-modal-description>
-          <textarea 
-           v-model="newBio" class="fucku" maxlength="200"
-           />
+          <sui-form>
+            <sui-form-field>
+            <textarea 
+            v-model="newBio" class="fucku" maxlength="200"
+            />
+            </sui-form-field>
+          </sui-form>
         </sui-modal-description>
       </sui-modal-content>
         
@@ -40,7 +41,7 @@
         <sui-button negative @click.native="toggle">
           Cancel
         </sui-button>
-        <sui-button positive @click.native="savePost">
+        <sui-button positive @click.native="saveNewBio">
           Save
         </sui-button>
       </sui-modal-actions>
@@ -48,9 +49,7 @@
     </sui-modal>
 
 
-    <sui-modal 
-    v-model="openPhoto"
-    >
+    <sui-modal v-model="openPhoto">
       <sui-modal-header> Change Profile Photo </sui-modal-header>
       <sui-modal-content>
         <sui-modal-description>
@@ -71,19 +70,51 @@
     </sui-modal>
 
 
+    <sui-modal v-model="openWritePost">
+      <CreateNewPostModal @ContinueTextPost="toggleWritePost" :userInfo="getUserInfo" />
+    </sui-modal>
 
 
       <sui-modal v-model="openFriends" size="mini">
-        <sui-modal-header>Friends</sui-modal-header>
+        <sui-modal-header>Friends!</sui-modal-header>
         <sui-modal-content scrolling > 
           <!-- scrolling image  -->
           <sui-modal-description>
-<div class="friends" v-for="f in friends">
-       <Friend
-          :name="f.name"
-          :image="f.photo"
-        />
-  </div>
+            <sui-table>
+              <sui-table-header>
+                <sui-table-row>
+                  <sui-table-header-cell>
+                    <sui-form>
+                      <sui-form-fields>
+                        <input
+                          placeholder="search"
+                        ></input>
+                      </sui-form-fields>
+                    </sui-form>
+                  </sui-table-header-cell>
+                </sui-table-row>
+              </sui-table-header>
+              <sui-table-body>
+                <sui-table-row v-for="(friend, n) in getFriends" :key="n">
+                  <sui-table-cell>
+                    <sui-grid>
+                      <sui-grid-row>
+                        <sui-grid-column :width="4">
+                          <CommentAvatarButton
+                            :image="friend.image"
+                            :uid="friend.uid"
+                          ></CommentAvatarButton>
+                        </sui-grid-column>
+                        <sui-grid-column :width="12">
+                          {{friend.name}}
+                        </sui-grid-column>
+                      </sui-grid-row>
+                    </sui-grid>
+                  </sui-table-cell>
+                </sui-table-row>
+              </sui-table-body>
+
+            </sui-table>
 
           </sui-modal-description>
         </sui-modal-content>
@@ -100,15 +131,17 @@
 </template>
 
 
-
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
 import UserFeed from '@/components/posts/UserFeed'
 import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import EditProfilePicture from '@/components/user_profile/EditProfileInfo'
 import MySideBar from '@/components/MySideBar'
+import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
 import Friend from '@/components/user_profile/Friend'
 import FriendButton from '@/components/user_profile/FriendButton'
+import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
+
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -117,10 +150,12 @@ export default {
   name: 'MyProfile',
     components: {
     "MySideBar": MySideBar,
+    "CreateNewPostModal": CreateNewPostModal,
     "EditProfileInfo": EditProfileInfo,
     "Friend": Friend,
     "FriendButton": FriendButton,
-    "UserFeed": UserFeed
+    "UserFeed": UserFeed,
+    'CommentAvatarButton': CommentAvatarButton
   },
   data() {
     return {
@@ -128,13 +163,14 @@ export default {
         newBio:'', 
         openPhoto: false,
         openFriends: false,
+        openWritePost: false,
         friends: [],
-
     }
   },
   computed: {
     ...mapGetters([
-      'getUserInfo'
+      'getUserInfo',
+      'getFriends'
     ]),
     textRemaining: function(){
         return 200 - this.newBio.length
@@ -143,12 +179,19 @@ export default {
 
   methods: {
     toggle: function(){
+      this.newBio = this.getUserInfo.bio
       this.open = !this.open;
     },
-    ...mapActions(['updateUserBio']),
-    savePost(){
-      this.updateUserBio(this.newBio)
-      this.open = !this.open;
+
+    saveNewBio(){
+      db.collection('users').doc(this.getUserInfo.uid).update({bio: this.newBio})
+      .then(() =>{
+              this.open = !this.open;
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
     },
     togglePhoto: function(){
       this.openPhoto = !this.openPhoto;
@@ -159,8 +202,9 @@ export default {
     toggleFriends: function(){
       this.openFriends = !this.openFriends;
     },
-
-
+    toggleWritePost: function(){
+      this.openWritePost = !this.openWritePost;
+    },
     getFriends() {
 
       db.collection('relations').where('uid_'+this.getUserInfo.uid, '==', true).get() //'uid_0GkbOriyJFaYUupbZhin', '==', 'true').get()
