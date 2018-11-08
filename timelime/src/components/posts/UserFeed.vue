@@ -24,7 +24,6 @@ export default {
   },
   data () {
     return {
-      textPost: '',
       posts: [],
     }
   }, 
@@ -32,17 +31,6 @@ export default {
     "Post": Post,
   },
   methods: {
-    submit() {
-      db.collection('posts').add({
-        text: this.textPost,
-      })
-      .then(docRef => {
-        db.collection('posts').doc(docRef.id).update({id: docRef.id})
-      })
-      .catch(err => {
-        console.log("failed with error: " + err)
-      })
-    }, 
     fetchPosts() {
       db.collection('posts').where('parent_id', '==', this.uid).get()
       .then((snapshot) => {
@@ -55,10 +43,6 @@ export default {
       })
     }
   },
-  // mounted () {
-  //   this.fetchPosts()
-  //   // console.log(this.posts[0])
-  // }
   watch: {
     uid: function() {
       this.fetchPosts()
