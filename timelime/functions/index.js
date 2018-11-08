@@ -7,8 +7,15 @@ const serviceAccount = require('./firebaseServiceAccount.json')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')({
-  origin: true
+  origin: '*',
+    // origin: '*',
+	// allowedHeaders: ['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With', 'Accept'],
+	// methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+	// optionsSuccessStatus: 200
 });
+
+
+
 /* ----------------------------------- */
 
 
