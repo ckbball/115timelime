@@ -7,8 +7,15 @@ const serviceAccount = require('./firebaseServiceAccount.json')
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')({
-  origin: true
+  origin: '*',
+    // origin: '*',
+	// allowedHeaders: ['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With', 'Accept'],
+	// methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
+	// optionsSuccessStatus: 200
 });
+
+
+
 /* ----------------------------------- */
 
 
@@ -145,11 +152,11 @@ exports.removeLike = functions.https.onRequest((req, res) => {
 
 exports.addNewPost = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
-		let parent_id = req.query.parent_id
-		let author_uid = req.query.author_uid
-		let author_image = req.query.author_image
-		let author_name = req.query.author_name
-		let content = req.query.content
+		let parent_id = req.body.parent_id
+		let author_uid = req.body.author_uid
+		let author_image = req.body.author_image
+		let author_name = req.body.author_name
+		let content = req.body.content
 
 		let promise = new Promise ((resolve, reject) => {
 			db.collection('posts').add({

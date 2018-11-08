@@ -1,7 +1,7 @@
 <template>
   <router-link :to="{path: '/user/'+uid}">
     <sui-comment-avatar 
-      :src="image"
+      :src="user.image"
     >
     </sui-comment-avatar>
   </router-link>
@@ -19,7 +19,7 @@ export default {
           required: false
       },
       uid: {
-          type: String, 
+          type: String,
           required: true,
           
       },

@@ -94,7 +94,7 @@ export default {
       this.setLoading(true)
       this.setResults([])
 
-      this.axios.get('http://localhost:5001/timelime-96d47/us-central1/searchUsers/',{
+      this.axios.get('https://us-central1-timelime-96d47.cloudfunctions.net/searchUsers',{
         params: {
           name: this.searchText,
           type: 'mini'
