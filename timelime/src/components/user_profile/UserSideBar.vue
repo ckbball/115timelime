@@ -55,10 +55,15 @@ export default {
   },
 
   methods: {
-    requestFriendship: function({my_id, their_id}){
+    requestFriendship: function({my_obj, their_obj}){
       db.collection('relations').add({
-        ['uid_'+my_id]: 'true',
-        ['uid_'+their_id]: 'false'
+        ['uid_'+my_obj.uid]: 'true',
+        ['uid_'+their_obj.uid]: 'false',
+        [my_obj.firstName+my_obj.uid]: my_obj.firstName + my_obj.lastName,
+        [their_obj.firstName+their_obj.uid]: their_obj.firstName + their_obj.lastName,
+        ['image_'+my_obj.uid]: my_obj.image,
+        ['image_'+their_obj.uid]: their_obj.image,
+        'type': 'friend',
       })
       .then(docRef => {
         this.relation_id = docRef.id
@@ -79,8 +84,10 @@ export default {
 
     },
     friendshipChangeHandler: function() {
+      var my_obj = this.getUserInfo
+      var their_obj = this.userInfo
       if(this.isFriend === 'false'){
-        this.requestFriendship({my_id: this.getUserInfo.uid, their_id: this.userInfo.uid})
+        this.requestFriendship({my_obj, their_obj})
       } else {
         this.cancelFriendship(this.relation_id)
       }
