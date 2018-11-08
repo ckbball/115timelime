@@ -94,14 +94,69 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 	})
 })
 
+exports.addLike = functions.https.onRequest((req, res) => {
+	cors(req, res, () => {
+		let parent_id = req.body.parent_id
+		let author_uid = req.body.author_uid
+		let author_image = req.body.author_image
+		let author_name = req.body.author_name
+
+		let promise = new Promise ((resolve, reject) => {
+			db.collection('likes').add({
+				parent_id: parent_id,
+				author_uid: author_uid,
+				author_image: author_image,
+				author_name: author_name,
+			})
+			.then(docRef => {
+				// increment number of likes on post by 1
+				console.log(docRef.id)
+				db.collection('likes').doc(docRef.id).update({likeid: docRef.id})
+				//db.collection('comments').doc(docRef.id).update({comment_id: docRef.id})
+				resolve(res.send('post liked!'))
+			})
+			.catch(err => {
+				console.log(err)
+				reject(res.status(500).send(err))
+			})
+		})
+	})
+})
+
+exports.removeLike = functions.https.onRequest((req, res) => {
+	cors(req, res, () => {
+		let author_uid = req.body.author_uid
+		let parent_id = req.body.parent_id
+
+		let promise = new Promise ((resolve, reject) => {
+			db.collection('likes').where('parent_id', '==', parent_id).where('author_uid', '==', author_uid).get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                  db.collection('likes').doc(doc.id).delete().then(function() {
+                    // reduce likes for post by 1
+					resolve(res.send('like removed'))
+                  })
+                  .catch(err => {
+                    reject(res.status(500).send(err))
+                  })
+                })
+            })
+            .catch(err => {
+              console.log("failed with error: " + err)
+            })
+			
+		})
+	})
+})
+
 
 exports.addNewPost = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
-		let parent_id = req.query.parent_id
-		let author_uid = req.query.author_uid
-		let author_image = req.query.author_image
-		let author_name = req.query.author_name
-		let content = req.query.content
+		let parent_id = req.body.parent_id
+		let author_uid = req.body.author_uid
+		let author_image = req.body.author_image
+		let author_name = req.body.author_name
+		let content = req.body.content
 
 		let promise = new Promise ((resolve, reject) => {
 			db.collection('posts').add({

@@ -69,29 +69,29 @@ const actions = {
 	fetchFriends: (context, payload) => {
 		db.collection('relations').where('uid_'+payload, '>=', 'a')
 		.onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-            snapshot.docChanges().forEach(change => {
-                if (change.type === 'added') {
-                    context.commit('pushToFriends', change.doc)
+      snapshot.docChanges().forEach(change => {
+        if (change.type === 'added') {
+          context.commit('pushToFriends', change.doc)
 				}
 				if (change.type === 'modified') {
 
 				}
-            })
-        })
+	    })
+    })
 	},
 
 	fetchFriendRequests: (context, payload) => {
 		db.collection('relations').where('uid_'+payload, '==', 'false')
 		.onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-            snapshot.docChanges().forEach(change => {
-                if (change.type === 'added') {
-                    context.commit('pushToFriendRequests', change.doc)
+      snapshot.docChanges().forEach(change => {
+        if (change.type === 'added') {
+          context.commit('pushToFriendRequests', change.doc)
 				}
 				if (change.type === 'modified') {
 
 				}
-            })
-        })
+      })
+	  })
 	},
 
 
