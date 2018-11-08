@@ -72,9 +72,7 @@ export default {
       // shuts modal in whoever is opening it
       this.$emit("ContinueTextPost")
     }
-
   },
-
 
 };
 
