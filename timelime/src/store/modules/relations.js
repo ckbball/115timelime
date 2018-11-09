@@ -135,13 +135,27 @@ const actions = {
           })
     },
     issueFriendRequest: (context, {requester, requestee}) => {
-        db.collection('relations').doc().add({})
+        db.collection('relations').doc().add({
+            [fbUID(requester.uid)]: 'true',
+            [fbName(requester.uid)]: requester.firstName + ' ' + requester.lastName,
+            [fbImage(requester.uid)]: requester.image,
 
+            [fbUID(requestee.uid)]: 'false',
+            [fbName(requestee.uid)]: requestee.firstName + ' ' + requestee.lastName,
+            [fbImage(requestee.uid)]: requestee.image,
+        })
+        .then(docRef => {
+            db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
+        })
     },
+    // respondToFriendRequest: (context, {response, request, responder}) { 
+    //     db.collection('relations').doc().
+    // }
 
 
 }
-
+var fbImage = (arg) => 'image_'+arg
+var fbName = (arg) => 'name_'+arg
 var getUID = (arg) => arg.substring(4)
 var fbUID = (arg) => 'uid_'+arg
 var isUID = (arg) => {
