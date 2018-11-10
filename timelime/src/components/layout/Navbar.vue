@@ -95,7 +95,6 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import FriendRequest from '@/components/layout/FriendRequest'
-import FriendRequestContainer from '@/components/layout/FriendRequestContainer' 
 import NavbarSearchBar from '@/components/layout/NavbarSearchBar'
 
 import firebase from 'firebase'
@@ -106,7 +105,6 @@ export default {
   components: {
     'NavbarSearchBar': NavbarSearchBar,
     'FriendRequest': FriendRequest,
-    'FriendRequestContainer': FriendRequestContainer,
   },
       data () {
         return {
@@ -152,72 +150,10 @@ export default {
       this.navigateTo(name)
     },
 
-    // respondRequest(otherUser, response){
-    //   var otherUserUID = otherUser;
 
-    //   var thisUserUID = 'uid_'+this.getAuthenticatedUser.uid;
-    //   db.collection('relations').where(thisUserUID, '==', false).where(otherUserUID, '==', true).get()
-    //   .then((snapshot) =>  {
-    //     snapshot.docs.forEach(doc  => {
-    //       var relation = doc.data();
-
-    //       if (response === false){
-    //         db.collection('relations').doc(doc.id).delete()
-    //       } else {
-    //         db.collection('relations').doc(doc.id).update({[thisUserUID]:true})
-    //       }
-    //     })
-    //   })
-    //   .catch(err => {
-    //     console.log("failed with error: " + err)
-    //   })
-    // },
-
-  //   getFriendRequests() {
-  //     var thisUserUID = 'uid_'+this.getAuthenticatedUser.uid;
-  //     db.collection('relations').where(thisUserUID, '==', false).get() //'uid_'+this.getAuthenticatedUser.uid, '==', 'false').get()
-  //     .then((snapshot) =>  {
-  //       snapshot.docs.forEach(doc  => {
-  //         var relation = doc.data();
-  //         var otherUserUID = "";
-          
-
-  //         for (var property1 in relation) {
-  //           if (property1 == thisUserUID){
-  //             continue;
-  //           } else {
-  //             otherUserUID = property1.substring(4);
-  //             continue;
-  //           }
-  //         }
-          
-  //         db.collection('users').where('uid', '==', otherUserUID).get()
-  //         .then((querySnapshot) => {
-  //           querySnapshot.docs.forEach((doc) => {
-  //             let data = {
-  //               'name': doc.data().firstName + ' ' + doc.data().lastName,
-  //               'photo': doc.data().image,
-  //               'UserID': 'uid_'+otherUserUID
-  //              }
-  //              this.friendReqs.push(data)
-  //           })
-  //         })
-  //         .catch(err => {
-  //           console.log("failed with error: " + err)
-  //         })
-
-
-  //       })
-  //     })
-  //     .catch(err => {
-  //       console.log("failed with error: " + err)
-  //     })
-  // },
 
   },
-  created () {
-    //this.getFriendRequests() 
-  }
+
    
 }
 </script>

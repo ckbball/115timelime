@@ -46,28 +46,9 @@ export default {
       db.collection('users').doc(this.uid).get()
         .then((doc) => {
             this.otherUsersInfo = doc.data()
-            // console.log(doc.data())
           })
     },
-    // getUser() {
-    //   db.collection('users').doc(this.uid).get()
-    //   .then((doc) => {
-    //     if (doc.exists) {
-    //       this.user.uid = doc.data().uid
-    //       this.user.firstName = doc.data().firstName
-    //       this.user.lastName = doc.data().lastName
-    //       this.user.email = doc.data().email,
-    //       this.user.joinedDate = doc.data().joinedDate,
-    //       this.user.bio = doc.data().bio
-    //       this.user.image = doc.data().image
-    //     } else {
-    //       console.log("No such user '"+this.uid+"'")
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.log(err)
-    //   })
-    // },  
+
   },
   watch: {
     '$route' (to, from) {

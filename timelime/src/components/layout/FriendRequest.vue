@@ -49,9 +49,6 @@ export default {
 		    };
     },
     props: {
-	    //name: String,
-	    //photo: String,
-	    //requester: String,
 	    request: {
 	    	type: Object
 	    }
@@ -78,13 +75,10 @@ export default {
  		...mapGetters(['getUserInfo'])
  	},
  	mounted () {
- 		//request function() {
- 			//console.log("CALLING REQUEST", this.request)
  			this.grabRequester({my_uid: this.getUserInfo.uid, request: this.request})
  			.then((retObj) => {
  				this.requester = retObj
  			})
- 		//},
  	},
 }
    
