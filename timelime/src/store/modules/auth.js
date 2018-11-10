@@ -5,9 +5,6 @@ import router from '@/router/index'
 const state = {
 	authenticatedUser: null,
 	userInfo: {},
-	friendRequests: [],
-	friends: [],
-
 }
 const getters = {
 	getAuthenticatedUser: (state) => {
@@ -22,35 +19,9 @@ const getters = {
 	getUserInfo: (state) => {
 		return state.userInfo
 	},
-	getFriendRequests: (state) => {
-		console.log(state.friendRequests)
-		return state.friendRequests
-	},
-	getFriends: (state) => {
-		return state.friends
-	}
-
 
 }
 const mutations = {
-	setFriends: (state, payload) => {
-		state.friends = payload
-	},
-	unsetFriends: (state, payload) => {
-		state.friends = []
-	},
-	pushToFriends: (state, payload) => {
-		state.friends.push(payload)
-	},
-	pushToFriendRequests: (state, payload) => {
-		state.friendRequests.push(payload)
-	},
-	setFriendRequests: (state, payload) => {
-		state.friendRequests = payload
-	},
-	unsetFriendRequests: (state, payload ) => {
-		state.friendRequests = []
-	},
 	setAuthenticatedUser: (state, payload) => {
 		state.authenticatedUser = payload
 	},
@@ -67,34 +38,6 @@ const mutations = {
 
 }
 const actions = {
-	fetchFriends: (context, payload) => {
-		db.collection('relations').where('uid_'+payload, '>=', 'a')
-		.onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-      snapshot.docChanges().forEach(change => {
-        if (change.type === 'added') {
-          context.commit('pushToFriends', change.doc)
-				}
-				if (change.type === 'modified') {
-
-				}
-	    })
-    })
-	},
-
-	fetchFriendRequests: (context, payload) => {
-		db.collection('relations').where('uid_'+payload, '==', 'false')
-		.onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-      snapshot.docChanges().forEach(change => {
-        if (change.type === 'added') {
-          context.commit('pushToFriendRequests', change.doc)
-				}
-				if (change.type === 'modified') {
-
-				}
-      })
-	  })
-	},
-
 
 	fetchUserInfo: (context, payload) => {
 		db.collection('users').doc(payload)

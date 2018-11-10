@@ -22,9 +22,10 @@
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
         >
+
           <sui-button class="requestButton">
-            <sui-label color="red" v-if="numberOfReqs>0" floating circular size="mini" class="friendNotif">
-              {{numberOfReqs}}
+            <sui-label color="red" v-if="this.getAllFriendsRequests.length > 0" floating circular size="mini" class="friendNotif">
+              {{this.getAllFriendsRequests.length}}
             </sui-label>        
             <sui-dropdown
               class = "requestDropdown"
@@ -35,10 +36,10 @@
             <sui-dropdown-menu  
               class="left menu dropMenuReq" scrolling=true >
               <sui-dropdown-header content="Friend Requests:"/>
-                <div class="posts" v-for="(req,n) in getAllFriendsRequests" :key="n">
+                <div class="posts" v-for="(req,n) in this.getAllFriendsRequests" :key="n">
                       <FriendRequest
-                      class="friendreq"
-                      :request="req.data()"
+                        class="friendreq"
+                        :request="req.data()"
                       />
                 </div>
               </sui-dropdown-menu>

@@ -12,8 +12,6 @@ export default function configureModerator (store) {
 			case 'setAuthenticatedUser':
 				if(store.getters.getAuthenticatedUser){
 					store.dispatch('fetchUserInfo', store.getters.getAuthenticatedUser.uid)
-					//store.dispatch('fetchFriendRequests', store.getters.getAuthenticatedUser.uid)
-					//store.dispatch('fetchFriends', store.getters.getAuthenticatedUser.uid)
 					store.dispatch('fetchAllRelations', store.getters.getAuthenticatedUser.uid )
 				}
 
@@ -26,9 +24,7 @@ export default function configureModerator (store) {
 		switch(type) {
 			 case 'signUserOut': 
 			 	store.commit('unsetAuthenticatedUser')
-				store.commit('unsetUserInfo')
-				//store.commit('unsetFriendRequests')	
-				//store.commit('unsetFriends')	
+				store.commit('unsetUserInfo')	
 				store.commit('unsetAllRelations')
 				store.commit('unsetFriends')
 			 	return router.replace('Login')

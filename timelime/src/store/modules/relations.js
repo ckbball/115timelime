@@ -45,8 +45,6 @@ const mutations = {
         state.friendRequests = []
     },
     pushToRequests: (state, payload) => {
-        console.log("pushing to requests....    ")
-        console.log(payload)
         state.friendRequests.push(payload)
     },
     setFriendRequests: (state, payload) => {
@@ -82,7 +80,6 @@ const actions = {
             if(request.id === change.id){
                 contains = true
                 if(changeTypeIsFriendship(request, change)){
-                    console.log("updateRequests.1")
                     if(isRequest(change, my_uid)) commit('pushToRequests', change)
                     if(!isRequest(change, my_uid)) commit ('removeFromRequests',change)
                 } else {
@@ -91,7 +88,6 @@ const actions = {
             } 
         })
         if (contains === false ) {
-            console.log("updateRequests.2")
             if(isRequest(change, my_uid)) commit('pushToRequests', change)
         }
 
@@ -116,7 +112,6 @@ const actions = {
     },
 
     sortRelation: ({commit}, {change, my_uid}) => {
-        console.log("sortRelation")
         if(isRequest(change, my_uid)) commit('pushToRequests', change)
         if(isFriend(change)) commit('pushToFriends', change)
     },
