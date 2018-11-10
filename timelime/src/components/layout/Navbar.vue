@@ -16,17 +16,15 @@
  
       <sui-menu-menu position="right">
 
-        <FriendRequestContainer
-        ></FriendRequestContainer>
 
 
 
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
         >
-          <!-- <sui-button class="requestButton">
-            <sui-label color="red" floating circular size="mini" class="friendNotif">
-              22
+          <sui-button class="requestButton">
+            <sui-label color="red" v-if="numberOfReqs>0" floating circular size="mini" class="friendNotif">
+              {{numberOfReqs}}
             </sui-label>        
             <sui-dropdown
               class = "requestDropdown"
@@ -37,22 +35,15 @@
             <sui-dropdown-menu  
               class="left menu dropMenuReq" scrolling=true >
               <sui-dropdown-header content="Friend Requests:"/>
-                
-                <div class="posts" v-for="(req,n) in getFriendRequests" :key="n">
+                <div class="posts" v-for="(req,n) in getAllFriendsRequests" :key="n">
                       <FriendRequest
                       class="friendreq"
-                      :name='req.name'
-                      :photo='req.photo'
-                      :requester='req.UserID'
-                      v-on:response="handelResponse($event)"
+                      :request="req.data()"
                       />
                 </div>
-               <FriendRequest v-for="(request,n) in getFriendRequests" :key="n"
-               ></FriendRequest>
-                
               </sui-dropdown-menu>
             </sui-dropdown>
-          </sui-button> -->
+          </sui-button>
 
           <sui-icon 
             name="envelope outline"
@@ -133,18 +124,17 @@ export default {
   computed: {
     ...mapGetters([
       'getAuthenticatedUser',
-      'getFriendRequests'
-    ])
+      'getAllFriendsRequests'
+    ]),
+    numberOfReqs: function(){
+        return this.getAllFriendsRequests.length
+    }
   },
 
   methods: {
     ...mapActions([
       'signUserOut'
     ]),
-
-    handelResponse: function(resp) {
-      this.respondRequest(resp[1], resp[0])
-    },
 
     onSearchReturned(event) {
       this.searchResults = event
@@ -162,26 +152,26 @@ export default {
       this.navigateTo(name)
     },
 
-    respondRequest(otherUser, response){
-      var otherUserUID = otherUser;
+    // respondRequest(otherUser, response){
+    //   var otherUserUID = otherUser;
 
-      var thisUserUID = 'uid_'+this.getAuthenticatedUser.uid;
-      db.collection('relations').where(thisUserUID, '==', false).where(otherUserUID, '==', true).get()
-      .then((snapshot) =>  {
-        snapshot.docs.forEach(doc  => {
-          var relation = doc.data();
+    //   var thisUserUID = 'uid_'+this.getAuthenticatedUser.uid;
+    //   db.collection('relations').where(thisUserUID, '==', false).where(otherUserUID, '==', true).get()
+    //   .then((snapshot) =>  {
+    //     snapshot.docs.forEach(doc  => {
+    //       var relation = doc.data();
 
-          if (response === false){
-            db.collection('relations').doc(doc.id).delete()
-          } else {
-            db.collection('relations').doc(doc.id).update({[thisUserUID]:true})
-          }
-        })
-      })
-      .catch(err => {
-        console.log("failed with error: " + err)
-      })
-    },
+    //       if (response === false){
+    //         db.collection('relations').doc(doc.id).delete()
+    //       } else {
+    //         db.collection('relations').doc(doc.id).update({[thisUserUID]:true})
+    //       }
+    //     })
+    //   })
+    //   .catch(err => {
+    //     console.log("failed with error: " + err)
+    //   })
+    // },
 
   //   getFriendRequests() {
   //     var thisUserUID = 'uid_'+this.getAuthenticatedUser.uid;

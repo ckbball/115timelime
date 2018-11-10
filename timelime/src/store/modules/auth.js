@@ -23,6 +23,7 @@ const getters = {
 		return state.userInfo
 	},
 	getFriendRequests: (state) => {
+		console.log(state.friendRequests)
 		return state.friendRequests
 	},
 	getFriends: (state) => {

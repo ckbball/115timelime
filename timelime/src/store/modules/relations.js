@@ -45,6 +45,8 @@ const mutations = {
         state.friendRequests = []
     },
     pushToRequests: (state, payload) => {
+        console.log("pushing to requests....    ")
+        console.log(payload)
         state.friendRequests.push(payload)
     },
     setFriendRequests: (state, payload) => {
@@ -80,6 +82,7 @@ const actions = {
             if(request.id === change.id){
                 contains = true
                 if(changeTypeIsFriendship(request, change)){
+                    console.log("updateRequests.1")
                     if(isRequest(change, my_uid)) commit('pushToRequests', change)
                     if(!isRequest(change, my_uid)) commit ('removeFromRequests',change)
                 } else {
@@ -88,6 +91,7 @@ const actions = {
             } 
         })
         if (contains === false ) {
+            console.log("updateRequests.2")
             if(isRequest(change, my_uid)) commit('pushToRequests', change)
         }
 
@@ -112,6 +116,7 @@ const actions = {
     },
 
     sortRelation: ({commit}, {change, my_uid}) => {
+        console.log("sortRelation")
         if(isRequest(change, my_uid)) commit('pushToRequests', change)
         if(isFriend(change)) commit('pushToFriends', change)
     },
@@ -135,7 +140,7 @@ const actions = {
           })
     },
     issueFriendRequest: (context, {requester, requestee}) => {
-        db.collection('relations').doc().add({
+        db.collection('relations').add({
             [fbUID(requester.uid)]: 'true',
             [fbName(requester.uid)]: requester.firstName + ' ' + requester.lastName,
             [fbImage(requester.uid)]: requester.image,
@@ -148,11 +153,43 @@ const actions = {
             db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
         })
     },
-    // respondToFriendRequest: (context, {response, request, responder}) { 
-    //     db.collection('relations').doc().
-    // }
+    // response - string "true" or "false"
+    // request - the doc.data() being responded to
+    // responder - the entire data for the person, to grab their uid
+    respondToFriendRequest: (context, {response, request, responder}) => { 
+        thisUserUID = fbUID(responder.uid)
+        if(response == "true"){
+            db.collection('relations').doc(request.self_id).update({[thisUserUID]: response})
+        } else {
+            db.collection('relations').doc(request.self_id).delete()
+        }
+    },
 
+    // grabRequester returns an object with the requesters info, returns an object with:
+    // name
+    // image
+    // uid
+    // of the requester 
+    grabRequester: (context, {my_uid, request}) => {
+        let retObj = {}
+        for(var property in request ) {
+            // check if property belongs to different user
+            if(belongToOtherUser(property, my_uid)) {
+                retObj[getPrefix(property)] = request[property]
+            }
+        }
+        return retObj
+    },
 
+    // respondToRequest here response is an object with the uid of the responder and their
+    // response ("true" or "false"), 
+    respondToRequest: (context, {request, response}) => {
+        if (response.accept === "true"){
+            db.collection("relations").doc(request.self_id).update({[fbUID(response.uid)]: "true"})
+        } else {
+            db.collection("relations").doc(request.self_id).delete()
+        }
+    },
 }
 var fbImage = (arg) => 'image_'+arg
 var fbName = (arg) => 'name_'+arg
@@ -165,6 +202,26 @@ var isUID = (arg) => {
     }
     return answer
 }
+
+var belongToOtherUser = (arg, my_uid) => {
+    // return false because belongs to neither user
+    if (getPrefix(arg) == "self"){
+        return false
+    }
+    var n = arg.indexOf('_')
+    var someUid = arg.substring(n+1)
+    // get whatever trails after _ and see if it is the other users
+    if (someUid == my_uid){
+        return false
+    }
+    return true 
+}
+
+var getPrefix = (arg) => {
+    var n = arg.indexOf('_')
+    return arg.substring(0,n)
+}
+
 var isOtherUID = (arg, payload) => {
     if (arg == fbUID(payload)){
         return false

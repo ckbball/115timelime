@@ -2,7 +2,8 @@
   <div>
     <sui-card class="raised">
       <sui-card-content>
-        <div is="sui-button" animated="fade" v-on:click="changeFriendStatus">
+        <!-- issueFriendRequest(this.getUserInfo, this.userInfo)"> -->
+        <div is="sui-button" animated="fade" v-on:click="addFriend()">
             <sui-button-content visible v-if="isFriend == 'true'">
               Remove Friend
             </sui-button-content>
@@ -31,13 +32,14 @@
 
 <script>
 import db from '@/firebase/init'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'FriendButton',
   data () {
     return {
-      input:""
+      input:"",
+      desiredAction: ""
     }
   },
   computed: {
@@ -46,6 +48,15 @@ export default {
       ])
   },
   methods: {
+    ...mapActions([
+      'issueFriendRequest',
+      ]),
+    // this function will depend on the desiredAction
+    addFriend(){
+      console.log("action taken on friend page")
+      console.log(this.getUserInfo, this.userInfo)
+      this.issueFriendRequest({requester: this.getUserInfo, requestee: this.userInfo})
+    },
     changeFriendStatus() {
       if (this.getUserInfo !== null) {
         var us1 = 'uid_'+this.getUserInfo.uid

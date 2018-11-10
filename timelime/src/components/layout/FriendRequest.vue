@@ -1,16 +1,29 @@
 <template>
 	<sui-card class="uglyfoot">
 	  <sui-card-content>
+	  	<!-- 
+	    :src="photo" -->
 	    <sui-image 
-	    :src="photo"
-	    
+	    :src="requester.image"
 	    class="squarePhoto"
 	    />
-	    <span class="username">{{name}}</span>
-<!-- 	    <span class="username">Name Name</span> -->
-	    <sui-button id="togglee1" :disabled="answered" class="squareButton" icon="remove" size="tiny" @click="decline()"/> 
-	     <!-- v-if="!answered" -->
-	    <sui-button id="togglee2"  :disabled="answered" class="squareButton" icon="add user" color="olive" size="tiny" @click="accept()"> Add </sui-button>
+	    <span class="username">{{requester.name}}</span>
+	    <sui-button id="togglee1" 
+	    	:disabled="answered" 
+	    	class="squareButton" 
+	    	icon="remove" 
+	    	size="tiny" 
+	    	@click="respond('false')"/> 
+
+	    <sui-button id="togglee2"  
+	    	:disabled="answered" 
+	    	class="squareButton" 
+	    	icon="add user" 
+	    	color="olive" 
+	    	size="tiny" 
+	    	@click="respond('true')"
+	    > Add </sui-button>
+
 	    <span class="butthole">{{this.result}}</span>
 	
 	  </sui-card-content>
@@ -23,6 +36,7 @@
 	item.content is what is displayed on the screen.
 	item.route must correspond to route/index.js route name **case sensitive**
 */
+import {mapActions, mapGetters} from 'vuex'
 export default {
 	name: 'FriendRequest',
   		data () {
@@ -30,31 +44,49 @@ export default {
 	          accepted: false,
 	          answered: false,
 	          result: "",
-	          color: "red"
+	          color: "red",
+	          requester: {},
 		    };
     },
     props: {
-	    name: String,
-	    photo: String,
-	    requester: String,
-  },
+	    //name: String,
+	    //photo: String,
+	    //requester: String,
+	    request: {
+	    	type: Object
+	    }
+  	},
   	methods: {
-	    accept(){
+  		...mapActions(['grabRequester', 'respondToRequest']),
+	    respond(requestAnswer){
 	    	this.accepted = true
 	    	// accepted = true
 	    	this.answered = true
+
+	    	this.respondToRequest({
+	    		request: this.request,
+	    		response: {
+	    			uid: this.getUserInfo.uid,
+	    			accept: requestAnswer
+	    			}
+	    		})
 	    	this.result = "Accepted!"
-	    	this.$emit("response", [true, this.requester])
+	    	
 	    },
-	    decline(){
-	    	this.accepted = false
-	    	// accepted = false
-	    	this.answered = true
-	    	this.result = "Declined!"
-	    	this.$emit("response", [false, this.requester])
-		}
  	},
-};
+ 	computed: {
+ 		...mapGetters(['getUserInfo'])
+ 	},
+ 	mounted () {
+ 		//request function() {
+ 			//console.log("CALLING REQUEST", this.request)
+ 			this.grabRequester({my_uid: this.getUserInfo.uid, request: this.request})
+ 			.then((retObj) => {
+ 				this.requester = retObj
+ 			})
+ 		//},
+ 	},
+}
    
 </script>
 

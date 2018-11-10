@@ -1,4 +1,4 @@
-<template lang="html">
+q<template lang="html">
   <div>
 
     <sui-grid :columns="2" :centered=false>
