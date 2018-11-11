@@ -3,7 +3,7 @@
     <sui-card class="raised">
       <sui-card-content>
         <!-- issueFriendRequest(this.getUserInfo, this.userInfo)"> -->
-        <div is="sui-button" animated="fade" v-on:click="addFriend()">
+        <div is="sui-button" animated="fade" v-on:click="changeFriendStatus()">
             <sui-button-content visible v-if="isFriend == 'true'">
               Remove Friend
             </sui-button-content>
@@ -39,7 +39,7 @@ export default {
   data () {
     return {
       input:"",
-      desiredAction: ""
+      // desiredAction: ""
     }
   },
   computed: {
@@ -52,11 +52,11 @@ export default {
       'issueFriendRequest',
       ]),
     // this function will depend on the desiredAction
-    addFriend(){
-      console.log("action taken on friend page")
-      console.log(this.getUserInfo, this.userInfo)
-      this.issueFriendRequest({requester: this.getUserInfo, requestee: this.userInfo})
-    },
+    // addFriend(){
+    //   console.log("action taken on friend page")
+    //   console.log(this.getUserInfo, this.userInfo)
+    //   this.issueFriendRequest({requester: this.getUserInfo, requestee: this.userInfo})
+    // },
     changeFriendStatus() {
       if (this.getUserInfo !== null) {
         var us1 = 'uid_'+this.getUserInfo.uid

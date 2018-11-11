@@ -90,7 +90,7 @@
                 </sui-table-row>
               </sui-table-header>
               <sui-table-body>
-                <sui-table-row v-for="(friend, n) in getFriends" :key="n">
+                <sui-table-row v-for="(friend, n) in getAllFriends" :key="n">
                   <sui-table-cell>
                     <sui-grid>
                       <sui-grid-row>
@@ -166,7 +166,7 @@ export default {
   computed: {
     ...mapGetters([
       'getUserInfo',
-      'getFriends'
+      'getAllFriends'
     ]),
     textRemaining: function(){
         return 200 - this.newBio.length

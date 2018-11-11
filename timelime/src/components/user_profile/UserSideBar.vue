@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getFriends',
+      'getAllRelations',
       'getUserInfo'
       ])
   },
@@ -117,7 +117,7 @@ export default {
     //   }
     // },
     areFriends: function() {
-      this.getFriends.forEach(friend => {
+      this.getAllRelations.forEach(friend => {
         var accepted = friend.data()['uid_'+this.userInfo.uid]
         if (accepted !== undefined) {
           if (accepted == 'true') {
@@ -128,6 +128,7 @@ export default {
             this.setFriendshipStatus('false')
           }
         }
+        console.log(this.userInfo.image)
       })
     },
     setFriendshipStatus: function(status) {
@@ -149,7 +150,7 @@ export default {
     }
   },
   watch: {
-    getFriends: function () {
+    getAllRelations: function () {
       this.areFriends()
     }
   },
