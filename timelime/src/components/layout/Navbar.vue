@@ -1,5 +1,5 @@
 <template>
-  <sui-menu pointing secondary>
+  <sui-menu pointing secondary >
       <a
         is="sui-menu-item"
         v-for="item in items"
@@ -14,12 +14,14 @@
       ></NavbarSearchBar>
 
  
-      <sui-menu-menu position="right">
+      <sui-menu-menu position="right" class="friendReq">
+        <FriendRequestContainer></FriendRequestContainer>
 
 
 
 
-        <a v-if="getAuthenticatedUser"
+
+        <!-- <a v-if="getAuthenticatedUser"
           is="sui-menu-item"
         >
 
@@ -34,7 +36,8 @@
               floating
             >
             <sui-dropdown-menu  
-              class="left menu dropMenuReq" scrolling=true >
+              class="left menu dropMenuReq" scrolling=true 
+              >
               <sui-dropdown-header content="Friend Requests:"/>
                 <div class="posts" v-for="(req,n) in this.getAllFriendsRequests" :key="n">
                       <FriendRequest
@@ -46,11 +49,8 @@
             </sui-dropdown>
           </sui-button>
 
-          <sui-icon 
-            name="envelope outline"
-            size="big"
-          ></sui-icon>
-        </a>
+
+        </a> -->
 
 
         <a v-if="getAuthenticatedUser"
@@ -97,6 +97,7 @@ import { mapGetters, mapActions } from 'vuex'
 
 import FriendRequest from '@/components/layout/FriendRequest'
 import NavbarSearchBar from '@/components/layout/NavbarSearchBar'
+import FriendRequestContainer from '@/components/layout/FriendRequestContainer'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -106,6 +107,7 @@ export default {
   components: {
     'NavbarSearchBar': NavbarSearchBar,
     'FriendRequest': FriendRequest,
+    'FriendRequestContainer': FriendRequestContainer
   },
       data () {
         return {
@@ -199,4 +201,5 @@ export default {
 .friendreq {
   position: relative;
 }
+
 </style>
