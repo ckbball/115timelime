@@ -15,6 +15,7 @@
             @editBio="toggle()"
             @editPhoto="togglePhoto()"
             @showFriends="toggleFriends()"
+            @writePost="toggleWritePost()"
         />
       </sui-grid-column>
     </sui-grid>
@@ -67,6 +68,9 @@
       
     </sui-modal>
 
+    <sui-modal v-model="openWritePost">
+      <CreateNewPostModal @ContinueTextPost="toggleWritePost" :userInfo="getUserInfo" />
+    </sui-modal>
 
 
 
@@ -136,6 +140,7 @@ import MySideBar from '@/components/MySideBar'
 import Friend from '@/components/user_profile/Friend'
 import FriendButton from '@/components/user_profile/FriendButton'
 import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
+import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -148,6 +153,7 @@ export default {
     "Friend": Friend,
     "FriendButton": FriendButton,
     "UserFeed": UserFeed,
+    'CreateNewPostModal': CreateNewPostModal,
     'CommentAvatarButton': CommentAvatarButton
   },
     props: {
@@ -160,6 +166,7 @@ export default {
         openPhoto: false,
         openFriends: false,
         friends: [],
+        openWritePost: false
 
     }
   },
@@ -178,7 +185,6 @@ export default {
       this.newBio = this.getUserInfo.bio
       this.open = !this.open;
     },
-
     saveNewBio(){
       db.collection('users').doc(this.getUserInfo.uid).update({bio: this.newBio})
       .then(() =>{
@@ -197,6 +203,9 @@ export default {
     },
     toggleFriends: function(){
       this.openFriends = !this.openFriends;
+    },
+    toggleWritePost: function(){
+      this.openWritePost = !this.openWritePost;
     },
 
 

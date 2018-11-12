@@ -45,7 +45,11 @@ export default {
 	          answered: false,
 	          result: "",
 	          color: "red",
-	          requester: {},
+	          requester: {
+	          	name: "",
+	          	image: "",
+	          	uid: "",
+	          },
 		    };
     },
     props: {

@@ -7,7 +7,6 @@ q<template lang="html">
         <PostLikeButton align="left" class= "Button1"
         :post_id="post.post_id"
         />
-        <PostCommentButton align="left" class= "Button2"/>
       </sui-grid-column>
       
 

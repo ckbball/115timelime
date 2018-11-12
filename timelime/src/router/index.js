@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import firebase from 'firebase'
 
-import Home from '@/components/Home'
+import Home from '@/components/home/Home'
 import User from '@/components/User'
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'

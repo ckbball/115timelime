@@ -1,7 +1,7 @@
 <template>
-  <router-link :to="{path: '/user/'+uid}">
+  <router-link :to="{path: '/user/'+userUIDLocation}">
     <sui-comment-avatar 
-      :src="user.image"
+      :src="userImageLocation"
     >
     </sui-comment-avatar>
   </router-link>
@@ -13,26 +13,28 @@
 export default {
   name: 'CommentAvatarButton',
   props: {
-      image: {
-          type: String,
-          default: 'https://randomuser.me/api/portraits/med/men/20.jpg',
-          required: false
-      },
-      uid: {
-          type: String,
-          required: true,
-          
-      },
-
+    user: Object 
   },
   data () {
     return {
+      userImageLocation: "",
+      userUIDLocation: ""
     }
   }, 
-
-  
-   
+  methods: {
+    userImagePropToVariable() {
+      this.userImageLocation = this.user.image
+    },
+    userUIDPropToVariable() {
+      this.userUIDLocation = this.user.uid
+    }
+  },
+  beforeUpdate() {
+    this.userImagePropToVariable()
+    this.userUIDPropToVariable()
+  }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
