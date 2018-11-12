@@ -62,9 +62,9 @@ export default {
         var us1 = 'uid_'+this.getUserInfo.uid
         var us2 = 'uid_'+this.userInfo.uid
         // names for us1 and us2
-        var us1_name = this.getUserInfo.firstName+ '_' +this.getUserInfo.uid
+        var us1_name = 'name_' +this.getUserInfo.uid
         var name1 = this.getUserInfo.firstName + ' ' +this.getUserInfo.lastName
-        var us2_name = this.userInfo.firstName+'_' +this.userInfo.uid
+        var us2_name = 'name_' +this.userInfo.uid
         var name2 = this.userInfo.firstName + ' ' +this.userInfo.lastName
         // images for us1 and us2
         var us1_img = ['image_'+this.getUserInfo.uid]
@@ -73,8 +73,7 @@ export default {
         var image2 = this.userInfo.image
 
         if (this.isFriend === "false") {
-          db.collection('relations').doc()
-          .set({
+          db.collection('relations').add({
             type: "friend",
             [us1]: 'true',
             [us2]: 'false',
@@ -83,6 +82,9 @@ export default {
             [us1_img]: image1,
             [us2_img]: image2
           })
+          .then(docRef => {
+            db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
+        })
           this.$emit('pendFriend')
         } else if (this.isFriend === "true") {
           db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'true').get()
