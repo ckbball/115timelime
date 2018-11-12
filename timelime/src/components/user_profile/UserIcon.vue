@@ -1,6 +1,6 @@
 <template>
     <sui-card class="raised">
-      <sui-image :src="userInfo.image" class=ProfilePicture />
+      <sui-image :src="userImageLocation" class=ProfilePicture />
       <sui-card-content>
 
         <sui-card-header>{{this.userInfo.firstName}} {{this.userInfo.lastName}}</sui-card-header>
@@ -18,11 +18,17 @@ export default {
   },
   data () {
     return {
-
+      userImageLocation: ""
     }
   },
-
-
+  methods: {
+    userImagePropToVariable() {
+      this.userImageLocation = this.userInfo.image
+    }
+  },
+  beforeUpdate() {
+    this.userImagePropToVariable()
+  }
 }
 </script>
 
