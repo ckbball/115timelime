@@ -70,6 +70,7 @@ export default {
     },
     CancelTextPost: function() {
       // shuts modal in whoever is opening it
+      this.PostContent = ''
       this.$emit("ContinueTextPost")
     }
   },

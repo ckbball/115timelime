@@ -47,10 +47,10 @@ export default {
 	          result: "",
 	          color: "red",
 	          requester: {
-							name: '',
-							image: '',
-							uid: '',
-						},
+					name: '',
+					image: '',
+					uid: '',
+				},
 		    };
     },
     props: {
