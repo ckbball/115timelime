@@ -65,6 +65,26 @@ exports.main = functions.https.onRequest(main);
 
 /* ----- Write new Firebase functions down here ---- */
 
+exports.updateSearchableName = functions.firestore
+.document('users/{uid}').onUpdate((change, context) => {
+	let promise = new Promise((resolve, reject)=> {
+		const newValue = change.after.data()
+		const oldValue = change.before.data()
+
+		if(newValue.firstName !== oldValue.firstName || newValue.lastName !== oldValue.lastName){
+			db.collection('users').doc(change.before.id).update({searchableName: newValue.firstName + ' ' + newValue.lastName})
+			.then(() => {
+				resolve()
+			})
+			.catch(err=> {
+				reject()
+			})
+		}
+		resolve()
+	})
+	return promise
+});
+
 exports.addNewComment = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
 		let parent_id = req.body.parent_id
@@ -183,8 +203,10 @@ exports.addUserToFirestoreAfterAccountCreation = functions.auth.user().onCreate(
 	const uid = user.uid
 	db.collection('users').doc(uid).set({
 		email: email,
-		uid: uid
-
+		uid: uid,
+		firstName: '',
+		lastName: '',
+		image: 'https://www.familyhandyman.com/wp-content/uploads/2017/09/dfh17sep001_shutterstock_550013404.jpg',
 	})
 	.then(() => {
 		console.log('User Successfully Added')
@@ -260,10 +282,7 @@ exports.santizeUsers = functions.https.onRequest((req, res) =>{
 	.catch(err => {
 		console.log(err)
 	})
-
 	res.send('done')
-
-
 })
 
 
