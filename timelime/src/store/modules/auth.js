@@ -47,6 +47,16 @@ const actions = {
 
 	},
 
+	updateUserInfo: (context, {uid, update}) => {
+		db.collection('users').doc(uid).update(update)
+		.then(() => {
+			resolve()
+		})
+		.catch(err => {
+
+		})
+	},
+
 	authenticateUser: ({commit,dispatch}, {email, password}) => {
 		return new Promise((resolve, reject) => {
 			firebase.auth().signInWithEmailAndPassword(email, password)
@@ -64,7 +74,7 @@ const actions = {
 			firebase.auth().createUserWithEmailAndPassword(email, password)
 			.then(cred => {
 				// commit('setAuthenticatedUser', cred.user)
-				resolve(cred)
+				resolve(cred.user)
 			})
 			.catch(err => {
 				console.log(err)
