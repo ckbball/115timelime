@@ -16,42 +16,7 @@
  
       <sui-menu-menu position="right" class="friendReq">
         <FriendRequestContainer></FriendRequestContainer>
-
-
-
-
-
-        <!-- <a v-if="getAuthenticatedUser"
-          is="sui-menu-item"
-        >
-
-          <sui-button class="requestButton">
-            <sui-label color="red" v-if="this.getAllFriendsRequests.length > 0" floating circular size="mini" class="friendNotif">
-              {{this.getAllFriendsRequests.length}}
-            </sui-label>        
-            <sui-dropdown
-              class = "requestDropdown"
-              multiple
-              icon="big universal access"
-              floating
-            >
-            <sui-dropdown-menu  
-              class="left menu dropMenuReq" scrolling=true 
-              >
-              <sui-dropdown-header content="Friend Requests:"/>
-                <div class="posts" v-for="(req,n) in this.getAllFriendsRequests" :key="n">
-                      <FriendRequest
-                        class="friendreq"
-                        :request="req.data()"
-                      />
-                </div>
-              </sui-dropdown-menu>
-            </sui-dropdown>
-          </sui-button>
-
-
-        </a> -->
-
+        <NotificationsContainer></NotificationsContainer>
 
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item">
@@ -95,9 +60,9 @@
 */
 import { mapGetters, mapActions } from 'vuex'
 
-import FriendRequest from '@/components/layout/FriendRequest'
 import NavbarSearchBar from '@/components/layout/NavbarSearchBar'
 import FriendRequestContainer from '@/components/layout/FriendRequestContainer'
+import NotificationsContainer from '@/components/layout/NotificationsContainer'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -106,8 +71,8 @@ export default {
   name: 'Navbar',
   components: {
     'NavbarSearchBar': NavbarSearchBar,
-    'FriendRequest': FriendRequest,
-    'FriendRequestContainer': FriendRequestContainer
+    'FriendRequestContainer': FriendRequestContainer,
+    'NotificationsContainer': NotificationsContainer
   },
       data () {
         return {
