@@ -7,6 +7,7 @@ import user from './modules/user'
 import colorScheme from './modules/colorScheme'
 import search from './modules/search'
 import relations from './modules/relations'
+import notifications from './modules/notifications'
 
 import configureModerator  from './modules/store-moderator'
 
@@ -24,6 +25,7 @@ export const store = new Vuex.Store({
 		user: user,
 		search: search,
 		relations: relations,
+		notifications: notifications,
 		colorScheme: colorScheme,
 		configureModerator
 

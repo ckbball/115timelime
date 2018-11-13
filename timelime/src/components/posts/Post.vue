@@ -28,12 +28,10 @@ q<template lang="html">
           <sui-card-description align="right">Time Remaining: 4 mins</sui-card-description>
         </sui-card-content>
 
-        <!-- <sui-card-content extra> -->
-          <!-- <Comments/> -->
+
           <CommentList
-          :post_id="post.post_id"
+          :post="post"
           ></CommentList>
-        <!-- </sui-card-content> -->
         
       </sui-card>
 

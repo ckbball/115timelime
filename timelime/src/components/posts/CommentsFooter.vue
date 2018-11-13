@@ -36,8 +36,8 @@ export default {
       'CommentAvatarButton': CommentAvatarButton
   },
   props: { 
-      post_id: {
-          type: String,
+      post: {
+          type: Object,
           required: true
       },
 
@@ -52,11 +52,10 @@ export default {
   methods: {
       submitComment: function() {
         if(this.commentText.length == 0) return;
-            console.log(this.post_id, ' ', this.commentText,' ', this.getUserInfo.uid)
-            console.log(this.getUserInfo.image, this.getUserInfo.firstName + this.getUserInfo.lastName )
 
-        this.axios.post('http://localhost:5001/timelime-96d47/us-central1/addNewComment', {
-            parent_id: this.post_id,
+        this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewComment', {
+            parent_id: this.post.post_id,
+            postAuthor_uid: this.post.author_uid,
             author_uid: this.getUserInfo.uid,
             author_image: this.getUserInfo.image,
             author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName,
