@@ -30,8 +30,8 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://timelime-96d47.firebaseio.com'
 });
-
 const db = admin.firestore()
+db.settings({ timestampsInSnapshots: true })
 
 /* ------------- */
 
@@ -87,11 +87,11 @@ exports.updateSearchableName = functions.firestore
 
 exports.issueNotificationOnNewComment = functions.firestore
 .document('comments/{commentId}').onCreate((snapshot, context) => {
-	let promse = new Promise((resolve, reject) => {
+	let promise = new Promise((resolve, reject) => {
 		const newValue = snapshot.data()
 		db.collection('notifications').add({
 			parent_id: newValue.parent_id, 
-			recipient: postAuthor_uid,
+			recipient: newValue.postAuthor_uid,
 			content: newValue.author_name+ ' commented on one of your posts.',
 			read: false, 
 		})
