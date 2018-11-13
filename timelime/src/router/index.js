@@ -76,10 +76,9 @@ const router = new Router({
       component: CaesarTest
     },
     {
-      path: '/kenjitest/:uid',
+      path: '/kenjitest',
       name: 'KenjiTest',
       component: KenjiTest,
-      props: true
     },
   ]
 })
