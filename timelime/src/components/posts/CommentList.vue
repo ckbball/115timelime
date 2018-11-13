@@ -18,7 +18,7 @@
         <sui-table-footer>
             <sui-table-row>
                 <CommentsFooter
-                    :post_id="post_id"
+                    :post="post"
                 >
                 </CommentsFooter>
 
@@ -45,8 +45,8 @@ export default {
       'CommentsFooter': CommentsFooter
   },
   props: {
-      post_id: {
-          type: String,
+      post: {
+          type: Object,
           required: true,
       }
 
@@ -79,7 +79,7 @@ export default {
       fetchComments: function() {
           console.log('fetching comments')
           db.collection('comments')
-          .where('parent_id', '==', this.post_id)
+          .where('parent_id', '==', this.post.post_id)
           .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
             snapshot.docChanges().forEach(change => {
                 if (change.type === 'added') {

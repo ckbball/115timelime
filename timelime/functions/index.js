@@ -85,9 +85,31 @@ exports.updateSearchableName = functions.firestore
 	return promise
 });
 
+exports.issueNotificationOnNewComment = functions.firestore
+.document('comments/{commentId}').onCreate((snapshot, context) => {
+	let promse = new Promise((resolve, reject) => {
+		const newValue = snapshot.data()
+		db.collection('notifications').add({
+			parent_id: newValue.parent_id, 
+			recipient: postAuthor_uid,
+			content: newValue.author_name+ ' commented on one of your posts.',
+			read: false, 
+		})
+		.then(docRef => {
+			resolve()
+		})
+		.catch(err => {
+			reject()
+		})
+
+	})	
+	return promise
+})
+
 exports.addNewComment = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
 		let parent_id = req.body.parent_id
+		let postAuthor_uid = req.body.postAuthor_uid
 		let author_uid = req.body.author_uid
 		let author_image = req.body.author_image
 		let author_name = req.body.author_name
@@ -96,6 +118,7 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 		let promise = new Promise ((resolve, reject) => {
 			db.collection('comments').add({
 				parent_id: parent_id,
+				postAuthor_uid: postAuthor_uid,
 				author_uid: author_uid,
 				author_image: author_image,
 				author_name: author_name,

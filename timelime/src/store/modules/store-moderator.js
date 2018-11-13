@@ -12,7 +12,8 @@ export default function configureModerator (store) {
 			case 'setAuthenticatedUser':
 				if(store.getters.getAuthenticatedUser){
 					store.dispatch('fetchUserInfo', store.getters.getAuthenticatedUser.uid)
-					store.dispatch('fetchAllRelations', store.getters.getAuthenticatedUser.uid )
+					store.dispatch('fetchAllRelations', store.getters.getAuthenticatedUser.uid)
+					store.dispatch('fetchAllNotifications', store.getters.getAuthenticatedUser.uid)
 				}
 
 	

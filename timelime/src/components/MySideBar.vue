@@ -19,8 +19,6 @@
         <sui-button icon="camera retro"></sui-button>
         <sui-button icon="film"></sui-button>
       </sui-card-content>
-
-
     </sui-card>
   </div>
 </template>
