@@ -1,6 +1,6 @@
 <template lang="html">
   <div>  
-    <input v-model="message" placeholder="Type your message here..."/>
+    <input v-model="messageContent" placeholder="Type your message here..."/>
     <button v-on:click="sendMessage()">save</button>
     <div>{{ saved }}</div>
   </div>
@@ -15,7 +15,8 @@ export default {
   data () {
     return {
       messageContent: "",
-      messageReceiver: {},
+      messageID: "TEST_MESSAGE_ID",
+      time: "TEST_TIME"
     }
   },
   computed: {
@@ -27,21 +28,22 @@ export default {
     sendMessage() {
       if (this.getUserInfo !== null) {
         // names for us1 and us2
-        var us2_uid = 'TESTUID'
-        var us1_name = 'name_' +this.getUserInfo.uid
+        var uid1 = this.getUserInfo.uid
         var name1 = this.getUserInfo.firstName + ' ' +this.getUserInfo.lastName
-        var us2_name = 'name_TESTUID'
-        var name2 = 'FIRSTNAME LASTNAME'
-        // images for us1 and us2
-        var us1_img = 'image_'+this.getUserInfo.uid
         var image1 = this.getUserInfo.image
-        var us2_img = 'image_TESTUID'
-        var image2 = 'IMAGEURL'
+        var uid2 = 'TEST_UID'
+        var name2 = 'TEST_NAME'
+        var image2 = 'TEST_IMAGE'
         db.collection('messages').add({
-          [us1_name]: name1,
-          [us2_name]: name2,
-          [us1_img]: image1,
-          [us2_img]: image2
+          message_id: this.messageID,
+          time_sent: this.time,
+          message_content: this.messageContent,
+          sender_uid: uid1,
+          sender_name: name1,
+          sender_image: image1,
+          receiver_uid: uid2,
+          receiver_name: name2,
+          receiver_image: image2
         })
         .then(docRef => {
           db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
