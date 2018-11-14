@@ -5,7 +5,7 @@
       </sui-grid-column>
 
       <sui-grid-column :width="7">
-        <UserFeed fluid
+        <HomeFeed fluid
             :uid="getUserInfo.uid"
         />
       </sui-grid-column>
@@ -29,7 +29,7 @@
 import router from '@/router/index'
 
 import {mapActions, mapGetters, mapMutations} from 'vuex'
-import UserFeed from '@/components/posts/UserFeed'
+import HomeFeed from '@/components/home/HomeFeed'
 import HomeSideBar from '@/components/home/HomeSideBar'
 import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
 
@@ -40,7 +40,7 @@ export default {
 	name: 'Home',
 	components: {
 		'HomeSideBar': HomeSideBar,
-		'UserFeed': UserFeed,
+		'HomeFeed': HomeFeed,
 		'CreateNewPostModal': CreateNewPostModal
 	},
 	props: {

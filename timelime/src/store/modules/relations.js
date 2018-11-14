@@ -2,7 +2,6 @@ import * as firebase from 'firebase'
 import db from '@/firebase/init'
 import { store } from '..';
 
-
 const state = {
     allRelations: [],
     friends: [],
@@ -126,7 +125,7 @@ const actions = {
               if (change.type === 'added') {
                 commit('pushToAllRelations', change.doc)
                 dispatch('sortRelation', {change: change.doc, my_uid: payload}) 
-            }
+              }
               if (change.type === 'modified') {
                 commit('updateRelations', change.doc)
                 dispatch('handleChanges', {change: change.doc, my_uid: payload})
