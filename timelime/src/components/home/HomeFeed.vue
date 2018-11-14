@@ -1,14 +1,11 @@
 <template>
   <div >
-    <div class="posts" v-for="(p,n) in this.getAllMyPosts" :key="n">
+
+    <div class="posts" v-for="(p,n) in this.getAllMyNetworksPosts" :key="n">
           <post
             :post="p.data()"
           />
     </div>
-
-<!--     <div class="posts" v-for="(post, n) in posts" :key="n">
-        <Post :post="post"/>
-    </div> -->
 
 </div>
 
@@ -18,30 +15,45 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import Post from '@/components/posts/Post'
-
 import firebase from 'firebase'
 import db from '@/firebase/init'
 
 export default {
-  name: 'UserFeed',
+  name: 'HomeFeed',
   props: {
     uid: {
       type: String,
       //required: true
     }
   },
-  data () {
-    return {
-      // posts: [],
-    }
-  },  
   computed: {
     ...mapGetters([
-      'getAllMyPosts'
+      'getAllMyNetworksPosts',
+      'getAllFriends',
+      'getUserInfo'
     ]),
   },
+  data () {
+    return {
+      posts: [],
+    }
+  }, 
   components: {
     "Post": Post,
+  },
+  methods: {
+    ...mapActions([
+      'fetchAllMyFriendsPosts'
+      ]),
+  },
+  // mounted () {
+  //   console.log('anal-hole')
+  //   this.fetchAllMyFriendsPosts(this.getAllFriends)
+  // },
+  watch: {
+    getAllFriends: function() {
+      this.fetchAllMyFriendsPosts({my_uid: this.getUserInfo.uid, allMyFriends: this.getAllFriends})
+    }
   },
 }
 </script>

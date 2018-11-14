@@ -13,10 +13,14 @@ export default function configureModerator (store) {
 				if(store.getters.getAuthenticatedUser){
 					store.dispatch('fetchUserInfo', store.getters.getAuthenticatedUser.uid)
 					store.dispatch('fetchAllRelations', store.getters.getAuthenticatedUser.uid )
+					store.dispatch('fetchMyPosts', store.getters.getAuthenticatedUser.uid)
+				}
+				return 
+			case 'finishFetchingRelations':
+				if(store.getters.getAuthenticatedUser){
+					store.dispatch('fetchAllMyFriendsPosts', store.getters.getAllFriends)
 				}
 
-	
-				return 
 		}
 	})
 
@@ -27,6 +31,8 @@ export default function configureModerator (store) {
 				store.commit('unsetUserInfo')	
 				store.commit('unsetAllRelations')
 				store.commit('unsetFriends')
+				store.commit('unsetAllMyPosts')
+				store.commit('unsetAllMyNetworksPosts')
 			 	return router.replace('Login')
 	
 		}
