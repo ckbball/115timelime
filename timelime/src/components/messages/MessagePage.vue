@@ -1,9 +1,7 @@
 <template>
-
-
-    <sui-grid :columns="2" :centered=false divided>
-      <sui-grid-column :width="5">
-      	<p> friends to messenge </p>
+    <sui-grid :columns="2" :centered=false >
+      <sui-grid-column :width="4">
+      	<FriendsToMessage> </FriendsToMessage>
       </sui-grid-column>
 
       <sui-grid-column :width="7">
@@ -19,6 +17,7 @@
 
 <script>
 import router from '@/router/index'
+import FriendsToMessage from '@/components/messages/FriendsToMessage'
 
 import {mapActions, mapGetters, mapMutations} from 'vuex'
 import MessageContainer from '@/components/messages/MessageContainer'
@@ -29,8 +28,10 @@ import db from '@/firebase/init'
 
 export default {
   name: 'MessagePage',
+
   components: {
     'MessageContainer': MessageContainer,
+    'FriendsToMessage': FriendsToMessage,
   },
   props: {
     user: Object,

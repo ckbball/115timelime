@@ -6,19 +6,24 @@ const state = {
     allRelations: [],
     friends: [],
     friendRequests: [],
+    myFriends: []
 
 }
 const getters = {
     getAllRelations: (state) => {
         return state.allRelations
     },
+    // returns friends as relations
     getAllFriends: (state) => {
         return state.friends
     },
     getAllFriendsRequests: (state) => {
         return state.friendRequests
     },
-
+    // returns friends as actual uids
+    getMyFriends: (state) => {
+        return state.myFriends
+    },
 }
 const mutations = {
     /* ----- Boilerplate functions -------*/
@@ -39,6 +44,27 @@ const mutations = {
     },
     pushToFriends: (state, payload) => {
         state.friends.push(payload)
+    },
+    setMyFriends: (state, payload) => {
+        state.myFriends = payload
+    },
+    unsetMyFriends: (state, payload) => {
+        state.myFriends = []
+    },
+    pushToMyFriends: (state, payload) => {
+        state.myFriends.push(payload)
+
+        console.log(state.myFriends)
+
+        function compare(a,b) {
+          if (a.name < b.name)
+            return -1;
+          if (a.name > b.name)
+            return 1;
+          return 0;
+        }
+
+        state.myFriends = (state.myFriends).sort(compare);
     },
     unsetFriendRequests: (state, payload) => {
         state.friendRequests = []
@@ -91,14 +117,15 @@ const actions = {
         }
 
     },
-
     updateFriends: ({commit, getters}, payload) => {
         let contains = false
         getters.getAllFriends.forEach(friend => {
             if(friend.id === payload.id){
                 contains = true
                 if(changeTypeIsFriendship(friend, payload)){
-                    if(isFriend(payload)) commit('pushToFriends', payload)
+                    if(isFriend(payload)) {
+                        commit('pushToFriends', payload)
+                    }
                     if (!isFriend(payload)) commit('removeFromFriends', payload)
                 } else {
                     friend = payload
@@ -106,13 +133,33 @@ const actions = {
             }
         })
         if (contains == false) {
-            if(isFriend(payload)) commit('pushToFriends', payload)
+            if(isFriend(payload)){
+                commit('pushToFriends', payload)
+            } 
         }
     },
-
     sortRelation: ({commit}, {change, my_uid}) => {
-        if(isRequest(change, my_uid)) commit('pushToRequests', change)
-        if(isFriend(change)) commit('pushToFriends', change)
+        if(isRequest(change, my_uid)) {
+            commit('pushToRequests', change)
+        }
+        if(isFriend(change)){
+            commit('pushToFriends', change)
+
+            var friend = {}
+            for(var property in change.data() ) {
+                console.log(property)
+                if(belongToOtherUser(property, my_uid)) {
+                    if(getPrefix(property) == 'uid'){
+                        friend[getPrefix(property)] = getUID(property)
+                    } else {
+                        friend[getPrefix(property)] = change.data()[property]
+                    }
+                }
+            }
+            console.log(friend)
+            commit('pushToMyFriends', friend)
+
+        }
     },
     handleChanges: ({dispatch}, {change, my_uid}) => {
         dispatch('updateFriends', change)
@@ -185,6 +232,7 @@ const actions = {
         }
     },
 }
+
 var fbImage = (arg) => 'image_'+arg
 var fbName = (arg) => 'name_'+arg
 var getUID = (arg) => arg.substring(4)

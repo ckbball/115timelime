@@ -30,6 +30,16 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
+    },
+    {
+      path: '/messages',
+      name: 'Messages',
+      component: MessagePage,
+    },
+    {
+      path: '/user/:uid',
+      name: 'User',
+      component: User,
       meta: {
         requiresAuth: true
       }
