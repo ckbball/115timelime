@@ -84,6 +84,24 @@ const actions = {
         })
     },
 
+  //   // NOTE: this is a helper function which appens to AllMyNetworkPosts
+  //   // payload here is the uid of the user
+  //   fetchPostsOfAUser: (context, payload) => {
+  //   	var posts []
+
+	 //    db.collection('posts').where('author_uid', '==', payload)
+		// .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+  //           snapshot.docChanges().forEach(change => {
+  //             if (change.type === 'added') {
+  //               posts.append(change.doc)
+  //           }
+  //             if (change.type === 'modified') {
+  //               posts.append(change.doc)
+  //             }
+  //           })
+  //       })
+  //   },
+
 
     // payload here is the uid of the user
     // step one, grab a users friends, then call `fetchPostsOfAUser` for each user to make 
