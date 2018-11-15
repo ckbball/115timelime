@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import firebase from 'firebase'
 
 import Home from '@/components/Home'
+import MessagePage from '@/components/messages/MessagePage'
 import User from '@/components/User'
 import Login from '@/components/auth/Login'
 import SignUp from '@/components/auth/SignUp'
@@ -30,6 +31,11 @@ const router = new Router({
       path: '/home',
       name: 'Home',
       component: Home,
+    },
+    {
+      path: '/messages',
+      name: 'Messages',
+      component: MessagePage,
     },
     {
       path: '/user/:uid',
