@@ -54,7 +54,6 @@ const mutations = {
     pushToMyFriends: (state, payload) => {
         state.myFriends.push(payload)
 
-        console.log(state.myFriends)
 
         function compare(a,b) {
           if (a.name < b.name)
@@ -147,7 +146,6 @@ const actions = {
 
             var friend = {}
             for(var property in change.data() ) {
-                console.log(property)
                 if(belongToOtherUser(property, my_uid)) {
                     if(getPrefix(property) == 'uid'){
                         friend[getPrefix(property)] = getUID(property)
@@ -156,7 +154,6 @@ const actions = {
                     }
                 }
             }
-            console.log(friend)
             commit('pushToMyFriends', friend)
 
         }
