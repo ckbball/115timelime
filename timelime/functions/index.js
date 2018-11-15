@@ -2,6 +2,9 @@ const functions = require('firebase-functions')
 const admin = require('firebase-admin')
 const serviceAccount = require('./firebaseServiceAccount.json')
 
+/* ---------Import Schedule for jobs ---------- */
+const schedule = require('node-schedule');
+
 
 /* -------- Express stuff ------------ */
 const express = require('express')
@@ -50,6 +53,8 @@ server.applyMiddleware({
 /* -------------------------- */
 
 
+
+
 /* --------- Express Server -----------*/
 //  https://us-central1-timelime-96d47.cloudfunctions.net/main/api/...
 const main = express()
@@ -58,7 +63,31 @@ exports.main = functions.https.onRequest(main);
 /*--------------------------------------*/
 
 
+/* ------ Writing the scheduling code -----*/
+var rule = new schedule.RecurrenceRule();
+rule.second = 10;
 
+var j = schedule.scheduleJob(rule, function(){
+	db.collection('posts').where('author_name', '==', "Fred Wow").get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              db.collection('posts').doc(doc.id).delete().then(function() {
+				
+              })
+              .catch(err => {
+                  console.log("failed with error: " + err)
+              })
+            })
+        })
+        .catch(err => {
+          console.log("failed with error: " + err)
+        })
+		
+	})
+	
+
+
+/* ---------------------------------------*/
 
 
 
