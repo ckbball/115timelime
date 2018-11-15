@@ -1,0 +1,44 @@
+[debug] [2018-11-15T23:41:44.158Z] ----------------------------------------------------------------------
+[debug] [2018-11-15T23:41:44.162Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Caesar3\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2018-11-15T23:41:44.163Z] CLI Version:   6.0.1
+[debug] [2018-11-15T23:41:44.163Z] Platform:      win32
+[debug] [2018-11-15T23:41:44.163Z] Node Version:  v8.11.3
+[debug] [2018-11-15T23:41:44.164Z] Time:          Thu Nov 15 2018 15:41:44 GMT-0800 (Pacific Standard Time)
+[debug] [2018-11-15T23:41:44.164Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-11-15T23:41:44.182Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-11-15T23:41:44.183Z] > authorizing via signed-in user
+[debug] [2018-11-15T23:41:44.183Z] [iam] checking project timelime-96d47 for permissions ["firebase.projects.get"]
+[debug] [2018-11-15T23:41:44.187Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-11-15T23:41:44.187Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2018-11-15T23:41:44.387Z] <<< HTTP RESPONSE 200
+[debug] [2018-11-15T23:41:44.400Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/timelime-96d47:testIamPermissions  
+
+[debug] [2018-11-15T23:41:45.083Z] <<< HTTP RESPONSE 200
+[debug] [2018-11-15T23:41:45.087Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/timelime-96d47  
+ 
+[debug] [2018-11-15T23:41:45.708Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\Caesar3\home\timelime\timelime'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-11-15T23:41:46.830Z] Fetching environment
+[debug] [2018-11-15T23:41:46.834Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/745633359616:getServerAppConfig  
+ 
+[debug] [2018-11-15T23:41:46.835Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/745633359616/clients/_:getWebAppConfig  
+ 
+[debug] [2018-11-15T23:41:47.032Z] <<< HTTP RESPONSE 200
+[debug] [2018-11-15T23:41:47.032Z] Starting @google-cloud/functions-emulator
+[debug] [2018-11-15T23:41:47.104Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: dist
+[info] +  hosting: Local server: http://localhost:5000
+[debug] [2018-11-15T23:41:49.581Z] Parsing function triggers
+[info] +  functions: main: http://localhost:5001/timelime-96d47/us-central1/main
+[info] +  functions: removeLike: http://localhost:5001/timelime-96d47/us-central1/removeLike
+[info] +  functions: addNewPost: http://localhost:5001/timelime-96d47/us-central1/addNewPost
+[info] +  functions: santizeUsers: http://localhost:5001/timelime-96d47/us-central1/santizeUsers
+[info] +  functions: addNewComment: http://localhost:5001/timelime-96d47/us-central1/addNewComment
+[info] +  functions: addLike: http://localhost:5001/timelime-96d47/us-central1/addLike
+[info] +  functions: searchUsers: http://localhost:5001/timelime-96d47/us-central1/searchUsers
+[info] +  functions: addFakeUSer: http://localhost:5001/timelime-96d47/us-central1/addFakeUSer
