@@ -6,7 +6,6 @@
     </sui-comment-avatar>
   </router-link>
 
-
 </template>
 
 <script>
@@ -14,6 +13,16 @@ export default {
   name: 'CommentAvatarButton',
   props: {
     user: Object 
+      // image: {
+      //     type: String,
+      //     default: 'https://randomuser.me/api/portraits/med/men/20.jpg',
+      //     required: false
+      // },
+      // uid: {
+      //     type: String,
+      //     required: true,
+          
+      // },
   },
   data () {
     return {

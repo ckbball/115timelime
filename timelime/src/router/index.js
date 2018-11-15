@@ -5,10 +5,10 @@ import firebase from 'firebase'
 import Home from '@/components/home/Home'
 import User from '@/components/User'
 import Login from '@/components/auth/Login'
+import MessagePage from '@/components/messages/MessagePage'
 import SignUp from '@/components/auth/SignUp'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'
 import Post from '@/components/posts/PostText'
-import SearchPage from '@/components/searchpage/SearchPage'
 
 import DonovanTest from '@/components/tests/donovantest'
 import MiaTest from '@/components/tests/miatest'
@@ -24,12 +24,17 @@ const router = new Router({
   routes: [
     {
       path: '*',
-      redirect: 'Login'
+      redirect: '/'
     },
     {
-      path: '/home',
+      path: '/',
       name: 'Home',
       component: Home,
+    },
+    {
+      path: '/messages',
+      name: 'Messages',
+      component: MessagePage,
     },
     {
       path: '/user/:uid',
@@ -37,28 +42,27 @@ const router = new Router({
       component: User,
       meta: {
         requiresAuth: true
-      },
-      props: true
+      }
     },
     {
-      path: '/login',
+      path: '/Login',
       name: 'LogIn',
       component: Login
     },
     {
-      path: '/sign-Up',
+      path: '/Messages',
+      name: 'Messages',
+      component: MessagePage
+    },
+    {
+      path: '/Sign-Up',
       name: 'SignUp',
       component: SignUp
     },
     {
-      path: '/terms-and-Conditions',
+      path: '/Terms-and-Conditions',
       name: 'TermsAndConditions',
       component: TermsAndConditions
-    },
-    {
-      path: '/search',
-      name: 'SearchPage',
-      component: SearchPage
     },
     {
       path: '/donovantest',
@@ -85,8 +89,8 @@ const router = new Router({
 
 // router.beforeEach((to, from, next) => {
 //   let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-//   if (requiresAuth && !auth.isLoggedIn) next('Login')
-//   else if (!requiresAuth && auth.isLoggedIn) next('Home')
+//   if (requiresAuth && !auth.isLoggedIn) next('login')
+//   else if (!requiresAuth && auth.isLoggedIn) next('hello')
 //   else next()
 // })
 

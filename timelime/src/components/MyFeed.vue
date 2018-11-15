@@ -23,7 +23,7 @@ import firebase from 'firebase'
 import db from '@/firebase/init'
 
 export default {
-  name: 'UserFeed',
+  name: 'MyFeed',
   props: {
     uid: {
       type: String,
