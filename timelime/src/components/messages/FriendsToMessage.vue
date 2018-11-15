@@ -11,7 +11,7 @@
         </sui-table-header>
         <sui-table-body>
           <sui-table-row v-for="(friend,n) in this.getMyFriends" :key="n"> 
-            <sui-table-cell >
+            <sui-table-cell v-on:click="requestMessages(friend.uid)">
 
                 <sui-grid :columns="2">
                   <sui-grid-column :width="3">
@@ -57,7 +57,12 @@ export default {
         ...mapGetters([
             'getMyFriends'
         ])
-    }
+    },
+    methods: {
+        requestMessages(uid){
+            this.$emit("changeLoadedMessages", uid)
+        },
+    },
 }
 </script>
 <style scoped>

@@ -1,7 +1,9 @@
 <template>
     <sui-grid :columns="2" :centered=false >
       <sui-grid-column :width="4">
-      	<FriendsToMessage> </FriendsToMessage>
+      	<FriendsToMessage
+          @changeLoadedMessages="changeLoadedMessages($event)"
+        > </FriendsToMessage>
       </sui-grid-column>
 
       <sui-grid-column :width="8">
@@ -24,8 +26,14 @@ export default {
   data () {
     return {
       }
-    }
-  }
+  },
+   methods: {
+      changeLoadedMessages(uid){
+          console.log(uid)
+      },
+  },
+}
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
