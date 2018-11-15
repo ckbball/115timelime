@@ -6,7 +6,6 @@
     </sui-comment-avatar>
   </router-link>
 
-
 </template>
 
 <script>
@@ -23,7 +22,6 @@ export default {
           required: true,
           
       },
-
   },
   data () {
     return {

@@ -1,12 +1,10 @@
 <template>
-
-
-    <sui-grid :columns="2" :centered=false divided>
-      <sui-grid-column :width="5">
-      	<p> friends to messenge </p>
+    <sui-grid :columns="2" :centered=false >
+      <sui-grid-column :width="4">
+      	<FriendsToMessage> </FriendsToMessage>
       </sui-grid-column>
 
-      <sui-grid-column :width="7">
+      <sui-grid-column :width="8">
       	<p> actual messenges </p>
       </sui-grid-column>
     </sui-grid>
@@ -15,9 +13,13 @@
 
 <script>
 import router from '@/router/index'
+import FriendsToMessage from '@/components/messages/FriendsToMessage'
 
 export default {
   name: 'MessagePage',
+  components: {
+    'FriendsToMessage': FriendsToMessage,
+  },
   data () {
     return {
       }
