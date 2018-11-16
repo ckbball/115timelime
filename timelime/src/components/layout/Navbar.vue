@@ -16,7 +16,7 @@
  
       <sui-menu-menu position="right" class="friendReq">
         <FriendRequestContainer></FriendRequestContainer>
-
+        <MessagingContainer></MessagingContainer>
 
 
 
@@ -98,6 +98,7 @@ import { mapGetters, mapActions } from 'vuex'
 import FriendRequest from '@/components/layout/FriendRequest'
 import NavbarSearchBar from '@/components/layout/NavbarSearchBar'
 import FriendRequestContainer from '@/components/layout/FriendRequestContainer'
+import MessagingContainer from '@/components/messages/MessagingContainer'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -107,6 +108,7 @@ export default {
   components: {
     'NavbarSearchBar': NavbarSearchBar,
     'FriendRequest': FriendRequest,
+    'MessagingContainer': MessagingContainer,
     'FriendRequestContainer': FriendRequestContainer
   },
       data () {
