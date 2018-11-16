@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import auth from './modules/auth'
 import user from './modules/user'
 import colorScheme from './modules/colorScheme'
+import messages from './modules/messages'
 import search from './modules/search'
 import relations from './modules/relations'
 
@@ -23,6 +24,7 @@ export const store = new Vuex.Store({
 		auth: auth,
 		user: user,
 		search: search,
+		messages: messages,
 		relations: relations,
 		colorScheme: colorScheme,
 		configureModerator

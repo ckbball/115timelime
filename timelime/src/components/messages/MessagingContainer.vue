@@ -1,0 +1,63 @@
+<template>
+    <router-link :to="{path: '/messages'}">
+  <a is="sui-dropdown-item">
+
+
+    <sui-dropdown icon="big envelope outline" class="requestDropdown" floating>
+        
+        <sui-label 
+            floating 
+            size="mini" 
+            circular  
+            color="red"
+        >69</sui-label>
+
+    </sui-dropdown>
+    </a>
+    </router-link>
+       
+ 
+</template>
+
+<script> 
+import { mapGetters } from 'vuex'
+export default {
+    name: 'MessagingContainer',
+    data () {
+        return{
+    
+        }
+    },
+    methods: {
+
+    },
+    computed: {
+        ...mapGetters([
+            'getAllFriendsRequests'
+        ])
+    }
+}
+
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.requestButton {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: 15px;
+}
+.dropMenuReq {
+  width: 400px;
+  max-height:400px;
+}
+.friendreq {
+  position: relative;
+  margin-bottom:-13px;
+}
+.maxheight{
+    max-height: 350px;
+    overflow: scroll;
+}
+</style>
