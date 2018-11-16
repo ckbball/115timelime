@@ -1,5 +1,5 @@
 <template>
-    <sui-card class="FriendCard">
+    <sui-card class="FriendCard scroll">
     <sui-table padded>
         <sui-table-header>
           <sui-table-row>
@@ -93,6 +93,10 @@ export default {
     right: 10px;
     color: gray;*/
  }
+ .scroll {
+    max-height: 700px;
+    overflow-y: auto;
+}
 </style>
 
 
