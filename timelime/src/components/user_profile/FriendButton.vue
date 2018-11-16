@@ -75,6 +75,7 @@ export default {
         if (this.isFriend === "false") {
           db.collection('relations').add({
             type: "friend",
+            conversation_id: this.getUserInfo.uid + '_' +this.userInfo.uid,
             [us1]: 'true',
             [us2]: 'false',
             [us1_name]: name1,

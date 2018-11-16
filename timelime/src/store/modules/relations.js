@@ -179,6 +179,9 @@ const actions = {
     },
     issueFriendRequest: (context, {requester, requestee}) => {
         db.collection('relations').add({
+            type: 'friend',
+            conversation_id: requester.uid + '_' + requestee.uid,
+
             [fbUID(requester.uid)]: 'true',
             [fbName(requester.uid)]: requester.firstName + ' ' + requester.lastName,
             [fbImage(requester.uid)]: requester.image,

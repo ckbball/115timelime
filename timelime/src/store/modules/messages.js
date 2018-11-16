@@ -189,7 +189,7 @@ const actions = {
         var image2 = mesagee.image
         db.collection('messages').add({
             message_id: messageID,
-            time_sent: this.time,
+            time_sent: moment(Date.now()).format("dddd h:mm A, MMMM Do YYYY"),
             message_content: messageContent,
             sender_uid: uid1,
             sender_name: name1,
@@ -200,7 +200,7 @@ const actions = {
             read: "false"
         })
         .then(docRef => {
-            db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
+            db.collection('messages').doc(docRef.id).update({self_id: docRef.id})
         })    
     },
 
