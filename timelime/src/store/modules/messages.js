@@ -179,24 +179,18 @@ const actions = {
     },
 
 
-    issueMessage: (context, {messeger, messagee, messageID, messageContent}) => {
-        // names for us1 and us2
-        var uid1 = messager.uid
-        var name1 = messager.firstName + ' ' +messager.lastName
-        var image1 = messager.image
-        var uid2 = messagee.uid
-        var name2 = messagee.firstName + ' ' +messagee.lastName
-        var image2 = mesagee.image
+    issueMessage: (context, {messager, messagee, conversationID, messageContent}) => {
+        var moment = require('moment');
         db.collection('messages').add({
-            message_id: messageID,
+            conversation_id: conversationID,
             time_sent: moment(Date.now()).format("dddd h:mm A, MMMM Do YYYY"),
             message_content: messageContent,
-            sender_uid: uid1,
-            sender_name: name1,
-            sender_image: image1,
-            receiver_uid: uid2,
-            receiver_name: name2,
-            receiver_image: image2,
+            sender_uid: messager.uid,
+            sender_name: messager.firstName + ' ' +messager.lastName,
+            sender_image: messager.image,
+            receiver_uid: messagee.uid,
+            receiver_name: messagee.firstName + ' ' +messagee.lastName,
+            receiver_image: messagee.image,
             read: "false"
         })
         .then(docRef => {

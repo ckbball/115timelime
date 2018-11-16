@@ -16,7 +16,13 @@ export default {
   data () {
     return {
       messageContent: "",
-      messageID: "TEST_MESSAGE_ID",
+      userInfo: {
+        uid: 'uid_hAy1HyEEWZZhub8OL5LCV9jTXbY2',
+        firstName: 'mia',
+        lastName: 'miaaa',
+        image: 'https://www.familyhandyman.com/wp-content/uploads/2017/09/dfh17sep001_shutterstock_550013404.jpg'
+      },
+      conversationID: 'cPS2VPED7gcEjjmi4o70oowhoyq2_hAy1HyEEWZZhub8OL5LCV9jTXbY2'
     }
   },
   computed: {
@@ -25,32 +31,16 @@ export default {
     ])
   },
   methods: {
+    ...mapActions([
+      'issueMessage',
+    ]),
     sendMessage() {
-      if (this.getUserInfo !== null) {
-        // names for us1 and us2
-        var uid1 = this.getUserInfo.uid
-        var name1 = this.getUserInfo.firstName + ' ' +this.getUserInfo.lastName
-        var image1 = this.getUserInfo.image
-        var uid2 = 'TEST_UID'
-        var name2 = 'TEST_NAME'
-        var image2 = 'TEST_IMAGE'
-        db.collection('messages').add({
-          message_id: this.messageID,
-          time_sent: moment(Date.now()).format("dddd h:mm A, MMMM Do YYYY"),
-          message_content: this.messageContent,
-          sender_uid: uid1,
-          sender_name: name1,
-          sender_image: image1,
-          receiver_uid: uid2,
-          receiver_name: name2,
-          receiver_image: image2,
-          read: "false"
-        })
-        .then(docRef => {
-          db.collection('messages').doc(docRef.id).update({self_id: docRef.id})
-        })    
-      }
-    }
+      this.issueMessage({messager: this.getUserInfo, 
+                         messagee: this.userInfo, 
+                         conversationID: this.conversationID, 
+                         messageContent: this.messageContent
+                       })
+    },
   }
 }
 </script>
