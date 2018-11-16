@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ Date.now() | moment("dddd h:mm A, MMMM Do YYYY") }}
     <SendMessage/>
   </div>
 </template>
@@ -14,7 +15,8 @@ export default {
     'SendMessage': SendMessage
   },
   data () {
-    return {}
+    return {
+    }
   },
   methods: {},
 }

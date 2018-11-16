@@ -19,6 +19,7 @@ import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { setContext } from 'apollo-link-context';
 import VueApollo from 'vue-apollo'
+import VueMoment from 'vue-moment'
 
 
 /* ----- Delete this Apollo Bullshit ------ */
@@ -52,6 +53,7 @@ Vue.use(VueAxios, axios)
 Vue.use(VueLodash, options)
 Vue.use(SuiVue)
 Vue.use(VueApollo)
+Vue.use(VueMoment);
 
 
 Vue.config.productionTip = false

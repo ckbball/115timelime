@@ -179,21 +179,29 @@ const actions = {
     },
 
 
-    issueMessage: (context, {requester, requestee}) => {
-        // TODO: this is old code, change it to suit messags
-
-        // db.collection('relations').add({
-        //     [fbUID(requester.uid)]: 'true',
-        //     [fbName(requester.uid)]: requester.firstName + ' ' + requester.lastName,
-        //     [fbImage(requester.uid)]: requester.image,
-
-        //     [fbUID(requestee.uid)]: 'false',
-        //     [fbName(requestee.uid)]: requestee.firstName + ' ' + requestee.lastName,
-        //     [fbImage(requestee.uid)]: requestee.image,
-        // })
-        // .then(docRef => {
-        //     db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
-        // })
+    issueMessage: (context, {messeger, messagee, messageID, messageContent}) => {
+        // names for us1 and us2
+        var uid1 = messager.uid
+        var name1 = messager.firstName + ' ' +messager.lastName
+        var image1 = messager.image
+        var uid2 = messagee.uid
+        var name2 = messagee.firstName + ' ' +messagee.lastName
+        var image2 = mesagee.image
+        db.collection('messages').add({
+            message_id: messageID,
+            time_sent: this.time,
+            message_content: messageContent,
+            sender_uid: uid1,
+            sender_name: name1,
+            sender_image: image1,
+            receiver_uid: uid2,
+            receiver_name: name2,
+            receiver_image: image2,
+            read: "false"
+        })
+        .then(docRef => {
+            db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
+        })    
     },
 
     // grabMessager returns an object with the messagers info, returns an object with:
