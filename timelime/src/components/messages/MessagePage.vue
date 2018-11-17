@@ -53,10 +53,12 @@ export default {
     }
   },
   methods: {
-    changeLoadedMessages(uid){
-      this.conversationID = uid.conversation_id 
-      console.log(uid)
-      console.log(this.user)
+    changeLoadedMessages(friend){
+      console.log(friend.uid)
+      console.log(friend.image)
+      console.log(friend.name)
+      console.log(friend.conversation_id )
+      this.conversationID = friend.conversation_id     
     },
   },
 }

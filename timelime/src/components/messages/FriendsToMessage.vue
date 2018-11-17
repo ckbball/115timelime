@@ -11,7 +11,7 @@
         </sui-table-header>
         <sui-table-body>
           <sui-table-row v-for="(friend,n) in this.getMyFriends" :key="n"> 
-            <sui-table-cell v-on:click="requestMessages(friend.uid, friend.conversation_id)">
+            <sui-table-cell v-on:click="requestMessages(friend)">
 
                 <sui-grid :columns="2">
                   <sui-grid-column :width="3">
@@ -59,8 +59,9 @@ export default {
         ])
     },
     methods: {
-        requestMessages(uid, conversation_id){
-            this.$emit("changeLoadedMessages", {uid: uid, conversation_id: conversation_id})
+        requestMessages(friend){
+            console.log(friend)
+            this.$emit("changeLoadedMessages", friend)
         },
     },
 }
