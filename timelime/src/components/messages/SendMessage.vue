@@ -1,7 +1,10 @@
 <template lang="html">
   <div>  
-    <sui-input class="most" v-model="messageContent" placeholder="Type your message here..."/>
-    <sui-button v-on:click="sendMessage()">Send</sui-button>
+    <sui-input class="most" 
+               v-model="messageContent" 
+               placeholder="Type your message here..."
+               id="messageBox"/>
+    <sui-button v-on:click="sendMessage()" type="submit">Send</sui-button>
   </div>
 </template>
 
@@ -30,6 +33,7 @@ export default {
                          messagee: this.friend, 
                          messageContent: this.messageContent
                        })
+      this.messageContent = ""
     }
   },
   props: {
