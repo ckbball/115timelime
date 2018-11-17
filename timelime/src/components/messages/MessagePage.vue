@@ -17,7 +17,7 @@
     </sui-grid>
 
     <div>
-      <SendMessage/>
+      <SendMessage :conversationID="conversationID"/>
     </div>
   </div>
 </template>
@@ -51,12 +51,14 @@ export default {
   },
   data () {
     return {
-      }
+      conversationID: ''  
+    }
   },
-   methods: {
-      changeLoadedMessages(uid){
-          console.log(uid)
-      },
+  methods: {
+    changeLoadedMessages(uid){
+      this.conversationID = uid.conversation_id 
+      console.log(uid)
+    },
   },
 }
 

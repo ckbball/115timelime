@@ -19,8 +19,7 @@ export default {
         firstName: 'mia',
         lastName: 'miaaa',
         image: 'https://www.familyhandyman.com/wp-content/uploads/2017/09/dfh17sep001_shutterstock_550013404.jpg'
-      },
-      conversationID: 'cPS2VPED7gcEjjmi4o70oowhoyq2_hAy1HyEEWZZhub8OL5LCV9jTXbY2'
+      }
     }
   },
   computed: {
@@ -39,6 +38,9 @@ export default {
                          messageContent: this.messageContent
                        })
     },
+  },
+  props: {
+    conversationID: String
   }
 }
 </script>
