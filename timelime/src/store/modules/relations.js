@@ -54,7 +54,6 @@ const mutations = {
     pushToMyFriends: (state, payload) => {
         state.myFriends.push(payload)
 
-
         function compare(a,b) {
           if (a.name < b.name)
             return -1;
@@ -152,6 +151,9 @@ const actions = {
                     } else {
                         friend[getPrefix(property)] = change.data()[property]
                     }
+                }
+                if (property == "conversation_id"){
+                    friend[property]=change.data()[property]
                 }
             }
             commit('pushToMyFriends', friend)

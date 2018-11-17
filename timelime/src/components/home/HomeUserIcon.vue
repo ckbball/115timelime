@@ -1,7 +1,9 @@
 <template lang="html">
   <div>
     <sui-card class="raised">
-      <sui-image :src="userInfo.image" class=ProfilePicture />
+      <router-link :to="{path: '/user/'+getUserInfo.uid}">
+        <sui-image :src="userInfo.image" class=ProfilePicture />
+      </router-link>
       <sui-card-content>
         <sui-card-header>{{this.userInfo.firstName}} {{this.userInfo.lastName}}</sui-card-header>
       </sui-card-content>
@@ -21,6 +23,11 @@ export default {
       image: ""
     }
 
+  },
+    computed: {
+    ...mapGetters([
+      'getUserInfo',
+    ]),
   },
   components: {
   },

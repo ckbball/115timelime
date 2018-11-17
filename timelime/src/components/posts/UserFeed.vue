@@ -1,8 +1,8 @@
 <template>
   <div >
-    <div class="posts" v-for="(p,n) in this.getAllMyPosts" :key="n">
+    <div class="posts" v-for="(p,n) in posts" :key="n">
           <post
-            :post="p.data()"
+            :post="p"
           />
     </div>
 
@@ -25,24 +25,41 @@ import db from '@/firebase/init'
 export default {
   name: 'UserFeed',
   props: {
-    uid: {
-      type: String,
-      //required: true
-    }
+    // uid: {
+    //   type: String,
+    //   //required: true
+    // }
   },
   data () {
     return {
-      // posts: [],
+      posts: [],
     }
   },  
+  methods: {
+    getPostsOfAUser: function(uid) {
+      this.posts = []
+      db.collection('posts').where('parent_id', '==', uid).get()
+      .then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+          this.posts.push(doc.data())
+        })
+      })
+    }
+  },
   computed: {
-    ...mapGetters([
-      'getAllMyPosts'
-    ]),
+
   },
   components: {
     "Post": Post,
   },
+  watch: {
+    $route: function(to, from) {
+      this.getPostsOfAUser(to.params.uid)
+    }
+  },
+  mounted() {
+    this.getPostsOfAUser(this.$route.params.uid)
+  }
 }
 </script>
 
