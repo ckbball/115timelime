@@ -13,7 +13,7 @@
             :userInfo="getUserInfo"            
         />
       <div>
-        <SendMessage :conversationID="conversationID"/>
+        <SendMessage :friend="friend"/>
       </div>
       </sui-grid-column>
     </sui-grid>
@@ -49,16 +49,12 @@ export default {
   },
   data () {
     return {
-      conversationID: ''  
+      friend: {}  
     }
   },
   methods: {
     changeLoadedMessages(friend){
-      console.log(friend.uid)
-      console.log(friend.image)
-      console.log(friend.name)
-      console.log(friend.conversation_id )
-      this.conversationID = friend.conversation_id     
+      this.friend = friend 
     },
   },
 }

@@ -179,17 +179,17 @@ const actions = {
     },
 
 
-    issueMessage: (context, {messager, messagee, conversationID, messageContent}) => {
+    issueMessage: (context, {messager, messagee, messageContent}) => {
         var moment = require('moment');
         db.collection('messages').add({
-            conversation_id: conversationID,
+            conversation_id: messagee.conversation_id,
             time_sent: moment(Date.now()).format("dddd h:mm A, MMMM Do YYYY"),
             message_content: messageContent,
             sender_uid: messager.uid,
             sender_name: messager.firstName + ' ' +messager.lastName,
             sender_image: messager.image,
             receiver_uid: messagee.uid,
-            receiver_name: messagee.firstName + ' ' +messagee.lastName,
+            receiver_name: messagee.name,
             receiver_image: messagee.image,
             read: "false"
         })
