@@ -9,8 +9,6 @@
 import db from '@/firebase/init'
 import { mapGetters, mapActions } from 'vuex'
 
-var moment = require('moment');
-
 export default {
   name: 'SendMessage',
   data () {
