@@ -1,7 +1,7 @@
 <template lang="html">
   <div>  
-    <input v-model="messageContent" placeholder="Type your message here..."/>
-    <button v-on:click="sendMessage()">save</button>
+    <sui-input class="most" v-model="messageContent" placeholder="Type your message here..."/>
+    <sui-button v-on:click="sendMessage()">Send</sui-button>
   </div>
 </template>
 
@@ -46,4 +46,8 @@ export default {
 </script>
 
 <style scoped>
+  .most {
+    width: calc(100% - 77px);
+    float: left;
+  }
 </style>
