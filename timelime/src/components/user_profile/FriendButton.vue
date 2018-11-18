@@ -58,58 +58,35 @@ export default {
     //   this.issueFriendRequest({requester: this.getUserInfo, requestee: this.userInfo})
     // },
     changeFriendStatus() {
-      if (this.getUserInfo !== null) {
-        var us1 = 'uid_'+this.getUserInfo.uid
-        var us2 = 'uid_'+this.userInfo.uid
-        // names for us1 and us2
-        var us1_name = 'name_' +this.getUserInfo.uid
-        var name1 = this.getUserInfo.firstName + ' ' +this.getUserInfo.lastName
-        var us2_name = 'name_' +this.userInfo.uid
-        var name2 = this.userInfo.firstName + ' ' +this.userInfo.lastName
-        // images for us1 and us2
-        var us1_img = ['image_'+this.getUserInfo.uid]
-        var image1 = this.getUserInfo.image
-        var us2_img = ['image_'+this.userInfo.uid]
-        var image2 = this.userInfo.image
+      var us1 = 'uid_'+this.getUserInfo.uid
+      var us2 = 'uid_'+this.userInfo.uid
 
-        if (this.isFriend === "false") {
-          db.collection('relations').add({
-            type: "friend",
-            [us1]: 'true',
-            [us2]: 'false',
-            [us1_name]: name1,
-            [us2_name]: name2,
-            [us1_img]: image1,
-            [us2_img]: image2
+      if (this.isFriend === "false") {
+        this.issueFriendRequest({requester: this.getUserInfo, requestee: this.userInfo})
+        this.$emit('pendFriend')
+      } else if (this.isFriend === "true") {
+        db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'true').get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            doc.ref.delete()
           })
-          .then(docRef => {
-            db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
+          this.$emit('notFriend')
         })
-          this.$emit('pendFriend')
-        } else if (this.isFriend === "true") {
-          db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'true').get()
-          .then((snapshot) => {
-            snapshot.forEach((doc) => {
-              doc.ref.delete()
-            })
-            this.$emit('notFriend')
+        .catch((err) => {
+          console.log(err)
+        })
+      } else {
+        db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'false').get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            doc.ref.delete()
           })
-          .catch((err) => {
-            console.log(err)
-          })
-        } else {
-          db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'false').get()
-          .then((snapshot) => {
-            snapshot.forEach((doc) => {
-              doc.ref.delete()
-            })
-            this.$emit('notFriend')
-          })
-          .catch((err) => {
-            console.log(err)
-          })
-        }        
-      }
+          this.$emit('notFriend')
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }        
     }
   },
   props: {

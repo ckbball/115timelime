@@ -1,15 +1,9 @@
 <template>
   <div>
     
-    <MyProfile v-if="uid === getUserInfo.uid"></MyProfile>
-    <UserProfile v-else :otherUsersInfo="otherUsersInfo"/>
+    <MyProfile v-if="$route.params.uid === getUserInfo.uid"></MyProfile>
+    <UserProfile v-if="$route.params.uid !== getUserInfo.uid" :uid="$route.params.uid" />
 
-
-
-
-
-
-  
   </div>
 </template>
 
@@ -22,13 +16,9 @@ import { mapGetters } from 'vuex'
 
 export default {
   name: 'User',
-  props: {
-    uid: String
-  },
+  
   data () {
     return {
-      otherUsersInfo: {},
-      activeUID: ''
 
     }
   }, 
@@ -41,25 +31,25 @@ export default {
       'getUserInfo'
     ])
   },
-  methods: {
-    fetchOtherUsersInfo: function() {
-      db.collection('users').doc(this.uid).get()
-        .then((doc) => {
-            this.otherUsersInfo = doc.data()
-          })
-    },
+  // methods: {
+  //   fetchOtherUsersInfo: function() {
+  //     db.collection('users').doc(this.uid).get()
+  //       .then((doc) => {
+  //           this.otherUsersInfo = doc.data()
+  //         })
+  //   },
 
-  },
-  watch: {
-    '$route' (to, from) {
-      if(to.params.uid != this.getUserInfo.uid){
-        this.fetchOtherUsersInfo()
-      }
-    }
-  },
-  mounted() {
-    this.fetchOtherUsersInfo()
-  }
+  // },
+  // watch: {
+  //   '$route' (to, from) {
+  //     if(to.params.uid != this.getUserInfo.uid){
+  //       this.fetchOtherUsersInfo()
+  //     }
+  //   }
+  // },
+  // mounted() {
+  //   this.fetchOtherUsersInfo()
+  // }
 
 
 

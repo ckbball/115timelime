@@ -1,17 +1,9 @@
 <template>
-  <div >
-    <div class="posts" v-for="(p,n) in this.getAllMyPosts" :key="n">
-          <post
-            :post="p.data()"
-          />
-    </div>
-
-<!--     <div class="posts" v-for="(post, n) in posts" :key="n">
-        <Post :post="post"/>
-    </div> -->
-
-</div>
-
+  <div v-if="this.posts.length > 0" >
+    <post class="posts" v-for="(p,n) in posts" :key="n"
+      :post="p"
+    />
+  </div>
 </template>
 
 <script>
@@ -24,25 +16,52 @@ import db from '@/firebase/init'
 
 export default {
   name: 'UserFeed',
-  props: {
-    uid: {
-      type: String,
-      //required: true
-    }
-  },
-  data () {
-    return {
-      // posts: [],
-    }
-  },  
-  computed: {
-    ...mapGetters([
-      'getAllMyPosts'
-    ]),
-  },
   components: {
     "Post": Post,
   },
+  data () {
+    return {
+      posts: [],
+    }
+  },  
+  methods: {
+    // getPostsOfAUser: function(uid) {
+    //   this.posts = []
+    //   db.collection('posts').where('parent_id', '==', uid).get()
+    //   .then((snapshot) => {
+    //     snapshot.docs.forEach(doc => {
+    //       this.posts.push(doc.data())
+    //     })
+    //   })
+    // },
+    getPostsOfAUser: function(uid) {
+      this.posts = []
+      db.collection('posts').where('parent_id', '==', uid)
+      .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            this.posts.push(change.doc.data())
+          }
+          if (change.type === 'modified') {
+            this.posts.forEach(post => {
+              if(post.post_id === change.doc.data().post_id){
+                post.whoLikes = change.doc.data().whoLikes
+              }
+            })
+          }
+        })
+      })
+    }
+  },
+
+  watch: {
+    $route: function(to, from) {
+      this.getPostsOfAUser(to.params.uid)
+    }
+  },
+  mounted() {
+    this.getPostsOfAUser(this.$route.params.uid)
+  }
 }
 </script>
 

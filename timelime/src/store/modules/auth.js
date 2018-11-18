@@ -38,11 +38,33 @@ const mutations = {
 
 }
 const actions = {
+	checkProfileCompletionAndSendNotification: (context, payload) => {
+		let total = 0
+			let count = 0
+			for (let property in payload ){
+				total++
+				
+				if(payload[property] === '') count++
+				if(payload[property] === 'https://www.familyhandyman.com/wp-content/uploads/2017/09/dfh17sep001_shutterstock_550013404.jpg')
+					count++
+			}
+			let percent = Math.floor(count/total*100)
+			if (100 - percent < 75){
+				db.collection('notifications').add({
+					content: 'Your profile is lacking, fill it out',
+					parent_id: '',
+					read: false,
+					recipient: payload.uid
+				})
+			}
+	},
 
 	fetchUserInfo: (context, payload) => {
 		db.collection('users').doc(payload)
 		.onSnapshot(doc => {
 			context.commit('setUserInfo', doc.data())
+			context.dispatch('checkProfileCompletionAndSendNotification',doc.data())
+			
 		})
 
 	},

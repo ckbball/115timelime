@@ -128,7 +128,6 @@ export default {
             this.setFriendshipStatus('false')
           }
         }
-        console.log(this.userInfo.image)
       })
     },
     setFriendshipStatus: function(status) {

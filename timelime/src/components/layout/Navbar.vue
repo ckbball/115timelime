@@ -17,6 +17,7 @@
       <sui-menu-menu position="right" class="friendReq">
         <FriendRequestContainer></FriendRequestContainer>
         <NotificationsContainer></NotificationsContainer>
+        <MessagingContainer></MessagingContainer>
 
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item">
@@ -63,6 +64,7 @@ import { mapGetters, mapActions } from 'vuex'
 import NavbarSearchBar from '@/components/layout/NavbarSearchBar'
 import FriendRequestContainer from '@/components/layout/FriendRequestContainer'
 import NotificationsContainer from '@/components/layout/NotificationsContainer'
+import MessagingContainer from '@/components/messages/MessagingContainer'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -71,8 +73,9 @@ export default {
   name: 'Navbar',
   components: {
     'NavbarSearchBar': NavbarSearchBar,
-    'FriendRequestContainer': FriendRequestContainer,
-    'NotificationsContainer': NotificationsContainer
+    'NotificationsContainer': NotificationsContainer,
+    'MessagingContainer': MessagingContainer,
+    'FriendRequestContainer': FriendRequestContainer
   },
       data () {
         return {
