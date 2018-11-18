@@ -49,7 +49,6 @@ const actions = {
 					count++
 			}
 			let percent = Math.floor(count/total*100)
-			console.log('percent: ', percent)
 			if (100 - percent < 75){
 				db.collection('notifications').add({
 					content: 'Your profile is lacking, fill it out',
