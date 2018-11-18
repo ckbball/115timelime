@@ -24,11 +24,8 @@ import db from '@/firebase/init'
 
 export default {
   name: 'UserFeed',
-  props: {
-    // uid: {
-    //   type: String,
-    //   //required: true
-    // }
+  components: {
+    "Post": Post,
   },
   data () {
     return {
@@ -46,12 +43,7 @@ export default {
       })
     }
   },
-  computed: {
 
-  },
-  components: {
-    "Post": Post,
-  },
   watch: {
     $route: function(to, from) {
       this.getPostsOfAUser(to.params.uid)

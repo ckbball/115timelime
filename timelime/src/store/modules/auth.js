@@ -43,6 +43,25 @@ const actions = {
 		db.collection('users').doc(payload)
 		.onSnapshot(doc => {
 			context.commit('setUserInfo', doc.data())
+			let total = 0
+			let count = 0
+			for (let property in doc.data() ){
+				total++
+				
+				if(doc.data()[property] === '') count++
+				if(doc.data()[property] === 'https://www.familyhandyman.com/wp-content/uploads/2017/09/dfh17sep001_shutterstock_550013404.jpg')
+					count++
+			}
+			let percent = Math.floor(count/total*100)
+			console.log('percent: ', percent)
+			if (100 - percent < 75){
+				db.collection('notifications').add({
+					content: 'Your profile is lacking, fill it out',
+					parent_id: '',
+					read: false,
+					recipient: doc.data().uid
+				})
+			}
 		})
 
 	},

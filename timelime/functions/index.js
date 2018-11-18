@@ -222,21 +222,27 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 	})
 })
 exports.addUserToFirestoreAfterAccountCreation = functions.auth.user().onCreate((user) => {
-	const email = user.email
-	const uid = user.uid
-	db.collection('users').doc(uid).set({
-		email: email,
-		uid: uid,
-		firstName: '',
-		lastName: '',
-		image: 'https://www.familyhandyman.com/wp-content/uploads/2017/09/dfh17sep001_shutterstock_550013404.jpg',
+	let promise = new Promise((resolve, reject) =>{	
+		const email = user.email
+		const uid = user.uid
+		db.collection('users').doc(uid).set({
+			email: email,
+			uid: uid,
+			firstName: '',
+			lastName: '',
+			image: 'https://www.familyhandyman.com/wp-content/uploads/2017/09/dfh17sep001_shutterstock_550013404.jpg',
+			bio:'',
+		})
+		.then(() => {
+			console.log('User Successfully Added')
+			resolve()
+		})
+		.catch(() => {
+			console.log(err)
+			reject()
+		})
 	})
-	.then(() => {
-		console.log('User Successfully Added')
-	})
-	.catch(() => {
-		console.log(err)
-	})
+	return promise
 })
 
 exports.searchUsers = functions.https.onRequest((req, res) => {
