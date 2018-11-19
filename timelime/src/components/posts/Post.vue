@@ -27,7 +27,7 @@
       </sui-grid-column>
 
       <sui-grid-column :width="7">
-         <sui-card-description class="PostedTime" align="right">Posted: 4/20/69 </sui-card-description>
+         <sui-card-description class="PostedTime" align="right">Posted: {{formattedPostDate}} </sui-card-description>
       </sui-grid-column>
     </sui-grid>
 
@@ -46,7 +46,7 @@
         </sui-card-content>
 
         <sui-card-content>
-          <sui-card-description align="right">Time Remaining: 4 mins</sui-card-description>
+          <sui-card-description align="right">Time Remaining: {{timeRemaining}}</sui-card-description>
         </sui-card-content>
 
 
@@ -81,6 +81,19 @@ export default {
     post: {
       type: Object,
       required: true,
+    }
+  },
+  computed: {
+    timeRemaining: function(){
+        var moment = require('moment')
+        var time_left = this.post.expire_time - Date.now()
+        var time = Math.ceil(time_left/86400000) + " days " + moment(time_left).format('hh') + " hrs " + moment(time_left).format('mm') + " minutes"
+        return time
+        //.format('days h:mm')
+    },
+    formattedPostDate: function(){
+        var moment = require('moment')
+        return moment(this.post.upload_time).format("dddd h:mm A, MMMM Do YYYY")
     }
   },
   data() {
