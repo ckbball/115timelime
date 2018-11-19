@@ -134,63 +134,64 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 				reject(res.status(500).send(err))
 			})
 		})
+		return promise
 	})
 })
 
-exports.addLike = functions.https.onRequest((req, res) => {
-	cors(req, res, () => {
-		let parent_id = req.body.parent_id
-		let author_uid = req.body.author_uid
-		let author_image = req.body.author_image
-		let author_name = req.body.author_name
+// exports.addLike = functions.https.onRequest((req, res) => {
+// 	cors(req, res, () => {
+// 		let parent_id = req.body.parent_id
+// 		let author_uid = req.body.author_uid
+// 		let author_image = req.body.author_image
+// 		let author_name = req.body.author_name
 
-		let promise = new Promise ((resolve, reject) => {
-			db.collection('likes').add({
-				parent_id: parent_id,
-				author_uid: author_uid,
-				author_image: author_image,
-				author_name: author_name,
-			})
-			.then(docRef => {
-				// increment number of likes on post by 1
-				console.log(docRef.id)
-				db.collection('likes').doc(docRef.id).update({likeid: docRef.id})
-				//db.collection('comments').doc(docRef.id).update({comment_id: docRef.id})
-				resolve(res.send('post liked!'))
-			})
-			.catch(err => {
-				console.log(err)
-				reject(res.status(500).send(err))
-			})
-		})
-	})
-})
+// 		let promise = new Promise ((resolve, reject) => {
+// 			db.collection('likes').add({
+// 				parent_id: parent_id,
+// 				author_uid: author_uid,
+// 				author_image: author_image,
+// 				author_name: author_name,
+// 			})
+// 			.then(docRef => {
+// 				// increment number of likes on post by 1
+// 				console.log(docRef.id)
+// 				db.collection('likes').doc(docRef.id).update({likeid: docRef.id})
+// 				//db.collection('comments').doc(docRef.id).update({comment_id: docRef.id})
+// 				resolve(res.send('post liked!'))
+// 			})
+// 			.catch(err => {
+// 				console.log(err)
+// 				reject(res.status(500).send(err))
+// 			})
+// 		})
+// 	})
+// })
 
-exports.removeLike = functions.https.onRequest((req, res) => {
-	cors(req, res, () => {
-		let author_uid = req.body.author_uid
-		let parent_id = req.body.parent_id
+// exports.removeLike = functions.https.onRequest((req, res) => {
+// 	cors(req, res, () => {
+// 		let author_uid = req.body.author_uid
+// 		let parent_id = req.body.parent_id
 
-		let promise = new Promise ((resolve, reject) => {
-			db.collection('likes').where('parent_id', '==', parent_id).where('author_uid', '==', author_uid).get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                  db.collection('likes').doc(doc.id).delete().then(function() {
-                    // reduce likes for post by 1
-					resolve(res.send('like removed'))
-                  })
-                  .catch(err => {
-                    reject(res.status(500).send(err))
-                  })
-                })
-            })
-            .catch(err => {
-              console.log("failed with error: " + err)
-            })
+// 		let promise = new Promise ((resolve, reject) => {
+// 			db.collection('likes').where('parent_id', '==', parent_id).where('author_uid', '==', author_uid).get()
+//             .then((querySnapshot) => {
+//                 querySnapshot.forEach((doc) => {
+//                   db.collection('likes').doc(doc.id).delete().then(function() {
+//                     // reduce likes for post by 1
+// 					resolve(res.send('like removed'))
+//                   })
+//                   .catch(err => {
+//                     reject(res.status(500).send(err))
+//                   })
+//                 })
+//             })
+//             .catch(err => {
+//               console.log("failed with error: " + err)
+//             })
 			
-		})
-	})
-})
+// 		})
+// 	})
+// })
 
 
 exports.addNewPost = functions.https.onRequest((req, res) => {
@@ -207,7 +208,8 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 				author_uid: author_uid,
 				author_image: author_image,
 				author_name: author_name,
-				content: content
+				content: content,
+				whoLikes: []
 			})
 			.then(docRef => {
 				console.log(docRef.id)
@@ -219,24 +221,31 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 				reject(res.status(500).send(err))
 			})
 		})
+		return promise
 	})
 })
 exports.addUserToFirestoreAfterAccountCreation = functions.auth.user().onCreate((user) => {
-	const email = user.email
-	const uid = user.uid
-	db.collection('users').doc(uid).set({
-		email: email,
-		uid: uid,
-		firstName: '',
-		lastName: '',
-		image: 'https://www.familyhandyman.com/wp-content/uploads/2017/09/dfh17sep001_shutterstock_550013404.jpg',
+	let promise = new Promise((resolve, reject) =>{	
+		const email = user.email
+		const uid = user.uid
+		db.collection('users').doc(uid).set({
+			email: email,
+			uid: uid,
+			firstName: '',
+			lastName: '',
+			image: 'https://www.familyhandyman.com/wp-content/uploads/2017/09/dfh17sep001_shutterstock_550013404.jpg',
+			bio:'',
+		})
+		.then(() => {
+			console.log('User Successfully Added')
+			resolve()
+		})
+		.catch(() => {
+			console.log(err)
+			reject()
+		})
 	})
-	.then(() => {
-		console.log('User Successfully Added')
-	})
-	.catch(() => {
-		console.log(err)
-	})
+	return promise
 })
 
 exports.searchUsers = functions.https.onRequest((req, res) => {
@@ -267,6 +276,7 @@ exports.searchUsers = functions.https.onRequest((req, res) => {
 				reject(res.status(500).send(err))
 			})
 		})
+		return promise
 	})
 });
 
