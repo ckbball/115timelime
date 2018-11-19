@@ -61,6 +61,7 @@ export default {
   },
   mounted() {
     this.getPostsOfAUser(this.$route.params.uid)
+    console.log('adasd')
   }
 }
 </script>
