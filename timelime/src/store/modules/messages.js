@@ -183,7 +183,8 @@ const actions = {
         var moment = require('moment');
         db.collection('messages').add({
             conversation_id: messagee.conversation_id,
-            time_sent: moment(Date.now()).format("dddd h:mm A, MMMM Do YYYY"),
+            // time_sent: moment(Date.now()).format("dddd h:mm A, MMMM Do YYYY"),
+            time_sent: Date.now(),
             message_content: messageContent,
             sender_uid: messager.uid,
             sender_name: messager.firstName + ' ' +messager.lastName,
