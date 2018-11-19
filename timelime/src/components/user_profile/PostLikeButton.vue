@@ -53,7 +53,7 @@ export default {
         .update({"whoLikes": firebase.firestore.FieldValue.arrayRemove(this.getUserInfo.uid)})
     }
     }
-  },  
+  }  
 }
 </script>
 
