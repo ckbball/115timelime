@@ -65,14 +65,15 @@ exports.main = functions.https.onRequest(main);
 
 /* ------ Writing the scheduling code -----*/
 var rule = new schedule.RecurrenceRule();
-rule.second = 10;
+rule.minute = 10;
 
 var j = schedule.scheduleJob(rule, function(){
-	db.collection('posts').where('author_name', '==', "Fred Wow").get()
+    var endTime = Date.now()
+    db.collection('posts').where('expire_time', '<', endTime).get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
               db.collection('posts').doc(doc.id).delete().then(function() {
-				
+                
               })
               .catch(err => {
                   console.log("failed with error: " + err)
@@ -82,8 +83,8 @@ var j = schedule.scheduleJob(rule, function(){
         .catch(err => {
           console.log("failed with error: " + err)
         })
-		
-	})
+        
+})
 	
 
 
@@ -230,6 +231,8 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 		let author_image = req.body.author_image
 		let author_name = req.body.author_name
 		let content = req.body.content
+		let upload_time = req.body.upload_time
+        let expire_time = upload_time + 2678400000
 
 		let promise = new Promise ((resolve, reject) => {
 			db.collection('posts').add({
@@ -238,7 +241,9 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 				author_image: author_image,
 				author_name: author_name,
 				content: content,
-				whoLikes: []
+				whoLikes: [],
+				upload_time: upload_time,
+                expire_time: expire_time,
 			})
 			.then(docRef => {
 				console.log(docRef.id)

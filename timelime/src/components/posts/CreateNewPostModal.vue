@@ -60,6 +60,7 @@ export default {
             author_image: this.getUserInfo.image, //
             author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName, //
             content: this.PostContent,
+            upload_time: Date.now(),
         })
         .then(response => {
             this.PostContent = ''
