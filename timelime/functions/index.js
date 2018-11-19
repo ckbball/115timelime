@@ -275,6 +275,7 @@ exports.searchUsers = functions.https.onRequest((req, res) => {
 				reject(res.status(500).send(err))
 			})
 		})
+		return promise
 	})
 });
 
