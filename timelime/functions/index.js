@@ -237,7 +237,8 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 				author_uid: author_uid,
 				author_image: author_image,
 				author_name: author_name,
-				content: content
+				content: content,
+				whoLikes: []
 			})
 			.then(docRef => {
 				console.log(docRef.id)
@@ -304,6 +305,7 @@ exports.searchUsers = functions.https.onRequest((req, res) => {
 				reject(res.status(500).send(err))
 			})
 		})
+		return promise
 	})
 });
 

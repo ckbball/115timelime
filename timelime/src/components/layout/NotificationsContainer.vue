@@ -1,14 +1,13 @@
 <template>
+
     <a is="sui-dropdown-item">
-
-
-        <sui-dropdown icon="big bell outline" floating>
-            <sui-dropdown-menu scrolling="true" class="left menu maxheight">
-                <a v-for="(notif,n) in this.getAllNotifications" :key="n" @click="acknowledgeNotification(notif)">
-                    <NotificationItem 
-                        :notification="notif.data()"
-                    ></NotificationItem>
-                </a>
+        <sui-dropdown icon="big bell outline" class="requestDropdown" floating>
+            <sui-dropdown-menu scrolling="true" class="left menu dropMenuReq maxheight">
+                <sui-dropdown-header content="Notifications:"/>
+                <NotificationItem v-for="(notif,n) in this.getAllNotifications" :key="n" @click="acknowledgeNotification(notif)"
+                    :notification="notif.data()"
+                    class="friendreq"
+                ></NotificationItem>
             </sui-dropdown-menu>
             <sui-label v-if="this.getNumberOfUnreadNotifications > 0"
                 floating 
@@ -51,6 +50,24 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.requestButton {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: 15px;
+}
+.dropMenuReq {
+  width: 400px;
+  max-height:400px;
+}
+.friendreq {
+  position: relative;
+  margin-bottom:-13px;
+}
+.maxheight{
+    max-height: 350px;
+    overflow: scroll;
+}
 /* .maxheight{
     max-height: 350px;
     overflow: scroll;

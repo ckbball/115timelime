@@ -17,6 +17,11 @@ const getters = {
 
 }
 const mutations = {
+    unsetNotifications: (state) => {
+        state.notifications = []
+        state.numberOfUnreadNotifications = 0
+    },
+
     pushToNotifications: (state, payload) => {
         state.notifications.push(payload)
         if(payload.data().read === false) state.numberOfUnreadNotifications++
