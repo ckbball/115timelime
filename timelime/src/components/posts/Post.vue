@@ -1,11 +1,10 @@
-q<template lang="html">
+<template lang="html">
   <div>
-
     <sui-grid :columns="2" :centered=false>
 
       <sui-grid-column :width="2">
         <PostLikeButton align="left" class= "Button1"
-        :post_id="post.post_id"
+        :parent="post"
         />
       </sui-grid-column>
       
@@ -70,7 +69,7 @@ import MessageAvatar from '@/components/messages/MessageAvatar'
 // import Comments from '@/components/posts/Comments'
 import CommentList from '@/components/posts/CommentList'
 export default {
-  name: 'EditProfileInfo',
+  name: 'Post',
   components: {
     "PostLikeButton": PostLikeButton,
     "PostCommentButton": PostCommentButton,

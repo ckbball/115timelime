@@ -10,15 +10,13 @@
       <sui-grid-column :width="7">
         <!-- need to pass down the "friend" object when the user clicks on the left column cell -->
       	<MessageContainer fluid
-            :userInfo="getUserInfo"
-            
+            :userInfo="getUserInfo"            
         />
+      <div>
+        <SendMessage :friend="friend"/>
+      </div>
       </sui-grid-column>
     </sui-grid>
-
-    <div>
-      <SendMessage :conversationID="conversationID"/>
-    </div>
   </div>
 </template>
 
@@ -51,16 +49,12 @@ export default {
   },
   data () {
     return {
-      conversationID: ''  
+      friend: {}  
     }
   },
   methods: {
     changeLoadedMessages(friend){
-      console.log(friend.uid)
-      console.log(friend.image)
-      console.log(friend.name)
-      console.log(friend.conversation_id )
-      this.conversationID = friend.conversation_id     
+      this.friend = friend 
     },
   },
 }
