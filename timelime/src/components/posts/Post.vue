@@ -87,13 +87,16 @@ export default {
     timeRemaining: function(){
         var moment = require('moment')
         var time_left = this.post.expire_time - Date.now()
-        var time = Math.ceil(time_left/86400000) + " days " + moment(time_left).format('hh') + " hrs " + moment(time_left).format('mm') + " minutes"
+        var days_left = Math.floor(time_left / 86400000)
+        var hours_left = Math.floor((time_left - (days_left * 86400000)) / 3600000)
+        var minutes_left = Math.floor((time_left - (days_left * 86400000) - (hours_left * 3600000)) / 60000)
+        var time = days_left + " days, " + hours_left + " hours, " + minutes_left + " minutes"
         return time
         //.format('days h:mm')
     },
     formattedPostDate: function(){
         var moment = require('moment')
-        return moment(this.post.upload_time).format("dddd h:mm A, MMMM Do YYYY")
+        return moment(this.post.upload_time).format("MMM Do, YYYY, h:mm A")
     }
   },
   data() {
