@@ -1,9 +1,9 @@
 <template>
   <sui-menu pointing secondary >
       <a
+        v-if="getAuthenticatedUser"
         is="sui-menu-item"
         v-for="item in items"
-        :active="isActive(item.route)"
         :key="item.content"
         :content="item.content"
         @click="select(item.route)"
@@ -13,13 +13,14 @@
 
       <NavbarSearchBar 
         v-on:searchReturned="onSearchReturned($event)"
+        v-if="getAuthenticatedUser"
       ></NavbarSearchBar>
 
  
       <sui-menu-menu position="right" class="friendReq">
-        <FriendRequestContainer></FriendRequestContainer>
-        <NotificationsContainer></NotificationsContainer>
-        <MessagingContainer></MessagingContainer>
+        <FriendRequestContainer v-if="getAuthenticatedUser"></FriendRequestContainer>
+        <NotificationsContainer v-if="getAuthenticatedUser"></NotificationsContainer>
+        <MessagingContainer v-if="getAuthenticatedUser"></MessagingContainer>
 
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item">
@@ -38,13 +39,11 @@
 
         <a v-if="!getAuthenticatedUser"
           is="sui-menu-item"
-          :active="isActive('SignUp')"
           content="Sign Up"
           @click="select('SignUp')"
         />
         <a v-if="!getAuthenticatedUser"
           is="sui-menu-item"
-          :active="isActive('LogIn')"
           content="Log In"
           @click="select('LogIn')"
         />
@@ -87,7 +86,7 @@ export default {
             route: 'Home'
           }
           ],
-          active:'Home',
+          active:'null',
           searchResults: null,
           friendReqs: []
     }
@@ -116,7 +115,8 @@ export default {
     },
 
     isActive(name) {
-      return this.active === name;
+      // return this.active === name;
+      return "null"
     },
     select(name) {
       this.active = name;
