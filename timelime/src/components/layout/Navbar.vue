@@ -7,7 +7,9 @@
         :key="item.content"
         :content="item.content"
         @click="select(item.route)"
-      />
+      >
+        <sui-icon size="big" name="home"/>
+      </a>
 
       <NavbarSearchBar 
         v-on:searchReturned="onSearchReturned($event)"
