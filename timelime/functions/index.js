@@ -257,6 +257,7 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 				author_name: author_name,
 				content: content,
 				whoLikes: [],
+				commentIDs: [],
 				upload_time: upload_time,
                 expire_time: expire_time,
 			})
