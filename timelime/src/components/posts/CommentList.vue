@@ -3,7 +3,8 @@
         <sui-table-header>
             <sui-table-row>
                 <CommentsHeader v-on:toggleVisiblity="onToggleVisibility()" 
-                    :visible="this.isVisible">
+                    :visible="this.isVisible"
+                    :post="post">
                 </CommentsHeader>
             </sui-table-row>
         </sui-table-header>

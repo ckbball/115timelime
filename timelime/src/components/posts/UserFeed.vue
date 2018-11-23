@@ -25,15 +25,6 @@ export default {
     }
   },  
   methods: {
-    // getPostsOfAUser: function(uid) {
-    //   this.posts = []
-    //   db.collection('posts').where('parent_id', '==', uid).get()
-    //   .then((snapshot) => {
-    //     snapshot.docs.forEach(doc => {
-    //       this.posts.push(doc.data())
-    //     })
-    //   })
-    // },
     getPostsOfAUser: function(uid) {
       this.posts = []
       db.collection('posts').where('parent_id', '==', uid)
@@ -46,6 +37,7 @@ export default {
             this.posts.forEach(post => {
               if(post.post_id === change.doc.data().post_id){
                 post.whoLikes = change.doc.data().whoLikes
+                post.commentIDs = change.doc.data().commentIDs
               }
             })
           }
