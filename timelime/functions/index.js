@@ -135,6 +135,21 @@ exports.issueNotificationOnNewComment = functions.firestore
 	})	
 	return promise
 })
+exports.updateCommentCountOnAPost = functions.firestore
+.document('comments/{commentId}').onCreate((snapshot, context) => {
+	let promise = new Promise ((resolve, reject) => {
+		const comment = snapshot.data()
+		db.collection('posts').doc(comment.parent_id)
+		.update({'commentIDs': admin.firestore.FieldValue.arrayUnion(snapshot.id)})
+		.then(() => {
+			resolve()
+		})
+		.catch(err => {
+			reject()
+		})
+	})
+	return promise
+})
 
 exports.addNewComment = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {

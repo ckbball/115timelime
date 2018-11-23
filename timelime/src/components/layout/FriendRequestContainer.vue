@@ -2,13 +2,12 @@
     <a is="sui-dropdown-item">
 
 
-    <sui-dropdown icon="big universal access" class="requestDropdown" floating>
-        <sui-dropdown-menu scrolling="true" class="left menu dropMenuReq maxheight">
+    <sui-dropdown icon="big universal access" class="requestDropdown" floating >
+        <sui-dropdown-menu scrolling="true" class="left menu dropMenuReq maxheight" >
             <sui-dropdown-header content="Friend Requests:"/>
                 <FriendRequest v-for="(req,n) in this.getAllFriendsRequests" :key="n"
                     :request="req.data()"
                     class="friendreq"
-
                 ></FriendRequest>
                 
         </sui-dropdown-menu>
@@ -38,6 +37,7 @@ export default {
         }
     },
     methods: {
+
 
     },
     computed: {
