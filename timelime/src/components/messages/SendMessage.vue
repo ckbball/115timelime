@@ -1,10 +1,21 @@
 <template lang="html">
   <div>  
-    <sui-input class="most" 
+<!--     <sui-input class="most" 
                v-model="messageContent" 
                placeholder="Type your message here..."
                id="messageBox"/>
-    <sui-button v-on:click="sendMessage()" type="submit">Send</sui-button>
+    <sui-button v-on:click="sendMessage()" type="submit">Send</sui-button> -->
+    <sui-form>
+      <sui-form-field>
+        <textarea
+          @keydown="inputHandler"
+          attached
+          :rows="nrows"
+          v-model="messageContent"
+          placeholder="Type your message here..."
+        ></textarea>
+      </sui-form-field>
+    </sui-form>
   </div>
 </template>
 
@@ -22,7 +33,10 @@ export default {
   computed: {
     ...mapGetters([
       'getUserInfo'
-    ])
+    ]),
+    nrows: function() {
+      return (Math.floor(this.messageContent.length / 50)) + 1
+    }
   },
   methods: {
     ...mapActions([
@@ -34,6 +48,15 @@ export default {
                          messageContent: this.messageContent
                        })
       this.messageContent = ""
+    },
+    inputHandler: function(e){
+      if (e.keyCode === 13 && !e.shiftKey) {
+          e.preventDefault();
+          this.sendMessage();
+      }
+      if(e.keyCode === 13 && e.shiftKey) {
+          this.messageContent = this.messageContent + '\n'
+      }
     }
   },
   props: {
