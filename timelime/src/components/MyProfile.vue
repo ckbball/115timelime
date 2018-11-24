@@ -5,9 +5,12 @@
       </sui-grid-column>
 
       <sui-grid-column :width="7">
-        <MyFeed fluid
+        <!-- <MyFeed fluid
             :uid="getUserInfo.uid"
-        />
+        /> -->
+        <UserFeed>
+
+        </UserFeed>
       </sui-grid-column>
       <sui-grid-column  :width="5">
         <MySideBar
@@ -134,6 +137,7 @@
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
 import MyFeed from '@/components/MyFeed'
+import UserFeed from '@/components/posts/UserFeed'
 import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import EditProfilePicture from '@/components/user_profile/EditProfileInfo'
 import MySideBar from '@/components/MySideBar'
@@ -152,9 +156,10 @@ export default {
     "EditProfileInfo": EditProfileInfo,
     "Friend": Friend,
     "FriendButton": FriendButton,
-    "MyFeed": MyFeed,
+    // "MyFeed": MyFeed,
     'CreateNewPostModal': CreateNewPostModal,
-    'CommentAvatarButton': CommentAvatarButton
+    'CommentAvatarButton': CommentAvatarButton,
+    'UserFeed': UserFeed
   },
     props: {
     user: Object,

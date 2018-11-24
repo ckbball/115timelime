@@ -11,18 +11,12 @@
 
         <sui-table-body v-if="isVisible == true">
             <sui-table-row v-for="comment in comments" :key="comment.comment_id">
-                <Comment
-                    :comment="comment"
-                ></Comment>
+                <Comment :comment="comment"></Comment>
             </sui-table-row>
         </sui-table-body>
         <sui-table-footer>
             <sui-table-row>
-                <CommentsFooter
-                    :post="post"
-                >
-                </CommentsFooter>
-
+                <CommentsFooter :post="post"></CommentsFooter>
             </sui-table-row>
         </sui-table-footer>
 
