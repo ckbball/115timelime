@@ -5,10 +5,19 @@
 
 
         <sui-card-content>
-          YOU HAVE NO POSTS :(
-        </sui-card-content>
+          <span class="top"> YOU HAVE NO POSTS :( </span>
+          <p>create a new post using <sui-button icon="pencil alternate" @click="clickWriteButton()"/> in your side bar </p>
+          <p> or find friends with posts using the search bar above </p>
+          <sui-image 
+            src="http://pixelartmaker.com/art/602231445d9af8c.png"
+            size="medium"
+          />
+          <br/>
+           <br/>
+            <br/>
+          <p> happy posting! </p>
 
-       
+        </sui-card-content>
          
       </sui-card>
 
@@ -35,7 +44,9 @@ export default {
     }
   },
   methods: {
-
+    clickWriteButton: function() {
+      this.$emit("writePost")
+    }
   }
 
 
@@ -48,6 +59,11 @@ export default {
 
 .UserPost{
   width: 100%;
+}
+.top{
+  font-weight: 400;
+  font-size: 15pt;
+  position: relative;
 }
 
 </style>

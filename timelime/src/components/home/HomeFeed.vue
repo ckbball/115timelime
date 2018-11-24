@@ -1,7 +1,10 @@
 <template>
   <div >
 
-    <StandInPost v-if="this.getAllMyNetworksPosts.length == 0"/>
+   <StandInPost 
+    v-if="this.getAllMyNetworksPosts.length == 0" 
+    @writePost="clickWriteButton()"
+  />
 
     <div class="posts" v-for="(p,n) in this.getAllMyNetworksPosts" :key="n">
           <post
@@ -48,7 +51,11 @@ export default {
   methods: {
     ...mapActions([
       'fetchAllMyFriendsPosts'
-      ]),
+    ]),
+    clickWriteButton: function() {
+    console.log("clicked at HOMEfeed level")
+    this.$emit("writePost")
+  },
   },
   // mounted () {
   //   console.log('anal-hole')
