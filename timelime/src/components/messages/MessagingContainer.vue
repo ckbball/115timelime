@@ -6,11 +6,12 @@
     <sui-dropdown icon="big envelope outline" class="requestDropdown" floating>
         
         <sui-label 
+          v-if="this.getUnreadMessageCount > 0"
             floating 
             size="mini" 
             circular  
             color="red"
-        >69</sui-label>
+        >{{this.getUnreadMessageCount}}</sui-label>
 
     </sui-dropdown>
     </a>
@@ -33,7 +34,7 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'getAllFriendsRequests'
+            'getUnreadMessageCount'
         ])
     }
 }

@@ -1,6 +1,8 @@
 <template>
   <div >
 
+    <StandInPost v-if="this.getAllMyNetworksPosts.length == 0"/>
+
     <div class="posts" v-for="(p,n) in this.getAllMyNetworksPosts" :key="n">
           <post
             :post="p.data()"
@@ -15,6 +17,7 @@
 import { mapGetters, mapActions } from 'vuex'
 
 import Post from '@/components/posts/Post'
+import StandInPost from '@/components/posts/StandInPost'
 import firebase from 'firebase'
 import db from '@/firebase/init'
 
@@ -40,6 +43,7 @@ export default {
   }, 
   components: {
     "Post": Post,
+    "StandInPost": StandInPost,
   },
   methods: {
     ...mapActions([
