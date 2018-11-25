@@ -131,7 +131,6 @@ exports.issueNotificationOnNewComment = functions.firestore
 		.catch(err => {
 			reject()
 		})
-
 	})	
 	return promise
 })
