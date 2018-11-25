@@ -94,7 +94,9 @@ export default {
   computed: {
     ...mapGetters([
       'getAuthenticatedUser',
-      'getAllFriendsRequests'
+      'getAllFriendsRequests',
+      'getAllFriends',
+      'getUserInfo',
     ]),
     numberOfReqs: function(){
         return this.getAllFriendsRequests.length
@@ -103,7 +105,8 @@ export default {
 
   methods: {
     ...mapActions([
-      'signUserOut'
+      'signUserOut',
+      'fetchMyMessageStatuses'
     ]),
 
     onSearchReturned(event) {
@@ -122,10 +125,19 @@ export default {
       this.active = name;
       this.navigateTo(name)
     },
-
-
-
   },
+  watch: {
+    getAllFriends: function() {
+      this.fetchMyMessageStatuses({my_uid: this.getUserInfo.uid, allMyFriends: this.getAllFriends})
+    }
+  },
+
+
+
+
+
+
+
 
    
 }

@@ -20,8 +20,8 @@ export default function configureModerator (store) {
 			case 'finishFetchingRelations':
 				if(store.getters.getAuthenticatedUser){
 					store.dispatch('fetchAllMyFriendsPosts', store.getters.getAllFriends)
+					store.dispatch('fetchMyMessageStatuses', store.getters.getAllFriends)
 				}
-
 		}
 	})
 
@@ -34,6 +34,9 @@ export default function configureModerator (store) {
 				store.commit('unsetFriends')
 				store.commit('unsetAllMyPosts')
 				store.commit('unsetAllMyNetworksPosts')
+				store.commit('unsetFriendsMessaged')
+				store.commit('unsetFriendsNotMessaged')
+				store.commit('unsetfriendsWithUnreadMessages')
 			 	return router.replace('Login')
 	
 		}
