@@ -7,6 +7,7 @@
       <sui-grid-column :width="7">
         <MyFeed fluid
             :uid="getUserInfo.uid"
+            @writePost="toggleWritePost()"
         />
       </sui-grid-column>
       <sui-grid-column  :width="5">

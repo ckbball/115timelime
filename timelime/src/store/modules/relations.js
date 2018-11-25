@@ -43,7 +43,14 @@ const mutations = {
         state.friends = []
     },
     pushToFriends: (state, payload) => {
-        state.friends.push(payload)
+        var friendInfo = {}
+
+        for(var property in payload.data() ) {
+            friendInfo[property] = payload.data()[property]
+        }
+
+        friendInfo['relation_id'] = payload.id
+        state.friends.push(friendInfo)
     },
     setMyFriends: (state, payload) => {
         state.myFriends = payload
@@ -183,6 +190,9 @@ const actions = {
         db.collection('relations').add({
             type: 'friend',
             conversation_id: requester.uid + '_' + requestee.uid,
+
+            message_history: -1,   // this holds when they last messaged each other 
+            unread_message: '',         // this will be a UID saying who needs to read mesages
 
             [fbUID(requester.uid)]: 'true',
             [fbName(requester.uid)]: requester.firstName + ' ' + requester.lastName,

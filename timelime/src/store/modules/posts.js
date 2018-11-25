@@ -107,6 +107,7 @@ const actions = {
     // step one, grab a users friends, then call `fetchPostsOfAUser` for each user to make 
     // AllMyNetworksPosts reflect this 
     fetchAllMyFriendsPosts: ({commit, dispatch}, {my_uid, allMyFriends}) => {
+      console.log("ive never had ANAL!")
     	allMyFriends.forEach( friend =>{
     		for(var property in friend.data()){
     			if(helpers.isUID(property)){

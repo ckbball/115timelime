@@ -6,11 +6,10 @@ import { store } from '..';
 const state = {   
     // NOTE: these are arrays of friends, not of messages
     friendsMessaged: [],            // list of friends ever messaged
-    friendsNotMessaged: [],         // list of friends never messaged
-    friendsWithUnreadMessages: [],  // list of friends who have messages that have not been read
+    unreadMessageCount: 0,
 
     // NOTE: these are arrays of messages
-    // @Ceasar & @Kenji & @Donovan this is a guess of what will be needed to be done
+    // @Caesar & @Kenji & @Donovan this is a guess of what will be needed to be done
     // if you want to change or add to these please do
     allMessages: [],                // all messages in firebase
     messagesBetweenTwoUsers: [],    // list of messages between two people
@@ -21,143 +20,92 @@ const getters = {
     getFriendsMessaged: (state) => {
         return state.friendsMessaged
     },
-    getFriendsNotMessaged: (state) => {
-        return state.friendsNotMessaged
-    },
-    getFriendsWithUnreadMessages: (state) => {
-        return state.friendsWithUnreadMessages
-    },
+    getUnreadMessageCount: (state) => {
+        return state.unreadMessageCount
+    }
 }
 const mutations = {
     /* ----- Boilerplate functions -------*/
     setFriendsMessaged: (state, payload) => {
         state.friendsMessaged = payload
     },
-    unsetFriendsMessaged: (state, payload) => {
+    unsetFriendsMessaged: (state) => {
         state.friendsMessaged = []
     },
     pushToFriendsMessaged: (state, payload) => {
-        state.friendsMessaged.push(payload)
+        if (!(containsObject(payload, state.friendsMessaged))){
+            state.friendsMessaged.push(payload)
+        }
 
         // nested function that specifies sorting of friends list, we cannot use
         // standard js sort since it is a list of objects not a list of numbers 
         // nor numbers.
         // this sort function is based off of the name field in the objects
         function compare(a,b) {
-          if (a.name < b.name)
-            return -1;
-          if (a.name > b.name)
-            return 1;
-          return 0;
+            if (a.message != b.message){
+                if (a.message > b.message)
+                    return -1;
+                if (a.message < b.message)
+                    return 1;
+                return 0;
+            } else {
+                if (a.name < b.name)
+                    return -1;
+                if (a.name > b.name)
+                    return 1;
+                return 0;
+            }
         }
             
         state.friendsMessaged = (state.friendsMessaged).sort(compare);
 
     },
-    setFriendsNotMessaged: (state, payload) => {
-        state.friendsNotMessaged = payload
-    },
-    unsetFriendsNotMessaged: (state, payload) => {
-        state.friendsNotMessaged = []
-    },
-    pushToFriendsNotMessaged: (state, payload) => {
-        state.friendsNotMessaged.push(payload)
 
-        // nested function that specifies sorting of friends list, we cannot use
-        // standard js sort since it is a list of objects not a list of numbers 
-        // nor numbers.
-        // this sort function is based off of the name field in the objects
-        function compare(a,b) {
-          if (a.name < b.name)
-            return -1;
-          if (a.name > b.name)
-            return 1;
-          return 0;
-        }
-            
-        state.friendsNotMessaged = (state.friendsNotMessaged).sort(compare);
+    unsetUnreadMessageCount: (state, payload) => {
+        state.unreadMessageCount = 0
     },
-    setFriendsWithUnreadMessages: (state, payload) => {
-        state.friendsWithUnreadMessages = payload
+    addToUnreadMessageCount: (state) => {
+        state.unreadMessageCount += 1
     },
-    unsetfriendsWithUnreadMessages: (state, payload) => {
-        state.friendsWithUnreadMessages = []
-    },
-    pushToFriendsWithUnreadMessages: (state, payload) => {
-        state.friendsWithUnreadMessages.push(payload)
 
-        // nested function that specifies sorting of friends list, we cannot use
-        // standard js sort since it is a list of objects not a list of numbers 
-        // nor numbers.
-        // this sort function is based off of the name field in the objects
-        function compare(a,b) {
-          if (a.name < b.name)
-            return -1;
-          if (a.name > b.name)
-            return 1;
-          return 0;
-        }
-            
-        state.friendsWithUnreadMessages = (state.friendsWithUnreadMessages).sort(compare);
-    },
+
 }
 const actions = {
-    updateMessages: ({commit, getters}, {change, my_uid}) => {
-        // TODO: this is old code, change it to suit messags
+     fetchMyMessageStatuses: ({commit, dispatch}, {my_uid, allMyFriends}) => {
+        commit('unsetUnreadMessageCount')
+        commit('unsetFriendsMessaged')
+
+        allMyFriends.forEach( friend =>{
+
+            var friendFormatted = {}
+            for(var property in friend ) {
+                if(belongToOtherUser(property, my_uid)) {
+                    if(getPrefix(property) == 'uid'){
+                        friendFormatted[getPrefix(property)] = getUID(property)
+                    } else {
+                        friendFormatted[getPrefix(property)] = friend[property]
+                    }
+                }
+                if (property == "conversation_id"){
+                    friendFormatted[property]=friend[property]
+                }
+            }
+
+            if (friendFormatted.unread === my_uid) {
+                commit('addToUnreadMessageCount')
+            }
 
 
-        // let contains = false
-        // getters.getAllFriendsRequests.forEach(request => {
-        //     if(request.id === change.id){
-        //         contains = true
-        //         if(changeTypeIsFriendship(request, change)){
-        //             if(isRequest(change, my_uid)) commit('pushToRequests', change)
-        //             if(!isRequest(change, my_uid)) commit ('removeFromRequests',change)
-        //         } else {
-        //             request = change
-        //         }
-        //     } 
-        // })
-        // if (contains === false ) {
-        //     if(isRequest(change, my_uid)) commit('pushToRequests', change)
-        // }
-
-    },
-    
-    // TODO: Mia 
-    // sort Friends, splits friends into three categories:
-    //      - friends with unread messages 
-    //      - friends with only read messages 
-    //      - no message history
-    sortFriends: ({commit}, {change, my_uid}) => {
-        // TODO: this is old code, change it to suit messags
-
-        // if(isRequest(change, my_uid)) {
-        //     commit('pushToRequests', change)
-        // }
-        // if(isFriend(change)){
-        //     commit('pushToFriends', change)
-
-        //     var friend = {}
-        //     for(var property in change.data() ) {
-        //         if(belongToOtherUser(property, my_uid)) {
-        //             if(getPrefix(property) == 'uid'){
-        //                 friend[getPrefix(property)] = getUID(property)
-        //             } else {
-        //                 friend[getPrefix(property)] = change.data()[property]
-        //             }
-        //         }
-        //     }
-        //     commit('pushToMyFriends', friend)
-
-        // }
+            commit('pushToFriendsMessaged', friendFormatted)
+        })
     },
 
-    handleChanges: ({dispatch}, {change, my_uid}) => {
-        // TODO: this is old code, change it to suit messags
+    readMessage({commit, dispatch}, {my_uid, friend}){
 
-        // dispatch('updateFriends', change)
-        // dispatch('updateRequests', {change: change, my_uid: my_uid})
+        db.collection('relations').doc(friend.relation).update(
+        {
+            unread_message: "",
+        })
     },
 
     fetchMessages: ({commit, dispatch}, payload) => {
@@ -180,8 +128,12 @@ const actions = {
 
 
     issueMessage: (context, {messager, messagee, messageContent}) => {
+
+
+
         var moment = require('moment');
         db.collection('messages').add({
+            //relation_id: 
             conversation_id: messagee.conversation_id,
             // time_sent: moment(Date.now()).format("dddd h:mm A, MMMM Do YYYY"),
             time_sent: Date.now(),
@@ -196,7 +148,19 @@ const actions = {
         })
         .then(docRef => {
             db.collection('messages').doc(docRef.id).update({self_id: docRef.id})
-        })    
+        })  
+
+
+        // grab the relation and change the readUID
+
+       db.collection('relations').doc(messagee.relation).update(
+        {
+            unread_message: messagee.uid,
+            message_history: Date.now(),
+        })
+       
+
+        // TODO: Mia change the friend doc to have messaged and change who needs to read it
     },
 
     // grabMessager returns an object with the messagers info, returns an object with:
@@ -221,86 +185,36 @@ const actions = {
 
 // TODO: create helper functions, these are old ones, they may be helpful a lot of them are in helpers.js
 
+var belongToOtherUser = (arg, my_uid) => {
+    // return false because belongs to neither user
+    if (getPrefix(arg) == "self"){
+        return false
+    }
+    var n = arg.indexOf('_')
+    var someUid = arg.substring(n+1)
+    // get whatever trails after _ and see if it is the other users
+    if (someUid == my_uid){
+        return false
+    }
+    return true 
+}
 
-// var fbImage = (arg) => 'image_'+arg
-// var fbName = (arg) => 'name_'+arg
-// var getUID = (arg) => arg.substring(4)
-// var fbUID = (arg) => 'uid_'+arg
-// var isUID = (arg) => {
-//     let answer = false
-//     if (arg.substring(0,4)== 'uid_') {
-//         answer = true
-//     }
-//     return answer
-// }
+var getPrefix = (arg) => {
+    var n = arg.indexOf('_')
+    return arg.substring(0,n)
+}
 
-// var belongToOtherUser = (arg, my_uid) => {
-//     // return false because belongs to neither user
-//     if (getPrefix(arg) == "self"){
-//         return false
-//     }
-//     var n = arg.indexOf('_')
-//     var someUid = arg.substring(n+1)
-//     // get whatever trails after _ and see if it is the other users
-//     if (someUid == my_uid){
-//         return false
-//     }
-//     return true 
-// }
+var getUID = (arg) => arg.substring(4)
 
-// var getPrefix = (arg) => {
-//     var n = arg.indexOf('_')
-//     return arg.substring(0,n)
-// }
-
-// var isOtherUID = (arg, payload) => {
-//     if (arg == fbUID(payload)){
-//         return false
-//     }
-//     return true
-// }
-// var isFriend = (relation) => {
-//     // assume they are friends
-//     let answer = true
-//     for(var property in relation.data() ) {
-//         if(isUID(property)) {
-//             if(relation.data()[property] !== 'true'){// check if they aren't
-//                 answer = false
-//             }
-//         }
-//     }
-//     return answer
-// }
-// var isRequest = (relation, my_uid) => {
-//     // assume it is a request
-//     //let answer = true
-//     for(var property in relation.data() ) {
-//         // check if user
-//         if (isUID(property)){
-//             // check if different user
-//             if(isOtherUID(property, my_uid)) {
-//                 // now see if that other user is true AND that we are false 
-//                 if(relation.data()[property] === 'true' && relation.data()[fbUID(my_uid)] === 'false'){
-//                     return true
-//                 }
-//             }
-//         }
-//     }
-//     return false
-// }
-// var changeTypeIsFriendship = (original, change) => {
-//     let answer = false
-//     for(var property in original.data()) {
-//         if(isUID(property)){
-//             if(original.data()[property] !== change.data()[property]){
-//                 answer = true
-//             } 
-//         }
-//     }
-//     return answer
-// }
-
-
+var containsObject = (obj, list) =>  {
+    var i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i].uid === obj.uid) {
+            return true;
+        }
+    }
+    return false;
+}
 
 
 
