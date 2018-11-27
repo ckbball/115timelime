@@ -99,12 +99,12 @@ export default {
         requestMessages(friend){
             this.readMessage({my_uid: this.getUserInfo.uid, friend: friend})
             // TODO: mia create a firebase function that checks if that message was read or not and change the relations
-
             this.$emit("changeLoadedMessages", friend)
         },
     },
     update: {
         getAllFriends: function() {
+
             // store.dispatch('fetchAllMyFriendsPosts', store.getters.getAllFriends)
             // this.fetchAllMyFriendsPosts({my_uid: this.getUserInfo.uid, allMyFriends: this.getAllFriends})
             // store.dispatch('fetchMyMessageStatuses', store.getters.getAllFriends)

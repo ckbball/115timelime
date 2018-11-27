@@ -4,10 +4,10 @@
             <sui-grid-row>
                 
                 <sui-grid-column :width="1">
-                    <CommentAvatarButton
-                       :uid="getUserInfo.uid" 
-                       :image="getUserInfo.image"
-                    ></CommentAvatarButton>
+                    <MessageAvatar
+                      :uid="getUserInfo.uid"
+                      :image="getUserInfo.image"
+                    ></MessageAvatar>
                    
                 </sui-grid-column>
                 <sui-grid-column :width="15" textAlign="right">
@@ -30,12 +30,12 @@
 </template>
 
 <script>
-import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
+import MessageAvatar from '@/components/messages/MessageAvatar'
 import { mapGetters } from 'vuex'
 export default {
   name: 'CommentsFooter',
   components: {
-      'CommentAvatarButton': CommentAvatarButton
+      'MessageAvatar': MessageAvatar
   },
   props: { 
       post: {

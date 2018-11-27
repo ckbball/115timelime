@@ -12,9 +12,10 @@ const computed = {
 }
 const state = {
 	post: null,
-	allMyPosts: [],
+    allMyPosts: [],
     allMyNetworksPosts: [],
     friendRequests: [],
+
 
 }
 const getters = {
@@ -24,6 +25,7 @@ const getters = {
     getAllMyPosts: (state) => {
     	return state.allMyPosts
     },
+
 }
 const mutations = {
 	/* ----- Boilerplate functions -------*/
@@ -45,6 +47,7 @@ const mutations = {
     pushToAllMyPosts: (state, payload) => {
         state.allMyPosts.push(payload)
     },    
+    
 
 }
 const actions = {	
@@ -68,7 +71,8 @@ const actions = {
         })
     },
 
-    // NOTE: this is a helper function which appens to AllMyNetworkPosts
+
+    // NOTE: this is a helper function which happens to AllMyNetworkPosts
     // payload here is the uid of the user
     fetchPostsOfAUser: ({commit, dispatch}, payload) => {
 	    db.collection('posts').where('author_uid', '==', payload)
@@ -83,24 +87,6 @@ const actions = {
             })
         })
     },
-
-  //   // NOTE: this is a helper function which appens to AllMyNetworkPosts
-  //   // payload here is the uid of the user
-  //   fetchPostsOfAUser: (context, payload) => {
-  //   	var posts []
-
-	 //    db.collection('posts').where('author_uid', '==', payload)
-		// .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-  //           snapshot.docChanges().forEach(change => {
-  //             if (change.type === 'added') {
-  //               posts.append(change.doc)
-  //           }
-  //             if (change.type === 'modified') {
-  //               posts.append(change.doc)
-  //             }
-  //           })
-  //       })
-  //   },
 
 
     // payload here is the uid of the user

@@ -51,7 +51,8 @@ export default {
   methods: {
       clickWriteButton: function() {
         this.$emit("writePost")
-    }
+    },
+    
   },
 }
 </script>

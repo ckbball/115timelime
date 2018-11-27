@@ -1,28 +1,25 @@
 <template>
-  <router-link :to="{path: '/user/'+userUIDLocation}">
-    <sui-comment-avatar 
-      :src="userImageLocation"
-    >
+  <router-link :to="{path: '/user/'+uid}">
+     <sui-image 
+        class="MessageIcon"
+        :src="image" 
+        shape="rounded" 
+        width="height" />
+<!--     <sui-comment-avatar 
+      :src="image"
+    > -->
     </sui-comment-avatar>
   </router-link>
 
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'CommentAvatarButton',
   props: {
-    user: Object 
-      // image: {
-      //     type: String,
-      //     default: 'https://randomuser.me/api/portraits/med/men/20.jpg',
-      //     required: false
-      // },
-      // uid: {
-      //     type: String,
-      //     required: true,
-          
-      // },
+    
   },
   data () {
     return {
@@ -30,12 +27,19 @@ export default {
       userUIDLocation: ""
     }
   }, 
+  computed: {
+      ...mapGetters([
+        'getUserInfo',  
+    ]),
+      
+  },
   methods: {
     userImagePropToVariable() {
-      this.userImageLocation = this.user.image
+      console.log(this.getUserInfo.image + 'in CommentAvatarButton')
+      this.userImageLocation = this.getUserInfo.image
     },
     userUIDPropToVariable() {
-      this.userUIDLocation = this.user.uid
+      this.userUIDLocation = this.getUserInfo.uid
     }
   },
   beforeUpdate() {
@@ -48,4 +52,9 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.MessageIcon{
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+}
 </style>
