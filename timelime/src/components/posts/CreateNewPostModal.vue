@@ -54,10 +54,7 @@ export default {
     ConfirmTextPost: function() {
       // shuts modal in whoever is opening it
       this.$emit("ContinueTextPost")
-      const friendIDs = this.getMyFriends.map(friend => {
-        return friend.uid
-      })
-   
+         
       this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
             parent_id: this.userInfo.uid, // 
             author_uid: this.getUserInfo.uid, //
@@ -65,6 +62,8 @@ export default {
             author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName, //
             content: this.PostContent,
             upload_time: Date.now(),
+            whoSees: this.getMyFriends.map(friend => friend.uid)
+
         })
         .then(response => {
             this.PostContent = ''
