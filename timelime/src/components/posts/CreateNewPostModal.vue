@@ -54,7 +54,8 @@ export default {
       // shuts modal in whoever is opening it
       this.$emit("ContinueTextPost")
 
-      this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
+      // send axios here, https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost, when in published mode.
+      this.axios.post('http://localhost:5001/timelime-96d47/us-central1/addNewPost', {
             parent_id: this.userInfo.uid, // 
             author_uid: this.getUserInfo.uid, //
             author_image: this.getUserInfo.image, //

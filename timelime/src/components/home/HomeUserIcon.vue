@@ -2,7 +2,7 @@
   <div>
     <sui-card class="raised">
       <router-link :to="{path: '/user/'+getUserInfo.uid}">
-        <sui-image :src="userInfo.image" class=ProfilePicture />
+        <sui-image :src="getUserInfo.image" class=ProfilePicture />
       </router-link>
       <sui-card-content>
         <sui-card-header>{{this.userInfo.firstName}} {{this.userInfo.lastName}}</sui-card-header>
