@@ -30,11 +30,17 @@ const router = new Router({
       path: '/',
       name: 'Home',
       component: Home,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/messages',
       name: 'Messages',
       component: MessagePage,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/user/:uid',
@@ -52,7 +58,10 @@ const router = new Router({
     {
       path: '/Messages',
       name: 'Messages',
-      component: MessagePage
+      component: MessagePage,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/Sign-Up',
@@ -90,7 +99,7 @@ const router = new Router({
 // router.beforeEach((to, from, next) => {
 //   let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 //   if (requiresAuth && !auth.isLoggedIn) next('login')
-//   else if (!requiresAuth && auth.isLoggedIn) next('hello')
+//   else if (!requiresAuth && auth.isLoggedIn) next('home')
 //   else next()
 // })
 

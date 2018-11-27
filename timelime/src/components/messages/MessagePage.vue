@@ -7,13 +7,40 @@
         > </FriendsToMessage>
       </sui-grid-column>
 
-      <sui-grid-column :width="7">
-        <!-- need to pass down the "friend" object when the user clicks on the left column cell -->
-      	<MessageContainer fluid
-            :userInfo="getUserInfo"            
-        />
+      <sui-grid-column :width="10">
+        <div class="MessageBox">
+          <sui-table striped>
+            <sui-table-header>
+              <sui-table-row>
+                <sui-table-header-cell text-align="center">{{ this.friend.name}}</sui-table-header-cell>
+              </sui-table-row>
+            </sui-table-header>
+
+            <sui-table-body>
+                  <sui-table-row class="MessageRow"> 
+                    <div v-for="(p, n) in this.getOurMessages" :key="n">
+                      <MessageContainer 
+                          :userInfo="getUserInfo"
+                          :friend="friend"
+                          :message="p"
+                      />
+                    </div>
+
+
+                  </sui-table-row>
+            </sui-table-body>
+
+            <sui-table-footer>
+              
+            </sui-table-footer>
+          </sui-table>
+
+
+      </div>
+
       <div>
-        <SendMessage :friend="friend"/>
+        <SendMessage v-if="!noFriendSelected" :friend="friend"/>
+        <p v-if="noFriendSelected">Click a friend on the left to start messaging!</p>
       </div>
       </sui-grid-column>
     </sui-grid>
@@ -45,17 +72,40 @@ export default {
   computed: {
       ...mapGetters([
         'getUserInfo',
+        'getOurMessages',
       ]),
   },
   data () {
     return {
-      friend: {}  
+      friend: {},
+      noFriendSelected: true
     }
   },
   methods: {
+    ...mapActions([
+      'fetchMessages',
+      'sortMessages'
+    ]),
     changeLoadedMessages(friend){
+      this.noFriendSelected = false
       this.friend = friend 
+      this.getMessages()
     },
+    getMessages: function() {
+      
+      this.fetchMessages({messager: this.getUserInfo, 
+                         messagee: this.friend, 
+                       })
+      
+      
+      setTimeout(this.computeOurMessage, 500)
+      
+      
+    },
+    computeOurMessage: function() {
+        this.sortMessages({my_uid: this.getUserInfo, allMyFriends: this.getOurMessages})
+    },
+    
   },
 }
 
@@ -63,5 +113,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.MessageBox{
+  font-weight: 40;
+  font-size: 12pt;
+  width: 100%;
+  top: 0px;
+}
+.MessageRow{
+  
+  top: 5px;
+}
 </style>

@@ -3,10 +3,10 @@
         <sui-grid>
             <sui-grid-row>
                 <sui-grid-column :width="1" floated="left">
-                    <CommentAvatarButton
-                    :image="comment.author_image"
-                    :uid="comment.author_uid"
-                    ></CommentAvatarButton>
+                    <MessageAvatar
+                      :uid="comment.author_uid"
+                      :image="comment.author_image"
+                    ></MessageAvatar>
                 </sui-grid-column>
 
                 <sui-grid-column :width="15" text-align="left" verticalAlign="middle">
@@ -25,11 +25,11 @@
 </template>
 
 <script>
-import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
+import MessageAvatar from '@/components/messages/MessageAvatar'
 export default {
   name: 'Comment',
   components: {
-      'CommentAvatarButton': CommentAvatarButton
+      'MessageAvatar': MessageAvatar
   },
   props: {
       comment:{
