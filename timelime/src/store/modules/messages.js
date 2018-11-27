@@ -13,7 +13,8 @@ const state = {
     // if you want to change or add to these please do
     allMessages: [],                // all messages in firebase
     messagesBetweenTwoUsers: [],    // list of messages between two people
-    myMessages: [],                 // list of all messages belonging to a user
+    myMessages: [],        // list of all messages belonging to a user
+    friendsMessages: [],
 
 }
 const getters = {
@@ -22,7 +23,20 @@ const getters = {
     },
     getUnreadMessageCount: (state) => {
         return state.unreadMessageCount
-    }
+    },/*
+    // called in MessageContainer to get messages between two users
+    getMessagesBetweenTwoUsers: (state) => {
+        return state.messagesBetweenTwoUsers
+    },
+    // testing function in MessageContainer
+    getMyMessages: (state) => {
+        return state.myMessages
+    },*/
+    // testing function in MessageContainer
+    getOurMessages: (state) => {
+        // console.log('in getOurMessages' + state.messagesBetweenTwoUsers)
+        return state.messagesBetweenTwoUsers
+    },
 }
 const mutations = {
     /* ----- Boilerplate functions -------*/
@@ -31,6 +45,55 @@ const mutations = {
     },
     unsetFriendsMessaged: (state) => {
         state.friendsMessaged = []
+    },/*
+    // sets myMessages used in MessageContainer
+    setMyMessages: (state, payload) => {
+        state.myMessages = payload
+    },
+    // sets friendsMessages used in MessageContainer
+    setFriendsMessages: (state, payload) => {
+        state.friendsMessages = payload
+    },*/
+    // sets our messages
+    setOurMessages: (state, payload) => {
+        state.messagesBetweenTwoUsers = payload
+        console.log(state.messagesBetweenTwoUsers)
+    },
+    unsetOurMessages: (state) => {
+        state.messagesBetweenTwoUsers = []
+    },
+    pushToOurMessages: (state, payload) => {
+        /*
+        if (!(containsObject(payload, state.messagesBetweenTwoUsers))){
+            state.messagesBetweenTwoUsers.push(payload)
+
+        }*/
+        var friendInfo = {}
+
+        for(var property in payload.data() ) {
+            friendInfo[property] = payload.data()[property]
+        }
+
+        friendInfo['self_id'] = payload.id
+        // console.log('messageInfo ' + friendInfo)
+        state.messagesBetweenTwoUsers.push(friendInfo)
+        // state.messagesBetweenTwoUsers.push(payload)
+        // nested function that specifies sorting of friends list, we cannot use
+        // standard js sort since it is a list of objects not a list of numbers 
+        // nor numbers.
+        // this sort function is based off of the name field in the objects
+        /*
+        function compare(a,b) {
+            console.log('in compare: a  ' + a)
+            if (a.time_sent > b.time_sent){
+                return -1
+            } else{
+                return 1
+            }
+        }
+            
+        state.messagesBetweenTwoUsers = (state.messagesBetweenTwoUsers).sort(compare);*/
+        
     },
     pushToFriendsMessaged: (state, payload) => {
         if (!(containsObject(payload, state.friendsMessaged))){
@@ -74,6 +137,7 @@ const actions = {
      fetchMyMessageStatuses: ({commit, dispatch}, {my_uid, allMyFriends}) => {
         commit('unsetUnreadMessageCount')
         commit('unsetFriendsMessaged')
+        // console.log(allMyFriends[allMyFriends.length - 1].self_id + ' in fetchMyMessageStatuses')
 
         allMyFriends.forEach( friend =>{
 
@@ -107,34 +171,66 @@ const actions = {
             unread_message: "",
         })
     },
+    
+    fetchMessages: ({commit, dispatch}, {messager, messagee}) => {
+        
 
-    fetchMessages: ({commit, dispatch}, payload) => {
-        // TODO: this is old code, change it to suit messags
+        state.messagesBetweenTwoUsers = []
 
-  //       db.collection('relations').where(fbUID(payload), '>=', 'a' )
-		// .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-  //           snapshot.docChanges().forEach(change => {
-  //             if (change.type === 'added') {
-  //               commit('pushToAllRelations', change.doc)
-  //               dispatch('sortRelation', {change: change.doc, my_uid: payload}) 
-  //           }
-  //             if (change.type === 'modified') {
-  //               commit('updateRelations', change.doc)
-  //               dispatch('handleChanges', {change: change.doc, my_uid: payload})
-  //             }
-  //           })
-  //         })
+        var conv_id = ""
+         if(messager.uid > messagee.uid){
+            conv_id = messager.uid + "_" + messagee.uid
+        } else {
+            conv_id = messagee.uid + "_" + messager.uid
+        }
+
+        // Call to get messages I sent to friend
+        db.collection('messages')
+        .where('conversation_id', '==', conv_id)
+        .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+          snapshot.docChanges().forEach(change => {
+              if (change.type === 'added') {
+                  commit('pushToOurMessages', change.doc)
+              }
+          })
+        })
+        
+        
+    
+    },
+
+    sortMessages: ({commit, dispatch}, {my_uid, allMyFriends}) => {
+        console.log('in sortMessages')
+        console.log(allMyFriends)
+        
+        function compare(a,b) {
+            if (a.time_sent < b.time_sent){
+                return -1
+            } else {
+                return 1
+            }
+        }
+        
+        // sorts messages in descending order based on time_sent (newest messages are last)
+        var sortedMessages = (allMyFriends).sort(compare);
+
+        state.messagesBetweenTwoUsers = sortedMessages
+        // console.log('is it sorted? ' + sortedMessages[0].message_content)
+        
     },
 
 
     issueMessage: (context, {messager, messagee, messageContent}) => {
-
-
-
+        var conv_id = ""
+        if(messager.uid > messagee.uid){
+            conv_id = messager.uid + "_" + messagee.uid
+        } else {
+            conv_id = messagee.uid + "_" + messager.uid
+        }
         var moment = require('moment');
-        db.collection('messages').add({
-            //relation_id: 
-            conversation_id: messagee.conversation_id,
+        db.collection('messages').add({ 
+
+            conversation_id: conv_id,
             // time_sent: moment(Date.now()).format("dddd h:mm A, MMMM Do YYYY"),
             time_sent: Date.now(),
             message_content: messageContent,

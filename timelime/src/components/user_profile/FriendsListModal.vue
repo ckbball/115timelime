@@ -65,7 +65,7 @@ export default {
           db.collection('relations').where('uid_'+this.uid, '==', 'true').get()
           .then((snapshot) => {
               snapshot.docs.forEach(doc => {
-                  friends.push(doc)
+                  this.friends.push(doc)
               })
           })
       }
