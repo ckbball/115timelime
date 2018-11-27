@@ -55,7 +55,7 @@ export default {
       this.$emit("ContinueTextPost")
 
       // send axios here, https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost, when in published mode.
-      this.axios.post('http://localhost:5001/timelime-96d47/us-central1/addNewPost', {
+      this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
             parent_id: this.userInfo.uid, // 
             author_uid: this.getUserInfo.uid, //
             author_image: this.getUserInfo.image, //
