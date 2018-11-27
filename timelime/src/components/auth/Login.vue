@@ -62,6 +62,9 @@
       ]),
       signIn() {
         this.authenticateUser({email: this.email, password: this.password})
+        .then( cred => {
+          this.$router.push('Home')
+        })
         .catch(err => {
           this.invalidEmail = false
           this.invalidPassword = false

@@ -201,6 +201,8 @@ const actions = {
             [fbUID(requestee.uid)]: 'false',
             [fbName(requestee.uid)]: requestee.firstName + ' ' + requestee.lastName,
             [fbImage(requestee.uid)]: requestee.image,
+
+            date_requested: Date.now()
         })
         .then(docRef => {
             db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
@@ -213,6 +215,7 @@ const actions = {
         thisUserUID = fbUID(responder.uid)
         if(response == "true"){
             db.collection('relations').doc(request.self_id).update({[thisUserUID]: response})
+            db.collection('relations').doc(request.self_id).add({date_accepted: Date.now()})
         } else {
             db.collection('relations').doc(request.self_id).delete()
         }
