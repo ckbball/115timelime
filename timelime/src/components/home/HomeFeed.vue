@@ -2,13 +2,13 @@
   <div >
 
    <StandInPost 
-    v-if="this.getAllMyNetworksPosts.length == 0" 
+    v-if="this.posts.length == 0" 
     @writePost="clickWriteButton()"
   />
 
-    <div class="posts" v-for="(p,n) in this.getAllMyNetworksPosts" :key="n">
+    <div class="posts" v-for="(p,n) in this.posts" :key="n">
           <post
-            :post="p.data()"
+            :post="p"
           />
     </div>
 
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 import Post from '@/components/posts/Post'
 import StandInPost from '@/components/posts/StandInPost'
@@ -34,9 +34,10 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getAllMyNetworksPosts',
-      'getAllFriends',
       'getUserInfo'
+    ]),
+    ...mapState([
+      'userInfo'
     ]),
   },
   data () {
@@ -49,23 +50,46 @@ export default {
     "StandInPost": StandInPost,
   },
   methods: {
-    ...mapActions([
-      'fetchAllMyFriendsPosts'
-    ]),
+
     clickWriteButton: function() {
-    console.log("clicked at HOMEfeed level")
+    //console.log("clicked at HOMEfeed level")
     this.$emit("writePost")
-  },
-  },
-  // mounted () {
-  //   console.log('anal-hole')
-  //   this.fetchAllMyFriendsPosts(this.getAllFriends)
-  // },
-  watch: {
-    getAllFriends: function() {
-      this.fetchAllMyFriendsPosts({my_uid: this.getUserInfo.uid, allMyFriends: this.getAllFriends})
+    },
+    getTimelime: function(id) {
+      console.log(2, id)
+      db.collection('posts').where('whoSees', "array-contains", id)
+      .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+        console.log('snapshot size:' , snapshot.size)
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            this.posts.push(change.doc.data())
+          }
+          if (change.type === 'modified') {
+            this.posts.forEach(post => {
+              if(post.post_id === change.doc.data().post_id){
+                post.whoLikes = change.doc.data().whoLikes
+                post.commentIDs = change.doc.data().commentIDs
+
+              }
+            })
+          }
+        })
+      })
     }
   },
+  mounted() {
+    console.log(1, this.getUserInfo.uid)
+    this.getTimelime(this.getUserInfo.uid)
+  },
+  watch: {
+    userInfo: function(oldvalue, newvalue) {
+      console.log(4, newvalue)
+    }
+  }
+
+  
+
+
 }
 </script>
 
