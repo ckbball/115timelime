@@ -1,20 +1,13 @@
 <template lang="html">
   <div>
-    <sui-card class="raised">
-      <sui-image :src="userInfo.image" class=ProfilePicture>
-        <sui-label slot="corner" corner="left" v-on:click="changeBio">
-          <sui-icon name="write"/>
-        </sui-label>
-        <sui-label slot="corner" corner="right" v-on:click="changeProfileImage">
-          <sui-icon name="camera"/>
-        </sui-label>
-      </sui-image>
-      <sui-card-content>
-        <sui-card-header>{{this.userInfo.firstName}} {{this.userInfo.lastName}}</sui-card-header>
-        <sui-card-meta>Joined {{this.userInfo.joinedDate}}</sui-card-meta>
-        <sui-card-description>{{this.userInfo.bio}}</sui-card-description>
-      </sui-card-content>
-    </sui-card>
+    <sui-image :src="userInfo.image" class=ProfilePicture>
+      <sui-label slot="corner" corner="left" v-on:click="changeBio">
+        <sui-icon name="write"/>
+      </sui-label>
+      <sui-label slot="corner" corner="right" v-on:click="changeProfileImage">
+        <sui-icon name="camera"/>
+      </sui-label>
+    </sui-image>
   </div>
 </template>
 
