@@ -55,7 +55,16 @@ const mutations = {
     },
     unsetTimelime: (state, payload) => {
         state.timelime = []
-    }  
+    },
+    updatePostOnTimelime: (state, payload) => {
+        state.timelime.forEach(post => {
+            if(post.post_id === payload.post_id) {
+                post.whoLikes = payload.whoLikes
+                post.commentIDs = payload.commentIDs 
+            }
+        })
+    }
+
     
 
 }
@@ -63,22 +72,14 @@ const actions = {
     fetchTimelime: ({commit, getters}, payload) => {
         db.collection('posts').where('whoSees', "array-contains", payload)
         .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-          console.log('snapshot size:' , snapshot.size)
           snapshot.docChanges().forEach(change => {
             if (change.type === 'added') {
-                commit('pushToTimelime', change.doc)
+                commit('pushToTimelime', change.doc.data())
+                console.log('added ', change.doc.data())
             }
             if (change.type === 'modified') {
-              this.posts.forEach(post => {
-                if(post.post_id === change.doc.data().post_id){
-                  post.whoLikes = change.doc.data().whoLikes
-                  post.commentIDs = change.doc.data().commentIDs
-                  /*
-                    When I return, I'm thinking about these changes, i probs need some mutations
-                  */
-  
-                }
-              })
+                commit('updatePostOnTimelime', change.doc.data())
+                console.log(change.doc.data())
             }
           })
         })
