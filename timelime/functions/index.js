@@ -320,6 +320,20 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 // 	})
 // })
 
+// exports.uploadFile = functions.https.onRequest((req, res) => {
+// 	cors(req, res, () => {
+// 		if (req.method !== "POST") {
+// 			return res.status(500).json({
+// 				message: "only POST req allowed :("
+// 			});
+// 		}
+
+// 		const busboy = new Busboy({ headers: req.headers});
+// 		let uploadData = null;
+
+// 		busyboy.on("file", (fieldname, file, encoding, mimetype) =)
+// 	})
+// })
 
 exports.addNewPost = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
@@ -329,6 +343,8 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 		let author_name = req.body.author_name
 		let content = req.body.content
 		let whoSees = req.body.whoSees
+		let photo_URL = req.body.photo_URL
+        let is_photo_post = req.body.is_photo_post
 		let upload_time = req.body.upload_time
         let expire_time = upload_time + 2678400000
 
@@ -339,6 +355,8 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 				author_image: author_image,
 				author_name: author_name,
 				content: content,
+				photo_URL: photo_URL,
+				is_photo_post: is_photo_post,
 				whoLikes: [],
 				whoSees: whoSees,
 				commentIDs: [],

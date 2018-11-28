@@ -45,6 +45,10 @@
           <sui-card-description align="left">{{post.content}}</sui-card-description>
         </sui-card-content>
 
+       
+          <sui-image  v-if="post.is_photo_post === 'true'" :src="post.photo_URL" />
+       
+
         <sui-card-content>
           <sui-card-description align="right">Time Remaining: {{timeRemaining}}</sui-card-description>
         </sui-card-content>
@@ -125,7 +129,7 @@ export default {
 }
 .Button1{
   position: relative;
-  margin-right: -130px;
+  margin-right: 20px;
   z-index: 2;
 }
 .Button2{
