@@ -16,8 +16,8 @@
     <sui-card class="raised">
       <sui-card-content>
         <sui-button icon="pencil alternate" @click="clickWriteButton()"></sui-button>
-        <sui-button icon="camera retro"></sui-button>
-<!--         <sui-button icon="film"></sui-button> -->
+        <sui-button icon="camera retro" @click="clickPhotoButton()"></sui-button>
+
       </sui-card-content>
     </sui-card>
   </div>
@@ -66,7 +66,11 @@ export default {
     },
     clickWriteButton: function() {
       this.$emit("writePost")
+    },
+    clickPhotoButton: function() {
+      this.$emit("photoPost")
     }
+
 
 
   },

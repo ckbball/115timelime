@@ -14,12 +14,17 @@
         <HomeSideBar
             :userInfo="getUserInfo"
             @writePost="toggleWritePost()"
+            @photoPost="togglePhotoPost()"
         />
       </sui-grid-column>
     </sui-grid>
 
      <sui-modal v-model="openWritePost">
       <CreateNewPostModal @ContinueTextPost="toggleWritePost" :userInfo="getUserInfo" />
+    </sui-modal>
+
+    <sui-modal v-model="openPhotoPost">
+      <CreateNewPhotoPostModal @ContinuePhotoPost="togglePhotoPost" :userInfo="getUserInfo" />
     </sui-modal>
 
 	</div>
@@ -33,6 +38,7 @@ import {mapActions, mapGetters, mapMutations} from 'vuex'
 import HomeFeed from '@/components/home/HomeFeed'
 import HomeSideBar from '@/components/home/HomeSideBar'
 import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
+import CreateNewPhotoPostModal from '@/components/posts/CreateNewPhotoPostModal'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -42,7 +48,8 @@ export default {
 	components: {
 		'HomeSideBar': HomeSideBar,
 		'HomeFeed': HomeFeed,
-		'CreateNewPostModal': CreateNewPostModal
+		'CreateNewPostModal': CreateNewPostModal,
+		'CreateNewPhotoPostModal' : CreateNewPhotoPostModal
 	},
 	props: {
 		user: Object,
@@ -54,7 +61,8 @@ export default {
 	        openPhoto: false,
 	        openFriends: false,
 	        friends: [],
-        	openWritePost: false
+        	openWritePost: false,
+        	openPhotoPost: false
 	    }
 	  },
 	  computed: {
@@ -74,6 +82,9 @@ export default {
 	    },
 	    toggleWritePost: function(){
 	      this.openWritePost = !this.openWritePost;
+	    },
+	   	togglePhotoPost: function(){
+	      this.openPhotoPost = !this.openPhotoPost;
 	    },
 	    saveNewBio(){
 	      db.collection('users').doc(this.getUserInfo.uid).update({bio: this.newBio})

@@ -12,6 +12,7 @@
                 
         </sui-dropdown-menu>
         <sui-label 
+            v-if="this.getAllFriendsRequests > 0"
             floating 
             size="mini" 
             circular  

@@ -6,7 +6,7 @@
     <sui-card-content>
 
         <sui-image 
-        src="https://cdn.drawception.com/images/panels/2012/5-2/yD3XfXms5g-2.png"
+        src="https://firebasestorage.googleapis.com/v0/b/timelime-96d47.appspot.com/o/user_posts%2FhAy1HyEEWZZhub8OL5LCV9jTXbY2_tumblr_n5gno8Z3SM1supp8bo1_1280.jpg?alt=media&token=f2570002-e351-4261-86eb-5767c395b13c"
         class="squarePhoto"
         />
 

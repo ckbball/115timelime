@@ -18,7 +18,9 @@
             @editBio="toggle()"
             @editPhoto="togglePhoto()"
             @showFriends="toggleFriends()"
+
             @writePost="toggleWritePost()"
+            @photoPost="togglePhotoPost()"
         />
       </sui-grid-column>
     </sui-grid>
@@ -75,7 +77,9 @@
       <CreateNewPostModal @ContinueTextPost="toggleWritePost" :userInfo="getUserInfo" />
     </sui-modal>
 
-
+    <sui-modal v-model="openPhotoPost">
+      <CreateNewPhotoPostModal @ContinuePhotoPost="togglePhotoPost" :userInfo="getUserInfo" />
+    </sui-modal>
 
       <sui-modal v-model="openFriends" size="mini">
         <sui-modal-header>Friends!</sui-modal-header>
@@ -145,6 +149,7 @@ import Friend from '@/components/user_profile/Friend'
 import FriendButton from '@/components/user_profile/FriendButton'
 import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
 import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
+import CreateNewPhotoPostModal from '@/components/posts/CreateNewPhotoPostModal'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -159,7 +164,8 @@ export default {
     // "MyFeed": MyFeed,
     'CreateNewPostModal': CreateNewPostModal,
     'CommentAvatarButton': CommentAvatarButton,
-    'UserFeed': UserFeed
+    'UserFeed': UserFeed,
+    'CreateNewPhotoPostModal': CreateNewPhotoPostModal,
   },
     props: {
     user: Object,
@@ -171,7 +177,8 @@ export default {
         openPhoto: false,
         openFriends: false,
         friends: [],
-        openWritePost: false
+        openWritePost: false,
+        openPhotoPost: false,
 
     }
   },
@@ -211,6 +218,9 @@ export default {
     },
     toggleWritePost: function(){
       this.openWritePost = !this.openWritePost;
+    },
+    togglePhotoPost: function(){
+      this.openPhotoPost = !this.openPhotoPost;
     },
 
 

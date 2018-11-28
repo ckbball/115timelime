@@ -276,6 +276,7 @@ var belongToOtherUser = (arg, my_uid) => {
 
 var getPrefix = (arg) => {
     var n = arg.indexOf('_')
+    //if (n < 0 ){ return arg } // MIA
     return arg.substring(0,n)
 }
 

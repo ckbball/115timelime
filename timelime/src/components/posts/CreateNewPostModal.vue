@@ -63,6 +63,8 @@ export default {
             author_image: this.getUserInfo.image, //
             author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName, //
             content: this.PostContent,
+            photo_URL: "",
+            is_photo_post: "false",
             upload_time: Date.now(),
             whoSees: this.getMyFriends.map(friend => friend.uid)
 
