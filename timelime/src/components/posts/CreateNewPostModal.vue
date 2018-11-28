@@ -54,7 +54,8 @@ export default {
     ConfirmTextPost: function() {
       // shuts modal in whoever is opening it
       this.$emit("ContinueTextPost")
-
+      let whosees=this.getMyFriends.map(friend => friend.uid)
+      whosees.push(this.getUserInfo.uid)
 
       // send axios here, https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost, when in published mode.
       this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
@@ -64,7 +65,7 @@ export default {
             author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName, //
             content: this.PostContent,
             upload_time: Date.now(),
-            whoSees: this.getMyFriends.map(friend => friend.uid)
+            whoSees: whosees//this.getMyFriends.map(friend => friend.uid)
 
         })
         .then(response => {

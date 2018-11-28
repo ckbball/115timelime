@@ -50,7 +50,7 @@ const mutations = {
     // pushToAllMyPosts: (state, payload) => {
     //     state.allMyPosts.push(payload)
     // },  
-    pushToTimelime: (state, payload) => {
+    pushToTimelime: (state, payload) => {        
         state.timelime.push(payload)
     },
     unsetTimelime: (state, payload) => {
@@ -61,6 +61,7 @@ const mutations = {
             if(post.post_id === payload.post_id) {
                 post.whoLikes = payload.whoLikes
                 post.commentIDs = payload.commentIDs 
+                
             }
         })
     }
@@ -74,7 +75,9 @@ const actions = {
         .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
           snapshot.docChanges().forEach(change => {
             if (change.type === 'added') {
-                commit('pushToTimelime', change.doc.data())
+                let post = change.doc.data()
+                post.post_id = change.doc.id
+                commit('pushToTimelime', post)
                 console.log('added ', change.doc.data())
             }
             if (change.type === 'modified') {
