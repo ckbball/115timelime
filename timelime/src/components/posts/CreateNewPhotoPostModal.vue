@@ -83,7 +83,8 @@ export default {
       //       .catch(err => {
       //           console.log(err)
       //       })
-
+                  let whosees=this.getMyFriends.map(friend => friend.uid)
+      whosees.push(this.getUserInfo.uid)
 
             this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
             parent_id: this.userInfo.uid, // 
@@ -94,7 +95,7 @@ export default {
             photo_URL: downloadURL,
             is_photo_post: "true",
             upload_time: Date.now(),
-            whoSees: this.getMyFriends.map(friend => friend.uid)
+            whoSees: whosees
 
         })
         .then(response => {
