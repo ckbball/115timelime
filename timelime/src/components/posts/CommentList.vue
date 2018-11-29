@@ -84,9 +84,12 @@ export default {
             snapshot.docChanges().forEach(change => {
                 if (change.type === 'added') {
                     this.comments.push(change.doc.data())
+                    
                 }
             })
-        })
+          })
+
+
           
 
       }

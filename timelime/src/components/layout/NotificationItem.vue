@@ -4,38 +4,58 @@
 
 <sui-card class="uglyfoot">
     <sui-card-content>
-
-        <sui-image 
-        src="https://cdn.drawception.com/images/panels/2012/5-2/yD3XfXms5g-2.png"
-        class="squarePhoto"
-        />
-
-        <span class="username" >{{notification.content}}</span>
+        <MessageAvatar  
+            :uid="notification.commenter_id"
+            :image="notification.commenter_image">
+        </MessageAvatar>
+        <span class="name"> {{ name }} </span>
+        <span class="content" >{{ content }}</span>
     </sui-card-content>
 </sui-card>
 
 </template>
 
 <script> 
-import { mapActions } from 'vuex'
+import firebase from 'firebase'
+import db from '@/firebase/init'
+import MessageAvatar from '@/components/messages/MessageAvatar'
+import { mapActions, mapGetters } from 'vuex'
 export default {
     name: 'NotificationItem',
     components: {
+        'MessageAvatar': MessageAvatar
     },
     props: {
         notification: {
             type: Object
         }
     },
+    computed: {
+        ...mapGetters([
+            'getUserInfo'
+        ]),
+        
+    },
     data () {
         return{
-    
+            user_uid: [],
+            user_image: '',
+            content: "",
+            name: "",
         }
     },
     methods: {
         ...mapActions([
-        ])
+        ]),
+        
     },
+    created: function () {
+        var n = this.notification.content.indexOf(' ')
+        var l = this.notification.content.indexOf(' ', n+1)
+        this.name = this.notification.content.substring(0, l+1)
+        this.content = this.notification.content.substring(l+1, this.notification.content.length)
+        
+    }
 
 }
 
@@ -53,10 +73,9 @@ export default {
     font-size: 11pt;
     left: 7px;
     position: relative;
-    /*
-    top: 17px;
-    right: 10px;
-    color: gray;*/
+ }
+ .name {
+    font-weight: bold;
  }
 .butthole {
     float: right;
@@ -66,9 +85,6 @@ export default {
     top: 11px;
     right: 5px;
     color: gray;
-/*  position: absolute;
-    display: inline-block;
-    float: right;*/
 }
 .dropdown_ul {
   right: 0;

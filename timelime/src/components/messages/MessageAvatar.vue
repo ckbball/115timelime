@@ -5,10 +5,6 @@
         :src="image" 
         shape="rounded" 
         width="height" />
-<!--     <sui-comment-avatar 
-      :src="image"
-    > -->
-    </sui-comment-avatar>
   </router-link>
 
 </template>

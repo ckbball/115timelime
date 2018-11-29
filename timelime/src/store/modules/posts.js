@@ -53,6 +53,8 @@ const mutations = {
 const actions = {	
 	// payload here is the uid of the CURRENT user
     fetchMyPosts: ({commit, dispatch}, payload) => {
+        state.allMyPosts = []
+        state.allMyNetworksPosts = []
 
 	    db.collection('posts').where('author_uid', '==', payload)
 		.onSnapshot({includeMetadataChanges: true}, (snapshot) => {

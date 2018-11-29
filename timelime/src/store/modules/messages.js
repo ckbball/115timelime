@@ -23,15 +23,7 @@ const getters = {
     },
     getUnreadMessageCount: (state) => {
         return state.unreadMessageCount
-    },/*
-    // called in MessageContainer to get messages between two users
-    getMessagesBetweenTwoUsers: (state) => {
-        return state.messagesBetweenTwoUsers
     },
-    // testing function in MessageContainer
-    getMyMessages: (state) => {
-        return state.myMessages
-    },*/
     // testing function in MessageContainer
     getOurMessages: (state) => {
         // console.log('in getOurMessages' + state.messagesBetweenTwoUsers)
@@ -45,15 +37,7 @@ const mutations = {
     },
     unsetFriendsMessaged: (state) => {
         state.friendsMessaged = []
-    },/*
-    // sets myMessages used in MessageContainer
-    setMyMessages: (state, payload) => {
-        state.myMessages = payload
     },
-    // sets friendsMessages used in MessageContainer
-    setFriendsMessages: (state, payload) => {
-        state.friendsMessages = payload
-    },*/
     // sets our messages
     setOurMessages: (state, payload) => {
         state.messagesBetweenTwoUsers = payload
@@ -63,11 +47,6 @@ const mutations = {
         state.messagesBetweenTwoUsers = []
     },
     pushToOurMessages: (state, payload) => {
-        /*
-        if (!(containsObject(payload, state.messagesBetweenTwoUsers))){
-            state.messagesBetweenTwoUsers.push(payload)
-
-        }*/
         var friendInfo = {}
 
         for(var property in payload.data() ) {
@@ -75,24 +54,7 @@ const mutations = {
         }
 
         friendInfo['self_id'] = payload.id
-        // console.log('messageInfo ' + friendInfo)
         state.messagesBetweenTwoUsers.push(friendInfo)
-        // state.messagesBetweenTwoUsers.push(payload)
-        // nested function that specifies sorting of friends list, we cannot use
-        // standard js sort since it is a list of objects not a list of numbers 
-        // nor numbers.
-        // this sort function is based off of the name field in the objects
-        /*
-        function compare(a,b) {
-            console.log('in compare: a  ' + a)
-            if (a.time_sent > b.time_sent){
-                return -1
-            } else{
-                return 1
-            }
-        }
-            
-        state.messagesBetweenTwoUsers = (state.messagesBetweenTwoUsers).sort(compare);*/
         
     },
     pushToFriendsMessaged: (state, payload) => {
