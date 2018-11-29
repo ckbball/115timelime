@@ -2,7 +2,6 @@
   <div>
     <sui-card class="raised">
       <sui-card-content>
-        <!-- issueFriendRequest(this.getUserInfo, this.userInfo)"> -->
         <div is="sui-button" animated="fade" v-on:click="changeFriendStatus()">
             <sui-button-content visible v-if="isFriend == 'true'">
               Remove Friend
@@ -51,12 +50,6 @@ export default {
     ...mapActions([
       'issueFriendRequest',
       ]),
-    // this function will depend on the desiredAction
-    // addFriend(){
-    //   console.log("action taken on friend page")
-    //   console.log(this.getUserInfo, this.userInfo)
-    //   this.issueFriendRequest({requester: this.getUserInfo, requestee: this.userInfo})
-    // },
     changeFriendStatus() {
       var us1 = 'uid_'+this.getUserInfo.uid
       var us2 = 'uid_'+this.userInfo.uid
