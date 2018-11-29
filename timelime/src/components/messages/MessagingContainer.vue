@@ -33,7 +33,7 @@ export default {
                 defeats the purpose of an SPA, so just use this function
                 instead
             */
-            this.$router.push({ path: 'Messages' })
+            this.$router.push({ path: '/messages' })
         }
     },
     computed: {

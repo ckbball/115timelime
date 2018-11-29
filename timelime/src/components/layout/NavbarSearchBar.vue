@@ -130,7 +130,8 @@ export default {
     ]),
     items () {
       return this.getResults.filter(entry => {
-        return (entry.firstName.substring(0, this.searchText.length) == this.searchText) || (entry.lastName.substring(0, this.searchText.length) == this.searchText)
+        return (entry.firstName.substring(0, this.searchText.length) == this.searchText) || 
+          (entry.lastName.substring(0, this.searchText.length) == this.searchText)
       })
     }
   }
