@@ -11,36 +11,36 @@
 
 <script>
 import Button from '@/components/user_profile/Button'
-export default {
-  name: 'PostCommentButton',
-  components: {
-    "Button": Button
-  },
-  data () {
-    return {
-      counter:0,
-      liked:false,
-      color:"blue",
-      icon:"comment",
-    }
-  },
-  methods: {
-  toggleLike: function()
-  {
-    console.log(event)
-    if (this.liked){
-      this.counter--
-      this.liked = false
-    } 
-    else {
-      this.counter++
-      this.liked = true
-    }
-  },
-  } 
+// export default {
+//   name: 'PostCommentButton',
+//   components: {
+//     "Button": Button
+//   },
+//   data () {
+//     return {
+//       counter:0,
+//       liked:false,
+//       color:"blue",
+//       icon:"comment",
+//     }
+//   },
+//   methods: {
+//   toggleLike: function()
+//   {
+//     console.log(event)
+//     if (this.liked){
+//       this.counter--
+//       this.liked = false
+//     } 
+//     else {
+//       this.counter++
+//       this.liked = true
+//     }
+//   },
+//   } 
   
   
-}
+// }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

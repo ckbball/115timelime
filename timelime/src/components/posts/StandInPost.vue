@@ -1,9 +1,6 @@
 <template lang="html">
   <div>
-
       <sui-card class="UserPost">
-
-
         <sui-card-content>
           <span class="top"> YOU HAVE NO POSTS :( </span>
           <p>create a new post using <sui-button icon="pencil alternate" @click="clickWriteButton()"/> in your side bar </p>
@@ -13,15 +10,12 @@
             size="medium"
           />
           <br/>
-           <br/>
-            <br/>
+          <br/>
+          <br/>
           <p> happy posting! </p>
 
         </sui-card-content>
-         
       </sui-card>
-
-
   </div>
 </template>
 
@@ -29,15 +23,6 @@
 
 export default {
   name: 'StandInPost',
-  components: {
-
-  },
-  props: {
-
-  },
-  computed: {
-
-  },
   data() {
     return {
 

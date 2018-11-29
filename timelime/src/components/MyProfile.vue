@@ -5,12 +5,8 @@
       </sui-grid-column>
 
       <sui-grid-column :width="7">
-        <!-- <MyFeed fluid
-            :uid="getUserInfo.uid"
-        /> -->
-        <UserFeed>
 
-        </UserFeed>
+        <UserFeed></UserFeed>
       </sui-grid-column>
       <sui-grid-column  :width="5">
         <MySideBar
@@ -51,30 +47,7 @@
       </sui-modal-actions>
       
     </sui-modal>
-
-<!-- 
     <sui-modal v-model="openPhoto">
-      <sui-modal-header> Change Profile Photo </sui-modal-header>
-      <sui-modal-content>
-        <sui-modal-description>
-          
-        </sui-modal-description>
-      </sui-modal-content>
-        
-      <sui-modal-actions>
-        Characters remaining: {{textRemaining}}
-        <sui-button negative @click.native="togglePhoto">
-          Cancel
-        </sui-button>
-        <sui-button positive @click.native="savePhoto">
-          Save
-        </sui-button>
-      </sui-modal-actions>
-      
-    </sui-modal>
- -->
-
-     <sui-modal v-model="openPhoto">
       <ChangeProfilePhotoModal @ContinuePhotoUpload="togglePhotoUpload" :userInfo="getUserInfo" />
     </sui-modal>
 
@@ -146,12 +119,10 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
-import MyFeed from '@/components/MyFeed'
 import UserFeed from '@/components/posts/UserFeed'
 import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import EditProfilePicture from '@/components/user_profile/EditProfileInfo'
 import MySideBar from '@/components/MySideBar'
-import Friend from '@/components/user_profile/Friend'
 import FriendButton from '@/components/user_profile/FriendButton'
 import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
 import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
@@ -166,9 +137,7 @@ export default {
     components: {
     "MySideBar": MySideBar,
     "EditProfileInfo": EditProfileInfo,
-    "Friend": Friend,
     "FriendButton": FriendButton,
-    // "MyFeed": MyFeed,
     'CreateNewPostModal': CreateNewPostModal,
     'CommentAvatarButton': CommentAvatarButton,
     'UserFeed': UserFeed,
@@ -208,7 +177,7 @@ export default {
     saveNewBio(){
       db.collection('users').doc(this.getUserInfo.uid).update({bio: this.newBio})
       .then(() =>{
-              this.open = !this.open;
+        this.open = !this.open;
       })
       .catch(err => {
         console.log(err)
@@ -232,75 +201,8 @@ export default {
     },
 
 
-//     getFriends() {
 
-//       db.collection('relations').where('uid_'+this.getUserInfo.uid, '==', true).get() //'uid_0GkbOriyJFaYUupbZhin', '==', 'true').get()
-//       .then((snapshot) =>  {
-//         snapshot.docs.forEach(doc  => {
-//           // need to check if the other one is true 
-//           //    if it is set otherUserUID to whateva that value is break it up at the _ and grab that second part 
-//           var relation = doc.data();
-//           var otherUserUID = "";
-//           var thisUserUID = 'uid_'+this.getUserInfo.uid; // 'uid_0GkbOriyJFaYUupbZhin'
-//           let friends = false;
-
-//           for (var property1 in relation) {
-//             if (property1 == thisUserUID){
-//               continue;
-//             } else {
-//               if (relation[property1] == true){
-//                 otherUserUID = property1.substring(4);
-//                 friends = true;
-//               } else {
-//               }
-//               continue;
-//             }
-//           }
-          
-
-
-//           if (friends === true){
-//             db.collection('users').where('uid', '==', otherUserUID).get()
-//             .then((querySnapshot) => {
-//               querySnapshot.docs.forEach((doc) => {
-//                 let data = {
-//                   'name': doc.data().firstName + ' ' + doc.data().lastName,
-//                   'photo': doc.data().image
-//                  }
-//                  this.friends.push(data)
-//               })
-//             })
-//             .catch(err => {
-//               console.log("failed with error: " + err)
-//             })
-//           }
-
-
-
-//          //  // if it is grab the other uid, and look through the users to find the friend
-//          //  // once friend is found then grab name and photo
-
-//         })
-//       })
-//       .catch(err => {
-//         console.log("failed with error: " + err)
-//       })
-
-
-//   },
-// /*
-// db.collection('relations').doc().where('uid_'+this.getAuthenticatedUser.uid, '==', 'false').get()
-// .then((snapshot) => {
-//   snapshot.forEach((doc) => {
-//     // something impulsive happens
-//   }
-// }) */
-
-//   },
-//   mounted () {
-//     this.getFriends()
-//   },
-}
+  }
 }
 
 </script>
