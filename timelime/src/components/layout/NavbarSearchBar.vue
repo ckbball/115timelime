@@ -104,8 +104,6 @@ export default {
         let results = []
         response.data.forEach(datum => {
           results.push(datum)
-          console.log(datum)
-
         })
         this.setResults(results)
       })
@@ -132,7 +130,8 @@ export default {
     ]),
     items () {
       return this.getResults.filter(entry => {
-        return (entry.firstName.substring(0, this.searchText.length) == this.searchText) || (entry.lastName.substring(0, this.searchText.length) == this.searchText)
+        return (entry.firstName.substring(0, this.searchText.length) == this.searchText) || 
+          (entry.lastName.substring(0, this.searchText.length) == this.searchText)
       })
     }
   }

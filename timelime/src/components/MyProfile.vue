@@ -5,18 +5,22 @@
       </sui-grid-column>
 
       <sui-grid-column :width="7">
-        <MyFeed fluid
+        <!-- <MyFeed fluid
             :uid="getUserInfo.uid"
-            @writePost="toggleWritePost()"
-        />
+        /> -->
+        <UserFeed>
+
+        </UserFeed>
       </sui-grid-column>
       <sui-grid-column  :width="5">
         <MySideBar
             :userInfo="getUserInfo"
             @editBio="toggle()"
-            @editPhoto="togglePhoto()"
+            @editPhoto="togglePhotoUpload()"
             @showFriends="toggleFriends()"
+
             @writePost="toggleWritePost()"
+            @photoPost="togglePhotoPost()"
         />
       </sui-grid-column>
     </sui-grid>
@@ -48,7 +52,7 @@
       
     </sui-modal>
 
-
+<!-- 
     <sui-modal v-model="openPhoto">
       <sui-modal-header> Change Profile Photo </sui-modal-header>
       <sui-modal-content>
@@ -68,12 +72,20 @@
       </sui-modal-actions>
       
     </sui-modal>
+ -->
+
+     <sui-modal v-model="openPhoto">
+      <ChangeProfilePhotoModal @ContinuePhotoUpload="togglePhotoUpload" :userInfo="getUserInfo" />
+    </sui-modal>
+
 
     <sui-modal v-model="openWritePost">
       <CreateNewPostModal @ContinueTextPost="toggleWritePost" :userInfo="getUserInfo" />
     </sui-modal>
 
-
+    <sui-modal v-model="openPhotoPost">
+      <CreateNewPhotoPostModal @ContinuePhotoPost="togglePhotoPost" :userInfo="getUserInfo" />
+    </sui-modal>
 
       <sui-modal v-model="openFriends" size="mini">
         <sui-modal-header>Friends!</sui-modal-header>
@@ -135,6 +147,7 @@
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
 import MyFeed from '@/components/MyFeed'
+import UserFeed from '@/components/posts/UserFeed'
 import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import EditProfilePicture from '@/components/user_profile/EditProfileInfo'
 import MySideBar from '@/components/MySideBar'
@@ -142,6 +155,8 @@ import Friend from '@/components/user_profile/Friend'
 import FriendButton from '@/components/user_profile/FriendButton'
 import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
 import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
+import CreateNewPhotoPostModal from '@/components/posts/CreateNewPhotoPostModal'
+import ChangeProfilePhotoModal from '@/components/user_profile/ChangeProfilePhotoModal'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -153,9 +168,12 @@ export default {
     "EditProfileInfo": EditProfileInfo,
     "Friend": Friend,
     "FriendButton": FriendButton,
-    "MyFeed": MyFeed,
+    // "MyFeed": MyFeed,
     'CreateNewPostModal': CreateNewPostModal,
-    'CommentAvatarButton': CommentAvatarButton
+    'CommentAvatarButton': CommentAvatarButton,
+    'UserFeed': UserFeed,
+    'CreateNewPhotoPostModal': CreateNewPhotoPostModal,
+    'ChangeProfilePhotoModal' : ChangeProfilePhotoModal,
   },
     props: {
     user: Object,
@@ -167,7 +185,8 @@ export default {
         openPhoto: false,
         openFriends: false,
         friends: [],
-        openWritePost: false
+        openWritePost: false,
+        openPhotoPost: false,
 
     }
   },
@@ -196,7 +215,7 @@ export default {
       })
 
     },
-    togglePhoto: function(){
+    togglePhotoUpload: function(){
       this.openPhoto = !this.openPhoto;
     },
     savePhoto(){
@@ -207,6 +226,9 @@ export default {
     },
     toggleWritePost: function(){
       this.openWritePost = !this.openWritePost;
+    },
+    togglePhotoPost: function(){
+      this.openPhotoPost = !this.openPhotoPost;
     },
 
 

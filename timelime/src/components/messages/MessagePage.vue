@@ -39,7 +39,8 @@
       </div>
 
       <div>
-        <SendMessage :friend="friend"/>
+        <SendMessage v-if="!noFriendSelected" :friend="friend"/>
+        <p v-if="noFriendSelected">Click a friend on the left to start messaging!</p>
       </div>
       </sui-grid-column>
     </sui-grid>
@@ -77,6 +78,7 @@ export default {
   data () {
     return {
       friend: {},
+      noFriendSelected: true
     }
   },
   methods: {
@@ -85,6 +87,7 @@ export default {
       'sortMessages'
     ]),
     changeLoadedMessages(friend){
+      this.noFriendSelected = false
       this.friend = friend 
       this.getMessages()
     },

@@ -1,14 +1,10 @@
 <template>
-  <router-link :to="{path: '/user/'+uid}">
+  <router-link v-if="userUIDLocation.length > 0" :to="{path: '/user/'+uid}">
      <sui-image 
         class="MessageIcon"
         :src="image" 
         shape="rounded" 
         width="height" />
-<!--     <sui-comment-avatar 
-      :src="image"
-    > -->
-    </sui-comment-avatar>
   </router-link>
 
 </template>
@@ -35,7 +31,6 @@ export default {
   },
   methods: {
     userImagePropToVariable() {
-      console.log(this.getUserInfo.image + 'in CommentAvatarButton')
       this.userImageLocation = this.getUserInfo.image
     },
     userUIDPropToVariable() {

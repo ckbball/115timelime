@@ -3,7 +3,7 @@
         <sui-grid>
             <sui-grid-row>
                 <sui-grid-column :width="4">
-                    3 Comments
+                    {{post.commentIDs.length}} Comments
                 </sui-grid-column>
                 <sui-grid-column :width="12" textAlign="right">
                     <a @click="emitVisiblity">
@@ -21,8 +21,17 @@ export default {
   components: {
   },
   props: { 
-      visible: Boolean,
-      default: false,
+      visible: {
+          type: Boolean,
+          default: false
+      },
+      post: {
+          type: Object,
+          default: {
+              commentIDs: []
+          }
+      }
+    
   },
   data () {
     return {

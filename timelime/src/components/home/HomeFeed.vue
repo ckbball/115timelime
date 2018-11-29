@@ -2,13 +2,13 @@
   <div >
 
    <StandInPost 
-    v-if="this.getAllMyNetworksPosts.length == 0" 
+    v-if="this.getTimelime.length == 0" 
     @writePost="clickWriteButton()"
   />
 
-    <div class="posts" v-for="(p,n) in this.getAllMyNetworksPosts" :key="n">
+    <div class="posts" v-for="(p,n) in this.getTimelime" :key="n">
           <post
-            :post="p.data()"
+            :post="p"
           />
     </div>
 
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 import Post from '@/components/posts/Post'
 import StandInPost from '@/components/posts/StandInPost'
@@ -34,9 +34,11 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'getAllMyNetworksPosts',
-      'getAllFriends',
-      'getUserInfo'
+      'getUserInfo',
+      'getTimelime'
+    ]),
+    ...mapState([
+      'userInfo'
     ]),
   },
   data () {
@@ -49,23 +51,17 @@ export default {
     "StandInPost": StandInPost,
   },
   methods: {
-    ...mapActions([
-      'fetchAllMyFriendsPosts'
-    ]),
+
     clickWriteButton: function() {
-    console.log("clicked at HOMEfeed level")
-    this.$emit("writePost")
+      this.$emit("writePost")
+    },
+  
   },
-  },
-  // mounted () {
-  //   console.log('anal-hole')
-  //   this.fetchAllMyFriendsPosts(this.getAllFriends)
-  // },
-  watch: {
-    getAllFriends: function() {
-      this.fetchAllMyFriendsPosts({my_uid: this.getUserInfo.uid, allMyFriends: this.getAllFriends})
-    }
-  },
+
+
+  
+
+
 }
 </script>
 

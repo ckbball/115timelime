@@ -34,51 +34,51 @@
 </template>
 
 <script>
-import firebase from 'firebase'
-import db from '@/firebase/init'
+// import firebase from 'firebase'
+// import db from '@/firebase/init'
 
-export default {
-  name: 'Post',
-  data () {
-    return {
-      textPost: '',
-      posts: [],
-    }
-  }, 
-  methods: {
-    submit() {
-      db.collection('posts').add({
-        text: this.textPost,
-      })
-      .then(docRef => {
-        db.collection('posts').doc(docRef.id).update({id: docRef.id})
-      })
-      .catch(err => {
-        console.log("failed with error: " + err)
-      })
-    }, 
-    getPosts() {
-      db.collection('posts').get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          let data = {
-            'id': doc.id,
-            'text': doc.data().text
-          }
-          this.posts.push(data)
-        })
-      })
-      .catch(err => {
-        console.log("failed with error: " + err)
-      })
-      console.log(this.posts)
-    }
-  },
-  created () {
-    this.getPosts()
-    console.log(this.posts[0])
-  }
-}
+// export default {
+//   name: 'Post',
+//   data () {
+//     return {
+//       textPost: '',
+//       posts: [],
+//     }
+//   }, 
+//   methods: {
+//     submit() {
+//       db.collection('posts').add({
+//         text: this.textPost,
+//       })
+//       .then(docRef => {
+//         db.collection('posts').doc(docRef.id).update({id: docRef.id})
+//       })
+//       .catch(err => {
+//         console.log("failed with error: " + err)
+//       })
+//     }, 
+//     getPosts() {
+//       db.collection('posts').get()
+//       .then((querySnapshot) => {
+//         querySnapshot.forEach((doc) => {
+//           let data = {
+//             'id': doc.id,
+//             'text': doc.data().text
+//           }
+//           this.posts.push(data)
+//         })
+//       })
+//       .catch(err => {
+//         console.log("failed with error: " + err)
+//       })
+//       console.log(this.posts)
+//     }
+//   },
+//   created () {
+//     this.getPosts()
+//     console.log(this.posts[0])
+//   }
+// }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

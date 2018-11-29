@@ -1,7 +1,7 @@
 <template>
 
     <a is="sui-dropdown-item">
-        <sui-dropdown icon="big bell outline" class="requestDropdown" floating>
+        <sui-dropdown icon="big bell outline" class="requestDropdown" floating @blur="acknowledgeAllNotifications()">
             <sui-dropdown-menu scrolling="true" class="left menu dropMenuReq maxheight">
                 <sui-dropdown-header content="Notifications:"/>
                 <NotificationItem v-for="(notif,n) in this.getAllNotifications" :key="n" @click="acknowledgeNotification(notif)"
@@ -36,7 +36,14 @@ export default {
     methods: {
         ...mapActions([
             'acknowledgeNotification'
-        ])
+        ]),
+        acknowledgeAllNotifications: function() {
+          this.getAllNotifications.forEach(notif => {
+              if (notif.data().read === false){
+                  this.acknowledgeNotification(notif)
+              }
+          })   
+        }
     },
     computed: {
         ...mapGetters([
@@ -45,7 +52,6 @@ export default {
         ])
     }
 }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

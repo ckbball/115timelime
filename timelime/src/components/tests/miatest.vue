@@ -2,7 +2,7 @@
   <div>
   	<!-- <UserSideBar/> -->
     
-    <UserProfile/>
+    <PhotoPost/>
   </div>
 </template>
 
@@ -23,6 +23,7 @@ import Navbar from '@/components/layout/Navbar'
 import UserIcon from '@/components/user_profile/UserIcon'
 import UserProfile from '@/components/user_profile/UserProfile'
 import UserSideBar from '@/components/user_profile/UserSideBar'
+import PhotoPost from '@/components/posts/PhotoPost'
 
 export default {
   name: 'MiaTest',
@@ -35,6 +36,7 @@ export default {
   	'UserIcon': UserIcon,
     'UserProfile': UserProfile,
     'UserSideBar': UserSideBar,
+    'PhotoPost': PhotoPost,
   },
   data () {
     return {}

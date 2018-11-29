@@ -38,7 +38,6 @@ export default {
   // },
   methods: {
     open() {
-      console.log("hey! someone wants to edit this profile! :)")
       this.$emit("editBio")
     },
     // savePost(){

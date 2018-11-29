@@ -1,21 +1,18 @@
 <template>
-    <router-link :to="{path: '/messages'}">
-  <a is="sui-dropdown-item">
+    <!-- <router-link :to="{name: 'Messages'}"> -->
+        <a is="sui-dropdown-item" @click="navigateTo()">
+            <sui-dropdown icon="big envelope outline" class="requestDropdown" floating>
+            
+                <sui-label v-if="this.getUnreadMessageCount > 0"
+                    floating 
+                    size="mini" 
+                    circular  
+                    color="red"
+                >{{this.getUnreadMessageCount}}</sui-label>
 
-
-    <sui-dropdown icon="big envelope outline" class="requestDropdown" floating>
-        
-        <sui-label 
-          v-if="this.getUnreadMessageCount > 0"
-            floating 
-            size="mini" 
-            circular  
-            color="red"
-        >{{this.getUnreadMessageCount}}</sui-label>
-
-    </sui-dropdown>
-    </a>
-    </router-link>
+            </sui-dropdown>
+        </a>
+    <!-- </router-link> -->
        
  
 </template>
@@ -30,7 +27,14 @@ export default {
         }
     },
     methods: {
-
+        navigateTo: function() {
+            /*
+                For some reason the router link causes a page reload, which
+                defeats the purpose of an SPA, so just use this function
+                instead
+            */
+            this.$router.push({ path: '/messages' })
+        }
     },
     computed: {
         ...mapGetters([

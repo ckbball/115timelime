@@ -9,17 +9,13 @@
                     ></MessageAvatar>
                 </sui-grid-column>
 
-                <sui-grid-column :width="15" text-align="left" verticalAlign="middle">
-                    <h5>{{comment.author_name}}</h5>
+                <sui-grid-column :width="15" textAlign="justify" verticalAlign="middle" class="commentText">
+                  <span class="commenterName">{{comment.author_name}}</span>
+                  <span class="test">
+                    {{comment.content}}
+                  </span>
                 </sui-grid-column>
             </sui-grid-row>
-            <sui-grid-row :width="12"  textAlign="left">
-               <p class="test">
-                  {{comment.content}}
-                </p>
-            </sui-grid-row>
-
-
         </sui-grid>
     </sui-table-cell>
 </template>
@@ -51,9 +47,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.commentText {
+  z-index: 2;
+  left: 14px;
+  display: block;
+}
+.commenterName {
+  font-weight: 830;
+  color: black;
+  font-size: 11pt;
+}
 .test {
-    padding-left: 1em;
-    padding-right: 1em;
+/*    padding-left: 1em;
+    padding-right: 1em;*/
+  display: block;
+  width: 95%;
 
 }
 </style>

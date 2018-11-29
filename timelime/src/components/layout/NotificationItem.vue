@@ -4,12 +4,14 @@
 
 <sui-card class="uglyfoot">
     <sui-card-content>
+
         <MessageAvatar  
             :uid="notification.commenter_id"
             :image="notification.commenter_image">
         </MessageAvatar>
         <span class="name"> {{ name }} </span>
         <span class="content" >{{ content }}</span>
+
     </sui-card-content>
 </sui-card>
 

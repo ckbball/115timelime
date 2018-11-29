@@ -3,25 +3,20 @@
         <sui-table-header>
             <sui-table-row>
                 <CommentsHeader v-on:toggleVisiblity="onToggleVisibility()" 
-                    :visible="this.isVisible">
+                    :visible="this.isVisible"
+                    :post="post">
                 </CommentsHeader>
             </sui-table-row>
         </sui-table-header>
 
         <sui-table-body v-if="isVisible == true">
             <sui-table-row v-for="comment in comments" :key="comment.comment_id">
-                <Comment
-                    :comment="comment"
-                ></Comment>
+                <Comment :comment="comment"></Comment>
             </sui-table-row>
         </sui-table-body>
         <sui-table-footer>
             <sui-table-row>
-                <CommentsFooter
-                    :post="post"
-                >
-                </CommentsFooter>
-
+                <CommentsFooter :post="post"></CommentsFooter>
             </sui-table-row>
         </sui-table-footer>
 
@@ -77,7 +72,6 @@ export default {
           }
       },
       fetchComments: function() {
-          console.log('fetching comments')
           db.collection('comments')
           .where('parent_id', '==', this.post.post_id)
           .onSnapshot({includeMetadataChanges: true}, (snapshot) => {

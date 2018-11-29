@@ -70,7 +70,6 @@
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
 import PostCommentButton from '@/components/user_profile/PostCommentButton'
 import MessageAvatar from '@/components/messages/MessageAvatar'
-// import Comments from '@/components/posts/Comments'
 import CommentList from '@/components/posts/CommentList'
 export default {
   name: 'Post',
@@ -78,7 +77,6 @@ export default {
     "PostLikeButton": PostLikeButton,
     "PostCommentButton": PostCommentButton,
     "MessageAvatar": MessageAvatar,
-    // "Comments": Comments,
     "CommentList": CommentList
   },
   props: {
@@ -91,7 +89,9 @@ export default {
     timeRemaining: function(){
         var moment = require('moment')
         var time_left = this.post.expire_time - Date.now()
-        var time = Math.ceil(time_left/86400000) + " days " + moment(time_left).format('hh') + " hrs " + moment(time_left).format('mm') + " minutes"
+        var time = Math.ceil(time_left/86400000) + " days " + 
+          moment(time_left).format('hh') + " hrs " + 
+          moment(time_left).format('mm') + " minutes"
         return time
         //.format('days h:mm')
     },
@@ -105,10 +105,6 @@ export default {
 
     }
   },
-  methods: {
-
-  }
-
 
 }
 
@@ -116,8 +112,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.PostedTime {
-}
+
 .PostersName{
   font-weight: 400;
   font-size: 15pt;

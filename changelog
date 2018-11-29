@@ -1,4 +1,4 @@
-Commit Message- "Posting Works, Icons in the comments of posts works"
+Commit Message- "Posting Works, Icons in the comments of posts works"   11/27/2018 9:28 a.m.
     Changes:
         - Changed the axios post url in creating new posts to localhost (switch it back for production)
         - Changed the Icon component that is called in commentfooter and comment to call the MessageAvatar.

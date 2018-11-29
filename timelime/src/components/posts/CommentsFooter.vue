@@ -2,6 +2,7 @@
     <sui-table-header-cell>
         <sui-grid>
             <sui-grid-row>
+                
                 <sui-grid-column :width="1">
                     <MessageAvatar
                       :uid="getUserInfo.uid"
@@ -12,6 +13,7 @@
                 <sui-grid-column :width="15" textAlign="right">
                     <sui-form>
                         <sui-form-field>
+    
                             <textarea 
                                 @keydown="inputHandler"
                                 attached
@@ -45,12 +47,20 @@ export default {
   },
   data () {
     return {
-        commentText: ''
-        
+        commentText: '',
+        loading: false
     }
   }, 
   methods: {
-      submitComment: function() {
+    setLoading: function(state) {
+        if(state === 'false'){
+            this.loading = false
+        }
+        if(state === 'true'){
+            this.loading = true
+        }
+    },
+    submitComment: function() {
         if(this.commentText.length == 0) return;
 
         this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewComment', {
@@ -62,21 +72,22 @@ export default {
             content: this.commentText,
         })
         .then(response => {
-            this.commentText = ''
         })
         .catch(err => {
             console.log(err)
         })
-      },
-      inputHandler: function(e){
-        if (e.keyCode === 13 && !e.shiftKey) {
-            e.preventDefault();
-            this.submitComment();
-        }
-        if(e.keyCode === 13 && e.shiftKey) {
-            this.commentText = this.commentText + '\n'
-        }
-      },
+            this.commentText = ''
+
+    },
+    inputHandler: function(e){
+    if (e.keyCode === 13 && !e.shiftKey) {
+        e.preventDefault();
+        this.submitComment();
+    }
+    if(e.keyCode === 13 && e.shiftKey) {
+        this.commentText = this.commentText + '\n'
+    }
+    },
 
 
   },

@@ -46,22 +46,28 @@ export default {
   },
   computed: {
       ...mapGetters([
-        'getUserInfo',  
+        'getUserInfo',
+        'getMyFriends'  
     ]),
   },
   methods: {
     ConfirmTextPost: function() {
       // shuts modal in whoever is opening it
       this.$emit("ContinueTextPost")
+      let whosees=this.getMyFriends.map(friend => friend.uid)
+      whosees.push(this.getUserInfo.uid)
 
-      // send axios here, https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost, when in published mode.
-      this.axios.post('http://localhost:5001/timelime-96d47/us-central1/addNewPost', {
+      this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
             parent_id: this.userInfo.uid, // 
             author_uid: this.getUserInfo.uid, //
             author_image: this.getUserInfo.image, //
             author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName, //
             content: this.PostContent,
+            photo_URL: "",
+            is_photo_post: "false",
             upload_time: Date.now(),
+            whoSees: whosees//this.getMyFriends.map(friend => friend.uid)
+
         })
         .then(response => {
             this.PostContent = ''

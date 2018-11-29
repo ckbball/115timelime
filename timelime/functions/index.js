@@ -94,6 +94,204 @@ var j = schedule.scheduleJob(rule, function(){
 
 
 /* ----- Write new Firebase functions down here ---- */
+exports.changeProfilePhotoAcrossData = functions.firestore
+.document('users/{uid}').onUpdate((change, context) => {
+	//return a promise :(
+	const newValue = change.after.data()
+	const oldValue = change.before.data()
+	const allPromises = []
+
+
+	var uid = newValue.uid
+	var URL = newValue.image
+
+	// change in posts 
+	const p1 = db.collection('posts').where('author_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('posts').doc(doc.id).update({
+					author_image: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p1)
+
+	// change in comments 
+	const p2 = db.collection('comments').where('author_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('comments').doc(doc.id).update({
+					author_image: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p2)
+
+	// change in messages
+	const p3 = db.collection('messages').where('receiver_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('messages').doc(doc.id).update({
+					receiver_image: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p3)
+	  
+	// change in messages
+	const p4 = db.collection('messages').where('sender_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('messages').doc(doc.id).update({
+					sender_image: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p4)
+
+	// change in relations 
+	const p5 = db.collection('relations').where('uid_'+uid, '>=', 'a').get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('relations').doc(doc.id).update({
+					['image_'+uid]: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p5)
+
+	// change in likes 
+	const p6 = db.collection('likes').where('author_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('likes').doc(doc.id).update({
+					author_uid: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p6)
+
+	return Promise.all(allPromises)
+})
+
+exports.editWhoSeesOnRelationChange = functions.firestore
+.document('relations/{relationID}').onUpdate((change, context) => {
+	var isFriend = (relation) => {
+		// assume they are friends
+		let answer = true
+		for(var property in relation ) {
+			if(isUID(property)) {
+				if(relation[property] !== 'true'){// check if they aren't
+					answer = false
+				}
+			}
+		}
+		return answer
+	}
+
+	var isUID = (arg) => {
+		let answer = false
+		if (arg.substring(0,4)== 'uid_') {
+			answer = true
+		}
+		return answer
+	}
+	var getUID = (arg) => arg.substring(4)
+	var extractUIDs = (arg) => {
+		let answer = []
+		for (var property in arg) { 
+			if(isUID(property)) answer.push(getUID(property))
+		}
+		return answer
+	}
+
+
+	const newValue = change.after.data()
+	const uids = extractUIDs(newValue)
+	const allPromises = []
+
+	const p1 = db.collection('posts').where('author_uid', '==', uids[0]).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				if(isFriend(newValue)){
+				const p = db.collection('posts').doc(doc.id)
+				.update({"whoSees": admin.firestore.FieldValue.arrayUnion(uids[1])})
+				promises.push(p)
+
+				} else {
+				const p = db.collection('posts').doc(doc.id)
+				.update({"whoSees": admin.firestore.FieldValue.arrayRemove(uids[1])})
+
+				promises.push(p)
+
+				}
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p1)
+	const p2 = db.collection('posts').where('author_uid', '==', uids[1]).get()
+	.then(snapshot => {
+		if(snapshot.size > 0){
+			const promises = []
+
+			snapshot.docs.forEach(doc => {
+				if(isFriend(newValue)){
+					const p = db.collection('posts').doc(doc.id)
+					.update({"whoSees": admin.firestore.FieldValue.arrayUnion(uids[0])})
+					
+					promises.push(p)
+				} else {
+					const p = db.collection('posts').doc(doc.id)
+					.update({"whoSees": admin.firestore.FieldValue.arrayRemove(uids[0])})
+					
+					promises.push(p)
+				}
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p2)
+	return Promise.all(allPromises)
+})
 
 exports.updateSearchableName = functions.firestore
 .document('users/{uid}').onUpdate((change, context) => {
@@ -131,8 +329,22 @@ exports.issueNotificationOnNewComment = functions.firestore
 		.catch(err => {
 			reject()
 		})
-
 	})	
+	return promise
+})
+exports.updateCommentCountOnAPost = functions.firestore
+.document('comments/{commentId}').onCreate((snapshot, context) => {
+	let promise = new Promise ((resolve, reject) => {
+		const comment = snapshot.data()
+		db.collection('posts').doc(comment.parent_id)
+		.update({'commentIDs': admin.firestore.FieldValue.arrayUnion(snapshot.id)})
+		.then(() => {
+			resolve()
+		})
+		.catch(err => {
+			reject()
+		})
+	})
 	return promise
 })
 
@@ -231,6 +443,9 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 		let author_image = req.body.author_image
 		let author_name = req.body.author_name
 		let content = req.body.content
+		let whoSees = req.body.whoSees
+		let photo_URL = req.body.photo_URL
+        let is_photo_post = req.body.is_photo_post
 		let upload_time = req.body.upload_time
         let expire_time = upload_time + 2678400000
 
@@ -241,7 +456,11 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 				author_image: author_image,
 				author_name: author_name,
 				content: content,
+				photo_URL: photo_URL,
+				is_photo_post: is_photo_post,
 				whoLikes: [],
+				whoSees: whoSees,
+				commentIDs: [],
 				upload_time: upload_time,
                 expire_time: expire_time,
 			})
@@ -288,7 +507,6 @@ exports.searchUsers = functions.https.onRequest((req, res) => {
 		let type = req.query.type
 		let users = []
 		let promise = new Promise((resolve, reject) => {
-			console.log('asdasd',search)
 			db.collection('users')
 			.where('searchableName', '>=', search)
 			.where('searchableName', '<', search + '\uf8ff')
@@ -351,6 +569,7 @@ exports.santizeUsers = functions.https.onRequest((req, res) =>{
 	})
 	res.send('done')
 })
+
 
 
 

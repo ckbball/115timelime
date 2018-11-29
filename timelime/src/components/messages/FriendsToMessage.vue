@@ -105,9 +105,6 @@ export default {
     update: {
         getAllFriends: function() {
 
-            // store.dispatch('fetchAllMyFriendsPosts', store.getters.getAllFriends)
-            // this.fetchAllMyFriendsPosts({my_uid: this.getUserInfo.uid, allMyFriends: this.getAllFriends})
-            // store.dispatch('fetchMyMessageStatuses', store.getters.getAllFriends)
             this.fetchMyMessageStatuses({my_uid: this.getUserInfo.uid, allMyFriends: this.getAllFriends})
         }
   },
@@ -120,27 +117,15 @@ export default {
     font-size: 15pt;
     left: 90px;
     position: relative;
-    /*
-    top: 17px;
-    right: 10px;
-    color: gray;*/
  }
  .FriendName {
     font-size: 11pt;
     position: relative;
     top: 12px;
-    /*
-    top: 17px;
-    right: 10px;
-    color: gray;*/
  }
  .FriendCard {
     position: absolute;
     right: 30px;
-    /*
-    top: 17px;
-    right: 10px;
-    color: gray;*/
  }
  .scroll {
     max-height: 700px;
