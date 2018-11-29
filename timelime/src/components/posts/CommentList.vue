@@ -72,7 +72,6 @@ export default {
           }
       },
       fetchComments: function() {
-          console.log('fetching comments')
           db.collection('comments')
           .where('parent_id', '==', this.post.post_id)
           .onSnapshot({includeMetadataChanges: true}, (snapshot) => {

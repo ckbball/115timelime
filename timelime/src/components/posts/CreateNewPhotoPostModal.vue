@@ -63,24 +63,26 @@ export default {
   methods: {
 
     PostPhotoToFB: function(downloadURL) {
-            this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
-            parent_id: this.userInfo.uid, // 
-            author_uid: this.getUserInfo.uid, //
-            author_image: this.getUserInfo.image, //
-            author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName, //
-            content: this.PostContent,
-            photo_URL: downloadURL,
-            is_photo_post: "true",
-            upload_time: Date.now(),
-            whoSees: this.getMyFriends.map(friend => friend.uid)
+      let whosees = this.getMyFriends.map(friend => friend.uid)
+      whosees.push(this.getUserInfo.uid)
+      this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
+        parent_id: this.userInfo.uid, // 
+        author_uid: this.getUserInfo.uid, //
+        author_image: this.getUserInfo.image, //
+        author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName, //
+        content: this.PostContent,
+        photo_URL: downloadURL,
+        is_photo_post: "true",
+        upload_time: Date.now(),
+        whoSees: whosees
 
-        })
-        .then(response => {
-            this.PostContent = ''
-        })
-        .catch(err => {
-            console.log(err)
-        })
+      })
+      .then(response => {
+          this.PostContent = ''
+      })
+      .catch(err => {
+          console.log(err)
+      })
 
     },
 
@@ -130,7 +132,6 @@ export default {
   watch: {
     url: function(oldvalue, newvalue) {
       if(newvalue){
-        console.log("THIS BITCH CHANGED")
         PostPhotoToFB(newvalue)
       }
     }

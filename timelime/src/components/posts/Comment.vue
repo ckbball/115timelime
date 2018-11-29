@@ -15,25 +15,7 @@
                     {{comment.content}}
                   </span>
                 </sui-grid-column>
-
-
-                
-
-
-
-<!--                 <sui-grid-column :width="15" text-align="left" verticalAlign="middle" class="commenterName">
-                    <h5>{{comment.author_name}}</h5>
-                </sui-grid-column>
- -->
             </sui-grid-row>
-           <!--  <sui-grid-row :width="12"  textAlign="left">
-              <h5>{{comment.author_name}}</h5>
-               <p class="test">
-                  {{comment.content}}
-                </p>
-            </sui-grid-row> -->
-
-
         </sui-grid>
     </sui-table-cell>
 </template>

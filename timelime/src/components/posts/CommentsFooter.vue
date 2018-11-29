@@ -51,9 +51,6 @@ export default {
         loading: false
     }
   }, 
-
-
-  
   methods: {
     setLoading: function(state) {
         if(state === 'false'){

@@ -1,10 +1,5 @@
 <template lang="html">
   <div>  
-<!--     <sui-input class="most" 
-               v-model="messageContent" 
-               placeholder="Type your message here..."
-               id="messageBox"/>
-    <sui-button v-on:click="sendMessage()" type="submit">Send</sui-button> -->
     <sui-form>
       <sui-form-field>
         <textarea
@@ -43,10 +38,11 @@ export default {
       'issueMessage',
     ]),
     sendMessage() {
-      this.issueMessage({messager: this.getUserInfo, 
-                         messagee: this.friend, 
-                         messageContent: this.messageContent
-                       })
+      this.issueMessage({
+        messager: this.getUserInfo, 
+        messagee: this.friend, 
+        messageContent: this.messageContent
+      })
       this.messageContent = ""
     },
     inputHandler: function(e){

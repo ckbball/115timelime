@@ -1,67 +1,43 @@
 <template lang="html">
   <div>
     <sui-grid :columns="2" :centered=false>
-
       <sui-grid-column :width="2">
         <PostLikeButton align="left" class= "Button1"
-        :parent="post"
+          :parent="post"
         />
       </sui-grid-column>
-      
-
-
       <sui-grid-column  :width="14">
-      <sui-card class="UserPost">
+        <sui-card class="UserPost">
+          <sui-card-content>
+            <sui-grid :columns="3" :centered=false >
+              <sui-grid-column :width="2">
+                  <MessageAvatar
+                    :uid="post.author_uid"
+                    :image="post.author_image"
+                  ></MessageAvatar>
+              </sui-grid-column>
+              <sui-grid-column :width="7">
+                <sui-card-header class="PostersName" align="left">{{post.author_name}}</sui-card-header>
+              </sui-grid-column>
 
-        <sui-card-content>
+              <sui-grid-column :width="7">
+                <sui-card-description class="PostedTime" align="right">Posted: {{formattedPostDate}} </sui-card-description>
+              </sui-grid-column>
+            </sui-grid>
+          </sui-card-content>
 
-    <sui-grid :columns="3" :centered=false >
-      <sui-grid-column :width="2">
-          <MessageAvatar
-            :uid="post.author_uid"
-            :image="post.author_image"
-          ></MessageAvatar>
-      </sui-grid-column>
-      <sui-grid-column :width="7">
-        <sui-card-header class="PostersName" align="left">{{post.author_name}}</sui-card-header>
-      </sui-grid-column>
-
-      <sui-grid-column :width="7">
-         <sui-card-description class="PostedTime" align="right">Posted: {{formattedPostDate}} </sui-card-description>
-      </sui-grid-column>
-    </sui-grid>
-
-
-<!-- 
-          <MessageAvatar
-          :uid="post.author_uid"
-          :image="post.author_image"
-          ></MessageAvatar>
-          <sui-card-header align="left">{{post.author_name}}</sui-card-header>
-          <sui-card-description align="right">Posted: 4/20/69 </sui-card-description> -->
-        </sui-card-content>
-
-        <sui-card-content>
-          <sui-card-description align="left">{{post.content}}</sui-card-description>
-        </sui-card-content>
-
-       
-          <sui-image  v-if="post.is_photo_post === 'true'" :src="post.photo_URL" />
-       
-
-        <sui-card-content>
-          <sui-card-description align="right">Time Remaining: {{timeRemaining}}</sui-card-description>
-        </sui-card-content>
-
-
-          <CommentList
-          :post="post"
-          ></CommentList>
+          <sui-card-content>
+            <sui-card-description align="left">{{post.content}}</sui-card-description>
+          </sui-card-content>
+            <sui-image  v-if="post.is_photo_post === 'true'" :src="post.photo_URL" />
+          <sui-card-content>
+            <sui-card-description align="right">Time Remaining: {{timeRemaining}}</sui-card-description>
+          </sui-card-content>
+          <CommentList :post="post" ></CommentList>
         
-      </sui-card>
+        </sui-card>
 
       </sui-grid-column>
-      
     </sui-grid>
   </div>
 </template>
@@ -70,7 +46,6 @@
 import PostLikeButton from '@/components/user_profile/PostLikeButton'
 import PostCommentButton from '@/components/user_profile/PostCommentButton'
 import MessageAvatar from '@/components/messages/MessageAvatar'
-// import Comments from '@/components/posts/Comments'
 import CommentList from '@/components/posts/CommentList'
 export default {
   name: 'Post',
@@ -78,7 +53,6 @@ export default {
     "PostLikeButton": PostLikeButton,
     "PostCommentButton": PostCommentButton,
     "MessageAvatar": MessageAvatar,
-    // "Comments": Comments,
     "CommentList": CommentList
   },
   props: {
@@ -119,8 +93,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.PostedTime {
-}
+
 .PostersName{
   font-weight: 400;
   font-size: 15pt;
