@@ -56,14 +56,6 @@ const router = new Router({
       component: Login
     },
     {
-      path: '/Messages',
-      name: 'Messages',
-      component: MessagePage,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
       path: '/Sign-Up',
       name: 'SignUp',
       component: SignUp

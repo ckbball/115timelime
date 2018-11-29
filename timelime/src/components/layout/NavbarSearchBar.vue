@@ -104,8 +104,6 @@ export default {
         let results = []
         response.data.forEach(datum => {
           results.push(datum)
-          console.log(datum)
-
         })
         this.setResults(results)
       })

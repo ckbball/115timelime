@@ -43,11 +43,9 @@ export default {
   },
   methods: {
     changeBio: function(){
-      console.log("hey! someone REALLY REALLY wants to edit this profile! :)")
       this.$emit("editBio")
     },
     changeProfileImage: function(){
-      console.log("hey! someone REALLY REALLY wants to edit this profile photo! :)")
       this.$emit("editPhoto")
     },
     clickWriteButton: function() {
