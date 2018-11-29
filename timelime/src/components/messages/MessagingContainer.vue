@@ -1,7 +1,8 @@
 <template>
+    <div>
     <!-- <router-link :to="{name: 'Messages'}"> -->
-        <a is="sui-dropdown-item" @click="navigateTo()">
-            <sui-dropdown icon="big envelope outline" class="requestDropdown" floating>
+        <a is="sui-dropdown-item" >
+            <sui-dropdown icon="big envelope outline" class="requestDropdown" @click="navigateTo()"floating>
             
                 <sui-label v-if="this.getUnreadMessageCount > 0"
                     floating 
@@ -14,7 +15,7 @@
         </a>
     <!-- </router-link> -->
        
- 
+    </div>
 </template>
 
 <script> 

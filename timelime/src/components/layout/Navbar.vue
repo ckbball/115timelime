@@ -20,7 +20,9 @@
       <sui-menu-menu position="right" class="friendReq">
         <FriendRequestContainer v-if="getAuthenticatedUser"></FriendRequestContainer>
         <NotificationsContainer v-if="getAuthenticatedUser"></NotificationsContainer>
-        <MessagingContainer v-if="getAuthenticatedUser"></MessagingContainer>
+
+          <MessagingContainer v-if="getAuthenticatedUser"></MessagingContainer>
+
 
         <a v-if="getAuthenticatedUser"
           is="sui-menu-item">

@@ -320,6 +320,8 @@ exports.issueNotificationOnNewComment = functions.firestore
 		db.collection('notifications').add({
 			parent_id: newValue.parent_id, 
 			recipient: newValue.postAuthor_uid,
+			commenter_id: newValue.author_uid,
+			commenter_image: newValue.author_image,
 			content: newValue.author_name+ ' commented on one of your posts.',
 			read: false, 
 		})
@@ -332,6 +334,29 @@ exports.issueNotificationOnNewComment = functions.firestore
 	})	
 	return promise
 })
+
+exports.issueNotificationOnNewLike = functions.firestore
+.document('likes/{likeId}').onCreate((snapshot, context) => {
+	let promise = new Promise((resolve, reject) => {
+		const newValue = snapshot.data()
+		db.collection('notifications').add({
+			parent_id: newValue.parent_id, 
+			recipient: newValue.postAuthor_uid,
+			liker_id: newValue.author_uid,
+			liker_image: newValue.author_image,
+			content: newValue.author_name+ ' liked one of your posts.',
+			read: false, 
+		})
+		.then(docRef => {
+			resolve()
+		})
+		.catch(err => {
+			reject()
+		})
+	})	
+	return promise
+})
+
 exports.updateCommentCountOnAPost = functions.firestore
 .document('comments/{commentId}').onCreate((snapshot, context) => {
 	let promise = new Promise ((resolve, reject) => {

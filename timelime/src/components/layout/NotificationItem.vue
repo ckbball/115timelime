@@ -52,6 +52,7 @@ export default {
         
     },
     created: function () {
+        // Used to parse the user name from the content
         var n = this.notification.content.indexOf(' ')
         var l = this.notification.content.indexOf(' ', n+1)
         this.name = this.notification.content.substring(0, l+1)

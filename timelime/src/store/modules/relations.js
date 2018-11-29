@@ -128,7 +128,7 @@ const actions = {
             if(friend.id === payload.id){
                 contains = true
                 if(changeTypeIsFriendship(friend, payload)){
-                    if(isFriend(payload)) {
+                    if(isFriend(payload) && state.friends.indexOf(payload) < 0) {
                         commit('pushToFriends', payload)
                     }
                     if (!isFriend(payload)) commit('removeFromFriends', payload)

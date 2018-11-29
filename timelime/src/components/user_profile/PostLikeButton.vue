@@ -45,6 +45,7 @@ export default {
 
     likeHandler: function() {
       if(this.parent.whoLikes.indexOf(this.getUserInfo.uid) ===  -1){
+        // Adds like to firebase
         db.collection('posts').doc(this.parent.post_id)
         .update({"whoLikes": firebase.firestore.FieldValue.arrayUnion(this.getUserInfo.uid)})
       }

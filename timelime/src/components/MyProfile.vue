@@ -89,47 +89,15 @@
 
       <sui-modal v-model="openFriends" size="mini">
         <sui-modal-header>Friends!</sui-modal-header>
-        <sui-modal-content scrolling > 
-          <!-- scrolling image  -->
-          <sui-modal-description>
-            <sui-table>
-              <sui-table-header>
-                <sui-table-row>
-                  <sui-table-header-cell>
-                    <sui-form>
-                      <sui-form-fields>
-                        <input
-                          placeholder="search"
-                        ></input>
-                      </sui-form-fields>
-                    </sui-form>
-                  </sui-table-header-cell>
-                </sui-table-row>
-              </sui-table-header>
-              <sui-table-body>
-                <sui-table-row v-for="(friend, n) in getAllFriends" :key="n">
-                  <sui-table-cell>
-                    <sui-grid>
-                      <sui-grid-row>
-                        <sui-grid-column :width="4">
-                          <CommentAvatarButton
-                            :image="friend.image"
-                            :uid="friend.uid"
-                          ></CommentAvatarButton>
-                        </sui-grid-column>
-                        <sui-grid-column :width="12">
-                          {{friend.name}}
-                        </sui-grid-column>
-                      </sui-grid-row>
-                    </sui-grid>
-                  </sui-table-cell>
-                </sui-table-row>
-              </sui-table-body>
 
-            </sui-table>
+          <sui-table padded>
+            <sui-table-row v-for="(friend,n) in this.getAllFriends" :key="n"> 
+              <FriendBox
+                :friend="friend">
+              </FriendBox>
+            </sui-table-row>
+          </sui-table>
 
-          </sui-modal-description>
-        </sui-modal-content>
         <sui-modal-actions>
           <sui-button positive @click.native="toggleFriends">
             Close
@@ -157,6 +125,8 @@ import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
 import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
 import CreateNewPhotoPostModal from '@/components/posts/CreateNewPhotoPostModal'
 import ChangeProfilePhotoModal from '@/components/user_profile/ChangeProfilePhotoModal'
+import NavbarSearchBar from '@/components/layout/NavbarSearchBar'
+import FriendBox from '@/components/FriendBox'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -174,6 +144,8 @@ export default {
     'UserFeed': UserFeed,
     'CreateNewPhotoPostModal': CreateNewPhotoPostModal,
     'ChangeProfilePhotoModal' : ChangeProfilePhotoModal,
+    'NavbarSearchBar': NavbarSearchBar,
+    'FriendBox': FriendBox
   },
     props: {
     user: Object,
@@ -230,77 +202,11 @@ export default {
     togglePhotoPost: function(){
       this.openPhotoPost = !this.openPhotoPost;
     },
+  },
+  created: function() {
 
+  }
 
-//     getFriends() {
-
-//       db.collection('relations').where('uid_'+this.getUserInfo.uid, '==', true).get() //'uid_0GkbOriyJFaYUupbZhin', '==', 'true').get()
-//       .then((snapshot) =>  {
-//         snapshot.docs.forEach(doc  => {
-//           // need to check if the other one is true 
-//           //    if it is set otherUserUID to whateva that value is break it up at the _ and grab that second part 
-//           var relation = doc.data();
-//           var otherUserUID = "";
-//           var thisUserUID = 'uid_'+this.getUserInfo.uid; // 'uid_0GkbOriyJFaYUupbZhin'
-//           let friends = false;
-
-//           for (var property1 in relation) {
-//             if (property1 == thisUserUID){
-//               continue;
-//             } else {
-//               if (relation[property1] == true){
-//                 otherUserUID = property1.substring(4);
-//                 friends = true;
-//               } else {
-//               }
-//               continue;
-//             }
-//           }
-          
-
-
-//           if (friends === true){
-//             db.collection('users').where('uid', '==', otherUserUID).get()
-//             .then((querySnapshot) => {
-//               querySnapshot.docs.forEach((doc) => {
-//                 let data = {
-//                   'name': doc.data().firstName + ' ' + doc.data().lastName,
-//                   'photo': doc.data().image
-//                  }
-//                  this.friends.push(data)
-//               })
-//             })
-//             .catch(err => {
-//               console.log("failed with error: " + err)
-//             })
-//           }
-
-
-
-//          //  // if it is grab the other uid, and look through the users to find the friend
-//          //  // once friend is found then grab name and photo
-
-//         })
-//       })
-//       .catch(err => {
-//         console.log("failed with error: " + err)
-//       })
-
-
-//   },
-// /*
-// db.collection('relations').doc().where('uid_'+this.getAuthenticatedUser.uid, '==', 'false').get()
-// .then((snapshot) => {
-//   snapshot.forEach((doc) => {
-//     // something impulsive happens
-//   }
-// }) */
-
-//   },
-//   mounted () {
-//     this.getFriends()
-//   },
-}
 }
 
 </script>
