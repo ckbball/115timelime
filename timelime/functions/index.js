@@ -316,21 +316,24 @@ exports.updateSearchableName = functions.firestore
 exports.issueNotificationOnNewComment = functions.firestore
 .document('comments/{commentId}').onCreate((snapshot, context) => {
 	let promise = new Promise((resolve, reject) => {
+		var post_author_uid = db.collection('posts').doc(newValue.parent_id).author_uid
 		const newValue = snapshot.data()
-		db.collection('notifications').add({
-			parent_id: newValue.parent_id, 
-			recipient: newValue.postAuthor_uid,
-			commenter_id: newValue.author_uid,
-			commenter_image: newValue.author_image,
-			content: newValue.author_name+ ' commented on one of your posts.',
-			read: false, 
-		})
-		.then(docRef => {
-			resolve()
-		})
-		.catch(err => {
-			reject()
-		})
+		if (post_author_uid !== newValue.author_uid){
+			db.collection('notifications').add({
+				parent_id: newValue.parent_id, 
+				recipient: newValue.postAuthor_uid,
+				commenter_id: newValue.author_uid,
+				commenter_image: newValue.author_image,
+				content: newValue.author_name+ ' commented on one of your posts.',
+				read: false, 
+			})
+			.then(docRef => {
+				resolve()
+			})
+			.catch(err => {
+				reject()
+			})
+		}
 	})	
 	return promise
 })
