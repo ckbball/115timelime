@@ -16,7 +16,7 @@
         <MySideBar
             :userInfo="getUserInfo"
             @editBio="toggle()"
-            @editPhoto="togglePhoto()"
+            @editPhoto="togglePhotoUpload()"
             @showFriends="toggleFriends()"
 
             @writePost="toggleWritePost()"
@@ -52,7 +52,7 @@
       
     </sui-modal>
 
-
+<!-- 
     <sui-modal v-model="openPhoto">
       <sui-modal-header> Change Profile Photo </sui-modal-header>
       <sui-modal-content>
@@ -72,6 +72,12 @@
       </sui-modal-actions>
       
     </sui-modal>
+ -->
+
+     <sui-modal v-model="openPhoto">
+      <ChangeProfilePhotoModal @ContinuePhotoUpload="togglePhotoUpload" :userInfo="getUserInfo" />
+    </sui-modal>
+
 
     <sui-modal v-model="openWritePost">
       <CreateNewPostModal @ContinueTextPost="toggleWritePost" :userInfo="getUserInfo" />
@@ -150,6 +156,7 @@ import FriendButton from '@/components/user_profile/FriendButton'
 import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
 import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
 import CreateNewPhotoPostModal from '@/components/posts/CreateNewPhotoPostModal'
+import ChangeProfilePhotoModal from '@/components/user_profile/ChangeProfilePhotoModal'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -166,6 +173,7 @@ export default {
     'CommentAvatarButton': CommentAvatarButton,
     'UserFeed': UserFeed,
     'CreateNewPhotoPostModal': CreateNewPhotoPostModal,
+    'ChangeProfilePhotoModal' : ChangeProfilePhotoModal,
   },
     props: {
     user: Object,
@@ -207,7 +215,7 @@ export default {
       })
 
     },
-    togglePhoto: function(){
+    togglePhotoUpload: function(){
       this.openPhoto = !this.openPhoto;
     },
     savePhoto(){

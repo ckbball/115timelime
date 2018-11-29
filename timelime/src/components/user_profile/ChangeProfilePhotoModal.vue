@@ -2,45 +2,36 @@
   <div>
 
     <sui-modal v-model="open">
-      <sui-modal-header>New image post</sui-modal-header>
-      <sui-modal-content >
-
+      <sui-modal-header> Change Profile Photo </sui-modal-header>
+      <sui-modal-content>
+          
         <sui-modal-description>
           <p> Choose your photo: </p>
           <input class="PhotoUpload" type="file" @change="uploadPhoto">
         </sui-modal-description>
 
-        <br/>
-        <br/>
-        <p> Caption this photo: </p>
-        <sui-form-field>
-          <textarea 
-             v-model="PostContent" attached
-             class="PostTextArea" maxlength="4680"
-             />
-        </sui-form-field>
-
-
       </sui-modal-content>
+        
       <sui-modal-actions>
-        <sui-button negative @click.native="CancelPhotoPost">
+        <sui-button negative @click.native="CancelProfileChange">
           Cancel
         </sui-button>
-        <sui-button positive @click.native="ConfirmPhotoPost">
-          Post!
+        <sui-button positive @click.native="ConfirmPhotoUpload">
+          Save
         </sui-button>
       </sui-modal-actions>
+      
     </sui-modal>
-
   </div>
 </template>
+
 
 <script>
 import { mapGetters } from 'vuex'
 import db from '@/firebase/init'
 import firebase from 'firebase' 
 export default {
-  name: 'CreateNewPhotoPostModal',
+  name: 'ChangeProfilePhotoModal',
   props: {
       userInfo: Object,
   },
@@ -61,45 +52,38 @@ export default {
     ]),
   },
   methods: {
-
-    PostPhotoToFB: function(downloadURL) {
-            this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
-            parent_id: this.userInfo.uid, // 
-            author_uid: this.getUserInfo.uid, //
-            author_image: this.getUserInfo.image, //
-            author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName, //
-            content: this.PostContent,
-            photo_URL: downloadURL,
-            is_photo_post: "true",
-            upload_time: Date.now(),
-            whoSees: this.getMyFriends.map(friend => friend.uid)
-
-        })
-        .then(response => {
-            this.PostContent = ''
-        })
-        .catch(err => {
-            console.log(err)
-        })
+    ChangeProfilePhotoOnFB: function(downloadURL) {
+      // change in users
+      // this triggers a change that is in index.js
+      db.collection('users').doc(this.getUserInfo.uid).update({
+        image: downloadURL
+      })
 
     },
 
-    ConfirmPhotoPost: function() {
+    ConfirmPhotoUpload: function() {
+      if(this.selectedFile.name == ""){
+        console.log("user tried to change their profile to NOTHING!")
+        this.$emit("ContinuePhotoUpload")
+        this.url = null;
+        this.selectedFile = null;
+        return
+      }
+
       // Get a reference to the storage service, which is used to create references in your storage bucket
       var storage = firebase.storage();
 
       // Create a storage reference from our storage service
-      var storageRef = storage.ref('user_posts/'+this.getUserInfo.uid+'_'+this.selectedFile.name);
+      var storageRef = storage.ref('user_profile_photos/'+this.getUserInfo.uid+'_'+this.selectedFile.name);
 
       // shuts modal in whoever is opening it
-      this.$emit("ContinuePhotoPost")
+      this.$emit("ContinuePhotoUpload")
 
       // get file
       var file = this.selectedFile;
 
       // upload the file
       var task = storageRef.put(file)
-
 
       task.on('state_changed', (snapshot) =>{
         // nothing?
@@ -109,32 +93,24 @@ export default {
         // Handle successful uploads on complete
         // For instance, get the download URL: https://firebasestorage.googleapis.com/...
         task.snapshot.ref.getDownloadURL().then(downloadURL => {
-          this.PostPhotoToFB(downloadURL)
+          this.ChangeProfilePhotoOnFB(downloadURL)
           this.url = downloadURL
         });
       });
 
-        this.url = null;
-        this.selectedFile = null;
+      this.url = null;
+      this.selectedFile = null;
     },
-    CancelPhotoPost: function() {
+    CancelProfileChange: function() {
       // shuts modal in whoever is opening it
       this.PostContent = ''
       this.selectedFile = null
-      this.$emit("ContinuePhotoPost")
+      this.$emit("ContinuePhotoUpload")
     },
     uploadPhoto: function (event) {
       this.selectedFile = event.target.files[0]
     },
   },
-  watch: {
-    url: function(oldvalue, newvalue) {
-      if(newvalue){
-        console.log("THIS BITCH CHANGED")
-        PostPhotoToFB(newvalue)
-      }
-    }
-  }
 
 };
 

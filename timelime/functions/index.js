@@ -94,6 +94,121 @@ var j = schedule.scheduleJob(rule, function(){
 
 
 /* ----- Write new Firebase functions down here ---- */
+exports.changeProfilePhotoAcrossData = functions.firestore
+.document('users/{uid}').onUpdate((change, context) => {
+	//return a promise :(
+	const newValue = change.after.data()
+	const oldValue = change.before.data()
+	const allPromises = []
+
+
+	var uid = newValue.uid
+	var URL = newValue.image
+
+	// change in posts 
+	const p1 = db.collection('posts').where('author_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('posts').doc(doc.id).update({
+					author_image: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p1)
+
+	// change in comments 
+	const p2 = db.collection('comments').where('author_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('comments').doc(doc.id).update({
+					author_image: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p2)
+
+	// change in messages
+	const p3 = db.collection('messages').where('receiver_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('messages').doc(doc.id).update({
+					receiver_image: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p3)
+	  
+	// change in messages
+	const p4 = db.collection('messages').where('sender_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('messages').doc(doc.id).update({
+					sender_image: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p4)
+
+	// change in relations 
+	const p5 = db.collection('relations').where('uid_'+uid, '>=', 'a').get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('relations').doc(doc.id).update({
+					['image_'+uid]: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p5)
+
+	// change in likes 
+	const p6 = db.collection('likes').where('author_uid', '==', uid).get()
+	.then(snapshot => {
+		if(snapshot.size > 0) {
+			const promises = []
+			snapshot.docs.forEach(doc => {
+				const p = db.collection('likes').doc(doc.id).update({
+					author_uid: URL
+				})
+
+				promises.push(p)
+			})
+			return Promise.all(promises)
+		}
+	})
+	allPromises.push(p6)
+
+	return Promise.all(allPromises)
+})
 
 exports.editWhoSeesOnRelationChange = functions.firestore
 .document('relations/{relationID}').onUpdate((change, context) => {
@@ -320,20 +435,6 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 // 	})
 // })
 
-// exports.uploadFile = functions.https.onRequest((req, res) => {
-// 	cors(req, res, () => {
-// 		if (req.method !== "POST") {
-// 			return res.status(500).json({
-// 				message: "only POST req allowed :("
-// 			});
-// 		}
-
-// 		const busboy = new Busboy({ headers: req.headers});
-// 		let uploadData = null;
-
-// 		busyboy.on("file", (fieldname, file, encoding, mimetype) =)
-// 	})
-// })
 
 exports.addNewPost = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
@@ -468,6 +569,7 @@ exports.santizeUsers = functions.https.onRequest((req, res) =>{
 	})
 	res.send('done')
 })
+
 
 
 
