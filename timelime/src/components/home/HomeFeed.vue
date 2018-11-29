@@ -53,29 +53,9 @@ export default {
   methods: {
 
     clickWriteButton: function() {
-    //console.log("clicked at HOMEfeed level")
-    this.$emit("writePost")
+      this.$emit("writePost")
     },
-    // getTimelime: function(uid) {
-    //   db.collection('posts').where('whoSees', "array-contains", uid)
-    //   .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-    //     console.log('snapshot size:' , snapshot.size)
-    //     snapshot.docChanges().forEach(change => {
-    //       if (change.type === 'added') {
-    //         this.posts.push(change.doc.data())
-    //       }
-    //       if (change.type === 'modified') {
-    //         this.posts.forEach(post => {
-    //           if(post.post_id === change.doc.data().post_id){
-    //             post.whoLikes = change.doc.data().whoLikes
-    //             post.commentIDs = change.doc.data().commentIDs
-
-    //           }
-    //         })
-    //       }
-    //     })
-    //   })
-    // }
+  
   },
 
 

@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
     <sui-card class="raised">
-      <router-link :to="{path: '/user/'+getUserInfo.uid}">
+      <router-link v-if="getUserInfo.uid" :to="{path: '/user/'+getUserInfo.uid}">
         <sui-image :src="getUserInfo.image" class=ProfilePicture />
       </router-link>
       <sui-card-content>

@@ -31,7 +31,6 @@ export default {
   },
   methods: {
     userImagePropToVariable() {
-      console.log(this.getUserInfo.image + 'in CommentAvatarButton')
       this.userImageLocation = this.getUserInfo.image
     },
     userUIDPropToVariable() {
