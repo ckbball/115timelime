@@ -5,12 +5,8 @@
       </sui-grid-column>
 
       <sui-grid-column :width="7">
-        <!-- <MyFeed fluid
-            :uid="getUserInfo.uid"
-        /> -->
-        <UserFeed>
 
-        </UserFeed>
+        <UserFeed></UserFeed>
       </sui-grid-column>
       <sui-grid-column  :width="5">
         <MySideBar
@@ -51,30 +47,7 @@
       </sui-modal-actions>
       
     </sui-modal>
-
-<!-- 
     <sui-modal v-model="openPhoto">
-      <sui-modal-header> Change Profile Photo </sui-modal-header>
-      <sui-modal-content>
-        <sui-modal-description>
-          
-        </sui-modal-description>
-      </sui-modal-content>
-        
-      <sui-modal-actions>
-        Characters remaining: {{textRemaining}}
-        <sui-button negative @click.native="togglePhoto">
-          Cancel
-        </sui-button>
-        <sui-button positive @click.native="savePhoto">
-          Save
-        </sui-button>
-      </sui-modal-actions>
-      
-    </sui-modal>
- -->
-
-     <sui-modal v-model="openPhoto">
       <ChangeProfilePhotoModal @ContinuePhotoUpload="togglePhotoUpload" :userInfo="getUserInfo" />
     </sui-modal>
 
@@ -114,12 +87,10 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
-import MyFeed from '@/components/MyFeed'
 import UserFeed from '@/components/posts/UserFeed'
 import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
 import EditProfilePicture from '@/components/user_profile/EditProfileInfo'
 import MySideBar from '@/components/MySideBar'
-import Friend from '@/components/user_profile/Friend'
 import FriendButton from '@/components/user_profile/FriendButton'
 import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
 import CreateNewPostModal from '@/components/posts/CreateNewPostModal'
@@ -136,9 +107,7 @@ export default {
     components: {
     "MySideBar": MySideBar,
     "EditProfileInfo": EditProfileInfo,
-    "Friend": Friend,
     "FriendButton": FriendButton,
-    // "MyFeed": MyFeed,
     'CreateNewPostModal': CreateNewPostModal,
     'CommentAvatarButton': CommentAvatarButton,
     'UserFeed': UserFeed,
@@ -180,7 +149,7 @@ export default {
     saveNewBio(){
       db.collection('users').doc(this.getUserInfo.uid).update({bio: this.newBio})
       .then(() =>{
-              this.open = !this.open;
+        this.open = !this.open;
       })
       .catch(err => {
         console.log(err)

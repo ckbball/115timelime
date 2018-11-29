@@ -10,25 +10,20 @@
 </template>
 
 <script>
-/*
-	add new navbar items to data/ items
-	item.content is what is displayed on the screen.
-	item.route must correspond to route/index.js route name **case sensitive**
-*/
-export default {
-	name: 'Friend',
-  		data () {
-  			return {
-		    };
-    },
-    props: {
-	    name: String,
-	    image: String,
-  	},
-  	methods: {
+// export default {
+// 	name: 'Friend',
+//   		data () {
+//   			return {
+// 		    };
+//     },
+//     props: {
+// 	    name: String,
+// 	    image: String,
+//   	},
+//   	methods: {
 
- 	},
-};
+//  	},
+// };
    
 </script>
 

@@ -32,16 +32,13 @@ export default {
         snapshot.docChanges().forEach(change => {
           if (change.type === 'added') {
             this.posts.push(change.doc.data())
-            console.log(1, 'added')
-            console.log(this.posts)
           }
           if (change.type === 'modified') {
             this.posts.forEach(post => {
               if(post.post_id === change.doc.data().post_id){
                 post.whoLikes = change.doc.data().whoLikes
                 post.commentIDs = change.doc.data().commentIDs
-                console.log(2, 'modified')
-
+                post.author_image = change.doc.data().author_image
               }
             })
           }
