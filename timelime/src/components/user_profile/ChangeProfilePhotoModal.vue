@@ -6,8 +6,25 @@
       <sui-modal-content>
           
         <sui-modal-description>
-          <p> Choose your photo: </p>
-          <input class="PhotoUpload" type="file" @change="uploadPhoto">
+
+
+
+  
+          <div id="app" class="photoUploadAndClip">
+              <button round>
+                <clipper-upload v-model="imgURL">upload image</clipper-upload>
+              </button>
+              
+              <clipper-basic class="my-clipper" ref="clipper" :src="imgURL" :ratio="ratio" :min-scale="minscale" preview="my-preview">
+                  <div class="placeholder" slot="placeholder">No image</div>
+              </clipper-basic>
+              
+          </div>
+
+
+
+
+
         </sui-modal-description>
 
       </sui-modal-content>
@@ -27,15 +44,19 @@
 
 
 <script>
+import { clipperBasic, clipperPreview } from 'vuejs-clipper'
 import { mapGetters } from 'vuex'
 import db from '@/firebase/init'
 import firebase from 'firebase' 
+
 export default {
   name: 'ChangeProfilePhotoModal',
   props: {
       userInfo: Object,
   },
   components: {
+      clipperBasic,
+      clipperPreview
   },
   data() {
     return { 
@@ -43,6 +64,10 @@ export default {
       PostContent: "",
       selectedFile: null,
       url: null,
+      imgURL: '',
+      resultURL: '',
+      ratio: 1,
+      minscale:.5
     };
   },
   computed: {
@@ -61,29 +86,38 @@ export default {
 
     },
 
+            getResult: function () {
+                const canvas = this.$refs.clipper.clip();//call component's clip method
+                this.resultURL = canvas.toDataURL("image/jpg", 1);//canvas->image
+                console.log(this.resultURL)
+            },
+
     ConfirmPhotoUpload: function() {
-      if(this.selectedFile.name == ""){
-        console.log("user tried to change their profile to NOTHING!")
-        this.$emit("ContinuePhotoUpload")
-        this.url = null;
-        this.selectedFile = null;
-        return
-      }
+      // if(this.selectedFile.name == ""){
+      //   console.log("user tried to change their profile to NOTHING!")
+      //   this.$emit("ContinuePhotoUpload")
+      //   this.url = null;
+      //   this.selectedFile = null;
+      //   return
+      // }
 
       // Get a reference to the storage service, which is used to create references in your storage bucket
       var storage = firebase.storage();
 
       // Create a storage reference from our storage service
-      var storageRef = storage.ref('user_profile_photos/'+this.getUserInfo.uid+'_'+this.selectedFile.name);
+      var storageRef = storage.ref('user_profile_photos/'+this.getUserInfo.uid+'_'+this.imgURL.name);
 
       // shuts modal in whoever is opening it
       this.$emit("ContinuePhotoUpload")
 
-      // get file
-      var file = this.selectedFile;
+      const canvas = this.$refs.clipper.clip();//call component's clip method
+      this.resultURL = canvas.toDataURL("image/jpg", 1);//canvas->image
+      console.log(this.resultURL)
+
+      var BlobVersion = this.dataURLtoBlob(this.resultURL)
 
       // upload the file
-      var task = storageRef.put(file)
+      var task = storageRef.put(BlobVersion)
 
       task.on('state_changed', (snapshot) =>{
         // nothing?
@@ -98,9 +132,57 @@ export default {
         });
       });
 
+      // canvas.toBlob(function(blob) {
+      //   var newImg = document.createElement('img'),
+      //         url = URL.createObjectURL(blob);
+
+      //         newImg.onload = function() {
+      //           // no longer need to read the blob so it's revoked
+      //           URL.revokeObjectURL(url);
+      //         };
+
+      //         newImg.src = url;
+      //         console.log(newImg)
+
+      //         console.log(newImg.src)
+
+      //         console.log(url)
+
+      //         // upload the file
+      //         var task = storageRef.put(newImg)
+
+      //         task.on('state_changed', (snapshot) =>{
+      //           // nothing?
+      //         }, (error) => {
+      //           // Handle unsuccessful uploads
+      //         }, ()=> {
+      //           // Handle successful uploads on complete
+      //           // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+      //           task.snapshot.ref.getDownloadURL().then(downloadURL => {
+      //             this.ChangeProfilePhotoOnFB(downloadURL)
+      //             this.url = downloadURL
+      //           });
+      //         });
+
+      // });
+
+   
+
+      
       this.url = null;
       this.selectedFile = null;
     },
+
+    dataURLtoBlob: function (dataurl) {
+      console.log("CALLING THAT FUNCTION")
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while(n--){
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {type:mime});
+    },
+
     CancelProfileChange: function() {
       // shuts modal in whoever is opening it
       this.PostContent = ''
@@ -110,6 +192,10 @@ export default {
     uploadPhoto: function (event) {
       this.selectedFile = event.target.files[0]
     },
+
+
+
+
   },
 
 };
@@ -118,6 +204,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.photoUploadAndClip{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
+  max-height: 600px;
+}
 .PhotoUpload{
   position: relative;
   margin-right: 1000px;

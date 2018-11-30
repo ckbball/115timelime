@@ -1,13 +1,21 @@
 <template lang="html">
   <div>
     <sui-image :src="userInfo.image" class=ProfilePicture>
-      <sui-label slot="corner" corner="left" v-on:click="changeBio">
+
+    </sui-image>
+
+          <sui-label slot="corner" corner="left" v-on:click="changeBio">
         <sui-icon name="write"/>
       </sui-label>
-      <sui-label slot="corner" corner="right" v-on:click="changeProfileImage">
-        <sui-icon name="camera"/>
+      <sui-label 
+        slot="corner" 
+        corner="right" 
+        v-on:click="changeProfileImage"
+      >
+        <sui-icon 
+          name="camera"
+        />
       </sui-label>
-    </sui-image>
   </div>
 </template>
 
@@ -28,7 +36,7 @@ export default {
     return {
       images: {
         user_lemon: require('@/assets/user_lemon.png')
-      }
+      },
     }
   },
   methods: {
@@ -46,7 +54,7 @@ export default {
     ...mapMutations(['updateUser']),
     setBio: function(text){
       this.$store.commit('updateUser')
-    }
+    },
   },
 
 }
