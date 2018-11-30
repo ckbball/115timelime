@@ -10,6 +10,8 @@ import firebase from 'firebase'
 import VueLodash from 'vue-lodash'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VuejsClipper from 'vuejs-clipper'
+import VueRx from 'vue-rx'
 
 import SuiVue from 'semantic-ui-vue'
 import 'semantic-ui-css/semantic.min.css';
@@ -72,11 +74,15 @@ firebase.auth().onAuthStateChanged(user => {
     })
   }
   store.commit('setAuthenticatedUser', user)
-  
-
-  
-
-
-
-
 })
+
+
+Vue.use(VuejsClipper)
+Vue.use(VueRx)
+
+
+
+
+
+
+

@@ -1,10 +1,19 @@
+
+
+
+
 <template>
-  <div>
-  	<!-- <UserSideBar/> -->
+<div id="app">
+    <button>
+      <clipper-upload v-model="imgURL">upload image</clipper-upload>
+    </button>
+    <button @click="getResult">clip image</button>
+    <clipper-basic class="my-clipper" ref="clipper" :src="imgURL" preview="my-preview">
+        <div class="placeholder" slot="placeholder">No image</div>
+    </clipper-basic>
     
-    <PhotoPost/>
-  </div>
-</template>
+</div></template>
+
 
 <script>
 /* How to use this page
@@ -15,37 +24,44 @@
 */
 
 
-import bar from '@/components/general/bar'
-import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
-import Button from '@/components/user_profile/Button'
-import PostLikeButton from '@/components/user_profile/PostLikeButton'
-import Navbar from '@/components/layout/Navbar'
-import UserIcon from '@/components/user_profile/UserIcon'
-import UserProfile from '@/components/user_profile/UserProfile'
-import UserSideBar from '@/components/user_profile/UserSideBar'
-import PhotoPost from '@/components/posts/PhotoPost'
+import { clipperBasic, clipperPreview } from 'vuejs-clipper'
 
 export default {
-  name: 'MiaTest',
-  components: {
-    'bar': bar,
-    'EditProfileInfo': EditProfileInfo,
-  	'Button': Button,
-    'Navbar': Navbar,
-  	'PostLikeButton': PostLikeButton,
-  	'UserIcon': UserIcon,
-    'UserProfile': UserProfile,
-    'UserSideBar': UserSideBar,
-    'PhotoPost': PhotoPost,
-  },
-  data () {
-    return {}
-  }, 
-  
-   
-}
+        data() {
+          return {
+            imgURL: '',
+            resultURL: ''
+          };
+        },
+        methods: {
+            getResult: function () {
+                const canvas = this.$refs.clipper.clip();//call component's clip method
+                this.resultURL = canvas.toDataURL("image/jpg", 1);//canvas->image
+                console.log(this.resultURL)
+            }
+        }
+      }
+
+      //  upload: function(e){
+      //   if (e.target.files.length !== 0) {
+      //     if(this.imgURL) URL.revokeObjectURL(this.imgURL)
+      //     this.imgURL = window.URL.createObjectURL(e.target.files[0]);
+      //   }
+      // },
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+    .my-clipper {
+        width: 100%;
+        max-width: 700px;
+    }
+
+    .placeholder {
+        text-align: center;
+        padding: 20px;
+        background-color: lightgray;
+    }
 </style>
+
