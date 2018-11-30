@@ -50,8 +50,16 @@ const mutations = {
     // pushToAllMyPosts: (state, payload) => {
     //     state.allMyPosts.push(payload)
     // },  
-    pushToTimelime: (state, payload) => {        
+    pushToTimelime: (state, payload) => {              
         state.timelime.push(payload)
+        function compareUploadTime(post1, post2) {
+            if (post1.upload_time > post2.upload_time)
+                return -1
+            if (post1.upload_time < post2.upload_time)
+                return 1
+            return 0
+        }
+        state.timelime.sort(compareUploadTime)
     },
     unsetTimelime: (state, payload) => {
         state.timelime = []
@@ -61,7 +69,6 @@ const mutations = {
             if(post.post_id === payload.post_id) {
                 post.whoLikes = payload.whoLikes
                 post.commentIDs = payload.commentIDs 
-                
             }
         })
     }
@@ -78,11 +85,9 @@ const actions = {
                 let post = change.doc.data()
                 post.post_id = change.doc.id
                 commit('pushToTimelime', post)
-                console.log('added ', change.doc.data())
             }
             if (change.type === 'modified') {
                 commit('updatePostOnTimelime', change.doc.data())
-                console.log(change.doc.data())
             }
           })
         })

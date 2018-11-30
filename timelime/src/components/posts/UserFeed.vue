@@ -32,6 +32,14 @@ export default {
         snapshot.docChanges().forEach(change => {
           if (change.type === 'added') {
             this.posts.push(change.doc.data())
+            function compareUploadTime(post1, post2) {
+              if (post1.upload_time > post2.upload_time)
+                  return -1
+              if (post1.upload_time < post2.upload_time)
+                  return 1
+              return 0
+            }
+            this.posts.sort(compareUploadTime)
           }
           if (change.type === 'modified') {
             this.posts.forEach(post => {

@@ -34,11 +34,10 @@ export default function configureModerator (store) {
 				store.commit('unsetUserInfo')	
 				store.commit('unsetAllRelations')
 				store.commit('unsetFriends')
-				//store.commit('unsetAllMyPosts')
-				//store.commit('unsetAllMyNetworksPosts')
 				store.commit('unsetFriendsMessaged')
 				store.commit('unsetFriendsNotMessaged')
 				store.commit('unsetfriendsWithUnreadMessages')
+				store.commit('unsetTimelime')
 			 	return router.replace('Login')
 	
 		}

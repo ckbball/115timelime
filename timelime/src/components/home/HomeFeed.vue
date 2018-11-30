@@ -6,7 +6,7 @@
     @writePost="clickWriteButton()"
   />
 
-    <div class="posts" v-for="(p,n) in this.getTimelime" :key="n">
+    <div class="posts" v-for="(p,n) in this.getTimelime" :key="n+'timelime'">
           <post
             :post="p"
           />
