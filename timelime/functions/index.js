@@ -385,6 +385,7 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 		let author_image = req.body.author_image
 		let author_name = req.body.author_name
 		let content = req.body.content
+		let time_sent = req.body.time_sent
 
 		let promise = new Promise ((resolve, reject) => {
 			db.collection('comments').add({
@@ -393,7 +394,8 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 				author_uid: author_uid,
 				author_image: author_image,
 				author_name: author_name,
-				content: content
+				content: content,
+				time_sent: time_sent
 			})
 			.then(docRef => {
 				console.log(docRef.id)

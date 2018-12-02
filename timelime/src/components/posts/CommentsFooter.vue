@@ -70,6 +70,7 @@ export default {
             author_image: this.getUserInfo.image,
             author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName,
             content: this.commentText,
+            time_sent: Date.now()
         })
         .then(response => {
             this.setLoading('false')
