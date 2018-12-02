@@ -47,11 +47,11 @@ export default {
 <style scoped>
 .message {
     background-color: yellow;
-    border: 5px;
-    padding: 20px;
-    margin: 20px;
+    /* border: 5px; */
+    padding: 10px;
+    /* margin: 20px; */
     float: right;
-    border-radius: 20px;
+    border-radius: 10px;
 }
 .avatar {
   position: relative;

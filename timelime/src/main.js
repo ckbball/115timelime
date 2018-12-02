@@ -12,6 +12,8 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VuejsClipper from 'vuejs-clipper'
 import VueRx from 'vue-rx'
+import VueChatScroll from 'vue-chat-scroll'
+
 
 import SuiVue from 'semantic-ui-vue'
 import 'semantic-ui-css/semantic.min.css';
@@ -56,6 +58,8 @@ Vue.use(VueLodash, options)
 Vue.use(SuiVue)
 Vue.use(VueApollo)
 Vue.use(VueMoment);
+Vue.use(VueChatScroll)
+
 
 
 Vue.config.productionTip = false

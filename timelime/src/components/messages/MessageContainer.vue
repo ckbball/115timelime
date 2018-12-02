@@ -21,10 +21,7 @@
         :image="friend.image"
         :uid="friend.uid">
       </FriendsMessageBox>
-    </div>
-
-
-            
+    </div>   
 </template>
 
 <script>
@@ -77,7 +74,10 @@ export default {
 .time {
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
+  font-size: .7em;
+  color: darkgray;
+
 }
 
 </style>
