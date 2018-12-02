@@ -3,18 +3,18 @@
         <sui-grid>
             <sui-grid-row>
                 
-                <sui-grid-column :width="1">
+                <sui-grid-column :width="2">
                     <MessageAvatar
                       :uid="getUserInfo.uid"
                       :image="getUserInfo.image"
                     ></MessageAvatar>
                    
                 </sui-grid-column>
-                <sui-grid-column :width="15" textAlign="right">
-                    <sui-form>
+                <sui-grid-column :width="14" textAlign="right">
+                    <sui-form :loading="loading">
                         <sui-form-field>
     
-                            <textarea 
+                            <textarea
                                 @keydown="inputHandler"
                                 attached
                                 :rows="nrows"
@@ -62,7 +62,7 @@ export default {
     },
     submitComment: function() {
         if(this.commentText.length == 0) return;
-
+        this.setLoading('true')
         this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewComment', {
             parent_id: this.post.post_id,
             postAuthor_uid: this.post.author_uid,
@@ -72,9 +72,12 @@ export default {
             content: this.commentText,
         })
         .then(response => {
+            this.setLoading('false')
         })
         .catch(err => {
             console.log(err)
+            this.setLoading('false')
+
         })
             this.commentText = ''
 

@@ -533,6 +533,8 @@ exports.addUserToFirestoreAfterAccountCreation = functions.auth.user().onCreate(
 exports.searchUsers = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
 		let search = req.query.name
+		search = search.toLowerCase()
+		console.log(1, search)
 		let type = req.query.type
 		let users = []
 		let promise = new Promise((resolve, reject) => {
@@ -542,6 +544,7 @@ exports.searchUsers = functions.https.onRequest((req, res) => {
 			.get()
 			.then((snapshot) => {
 			snapshot.docs.forEach(doc => {
+				console.log(doc.data().firstName ,doc.data().uid)
 				let user = {
 					firstName: doc.data().firstName || '',
 					lastName: doc.data().lastName || '',

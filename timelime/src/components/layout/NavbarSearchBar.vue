@@ -96,7 +96,7 @@ export default {
 
       this.axios.get('https://us-central1-timelime-96d47.cloudfunctions.net/searchUsers',{
         params: {
-          name: this.searchText,
+          name: this.searchText.toLowerCase(),
           type: 'mini'
         }
       })
