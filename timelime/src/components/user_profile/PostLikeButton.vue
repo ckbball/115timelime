@@ -48,6 +48,23 @@ export default {
         // Adds like to firebase
         db.collection('posts').doc(this.parent.post_id)
         .update({"whoLikes": firebase.firestore.FieldValue.arrayUnion(this.getUserInfo.uid)})
+
+        this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addLike', {
+            parent_id: this.parent.post_id,
+            postAuthor_uid: this.parent.author_uid,
+            author_uid: this.getUserInfo.uid,
+            author_image: this.getUserInfo.image,
+            author_name: this.getUserInfo.firstName + ' ' + this.getUserInfo.lastName,
+            time_sent: Date.now()
+        })
+        .then(response => {
+            
+        })
+        .catch(err => {
+            console.log(err)
+            
+
+        })
       }
       if(this.parent.whoLikes.indexOf(this.getUserInfo.uid) > -1){
         db.collection('posts').doc(this.parent.post_id)

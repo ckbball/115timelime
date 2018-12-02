@@ -6,8 +6,8 @@
     <sui-card-content>
 
         <MessageAvatar  
-            :uid="notification.commenter_id"
-            :image="notification.commenter_image">
+            :uid="notification.notif_id"
+            :image="notification.notif_image">
         </MessageAvatar>
         <span class="name"> {{ name }} </span>
         <span class="content" >{{ content }}</span>
