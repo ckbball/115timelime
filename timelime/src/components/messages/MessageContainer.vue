@@ -60,9 +60,6 @@ export default {
         //.format('days h:mm')
     },
   },
-  methods: {
-    
-  },
 
 
 }

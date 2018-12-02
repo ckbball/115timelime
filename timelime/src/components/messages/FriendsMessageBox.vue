@@ -10,7 +10,7 @@
         </span>
       </sui-grid-column>
 
-      <sui-grid-column :width="14" text-align="left">
+      <sui-grid-column :width="14" textAlign="left">
         <div class="message">
         {{ message.message_content }}
         </div>

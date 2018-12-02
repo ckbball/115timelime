@@ -21,7 +21,7 @@
                     <li v-for="(p, n) in this.messages" :key="n +'message'">
                       <MessageContainer  
                           :userInfo="getUserInfo"
-                          :friend="friend"
+                          :friend="selectedFriend"
                           :message="p"
                       />
                     </li>
@@ -182,6 +182,7 @@ export default {
   overflow-x:hidden;
   height: 66vh;
   list-style: none;
+  padding-left:0;
 }
 .HeaderText{
     font-weight: 400;
