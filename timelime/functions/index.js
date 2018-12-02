@@ -300,7 +300,8 @@ exports.updateSearchableName = functions.firestore
 		const oldValue = change.before.data()
 
 		if(newValue.firstName !== oldValue.firstName || newValue.lastName !== oldValue.lastName){
-			db.collection('users').doc(change.before.id).update({searchableName: newValue.firstName + ' ' + newValue.lastName})
+			db.collection('users').doc(change.before.id).update({searchableName: newValue.firstName.toLowerCase() + ' ' + 
+			newValue.lastName.toLowerCase()})
 			.then(() => {
 				resolve()
 			})
