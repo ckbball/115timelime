@@ -30,7 +30,10 @@ import db from '@/firebase/init'
 export default {
   name: 'UserSideBar',
   props: {
-    userInfo: Object,
+    userInfo: {
+      type: Object,
+      default: null,
+    }
   },
   components: {
     "UserIcon": UserIcon,
