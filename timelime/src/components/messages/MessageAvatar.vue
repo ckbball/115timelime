@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{path: '/user/'+uid}">
+  <router-link v-if="this.uid" :to="{path: '/user/'+uid}">
      <sui-image 
         class="MessageIcon"
         :src="image" 

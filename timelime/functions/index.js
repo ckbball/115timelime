@@ -302,7 +302,8 @@ exports.updateSearchableName = functions.firestore
 		const oldValue = change.before.data()
 
 		if(newValue.firstName !== oldValue.firstName || newValue.lastName !== oldValue.lastName){
-			db.collection('users').doc(change.before.id).update({searchableName: newValue.firstName + ' ' + newValue.lastName})
+			db.collection('users').doc(change.before.id).update({searchableName: newValue.firstName.toLowerCase() + ' ' + 
+			newValue.lastName.toLowerCase()})
 			.then(() => {
 				resolve()
 			})
@@ -324,8 +325,8 @@ exports.issueNotificationOnNewComment = functions.firestore
 			db.collection('notifications').add({
 				parent_id: newValue.parent_id, 
 				recipient: newValue.postAuthor_uid,
-				commenter_id: newValue.author_uid,
-				commenter_image: newValue.author_image,
+				notif_id: newValue.author_uid,
+				notif_image: newValue.author_image,
 				content: newValue.author_name+ ' commented on one of your posts.',
 				read: false, 
 			})
@@ -343,21 +344,24 @@ exports.issueNotificationOnNewComment = functions.firestore
 exports.issueNotificationOnNewLike = functions.firestore
 .document('likes/{likeId}').onCreate((snapshot, context) => {
 	let promise = new Promise((resolve, reject) => {
+		var post_author_uid = db.collection('posts').doc(newValue.parent_id).author_uid
 		const newValue = snapshot.data()
-		db.collection('notifications').add({
-			parent_id: newValue.parent_id, 
-			recipient: newValue.postAuthor_uid,
-			liker_id: newValue.author_uid,
-			liker_image: newValue.author_image,
-			content: newValue.author_name+ ' liked one of your posts.',
-			read: false, 
-		})
-		.then(docRef => {
-			resolve()
-		})
-		.catch(err => {
-			reject()
-		})
+		if (post_author_uid !== newValue.author_uid){
+			db.collection('notifications').add({
+				parent_id: newValue.parent_id, 
+				recipient: newValue.postAuthor_uid,
+				notif_id: newValue.author_uid,
+				notif_image: newValue.author_image,
+				content: newValue.author_name+ ' liked one of your posts.',
+				read: false, 
+			})
+			.then(docRef => {
+				resolve()
+			})
+			.catch(err => {
+				reject()
+			})
+		}
 	})	
 	return promise
 })
@@ -386,6 +390,7 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 		let author_image = req.body.author_image
 		let author_name = req.body.author_name
 		let content = req.body.content
+		let time_sent = req.body.time_sent
 
 		let promise = new Promise ((resolve, reject) => {
 			db.collection('comments').add({
@@ -394,7 +399,8 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 				author_uid: author_uid,
 				author_image: author_image,
 				author_name: author_name,
-				content: content
+				content: content,
+				time_sent: time_sent
 			})
 			.then(docRef => {
 				console.log(docRef.id)
@@ -410,34 +416,34 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 	})
 })
 
-// exports.addLike = functions.https.onRequest((req, res) => {
-// 	cors(req, res, () => {
-// 		let parent_id = req.body.parent_id
-// 		let author_uid = req.body.author_uid
-// 		let author_image = req.body.author_image
-// 		let author_name = req.body.author_name
+ exports.addLike = functions.https.onRequest((req, res) => {
+ 	cors(req, res, () => {
+ 		let parent_id = req.body.parent_id
+ 		let author_uid = req.body.author_uid
+ 		let author_image = req.body.author_image
+ 		let author_name = req.body.author_name
+        let postAuthor_uid = req.body.postAuthor_uid
 
-// 		let promise = new Promise ((resolve, reject) => {
-// 			db.collection('likes').add({
-// 				parent_id: parent_id,
-// 				author_uid: author_uid,
-// 				author_image: author_image,
-// 				author_name: author_name,
-// 			})
-// 			.then(docRef => {
-// 				// increment number of likes on post by 1
-// 				console.log(docRef.id)
-// 				db.collection('likes').doc(docRef.id).update({likeid: docRef.id})
-// 				//db.collection('comments').doc(docRef.id).update({comment_id: docRef.id})
-// 				resolve(res.send('post liked!'))
-// 			})
-// 			.catch(err => {
-// 				console.log(err)
-// 				reject(res.status(500).send(err))
-// 			})
-// 		})
-// 	})
-// })
+ 		let promise = new Promise ((resolve, reject) => {
+ 			db.collection('likes').add({
+ 				parent_id: parent_id,
+ 				author_uid: author_uid,
+ 				author_image: author_image,
+ 				author_name: author_name,
+				postAuthor_uid: postAuthor_uid
+ 			})
+			.then(docRef => {
+				console.log(docRef.id)
+ 				db.collection('likes').doc(docRef.id).update({likeid: docRef.id})
+ 				resolve(res.send('post liked!'))
+ 			})
+ 			.catch(err => {
+ 				console.log(err)
+ 				reject(res.status(500).send(err))
+ 			})
+ 		})
+ 	})
+ })
 
 // exports.removeLike = functions.https.onRequest((req, res) => {
 // 	cors(req, res, () => {
@@ -449,7 +455,6 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 //             .then((querySnapshot) => {
 //                 querySnapshot.forEach((doc) => {
 //                   db.collection('likes').doc(doc.id).delete().then(function() {
-//                     // reduce likes for post by 1
 // 					resolve(res.send('like removed'))
 //                   })
 //                   .catch(err => {
@@ -537,6 +542,8 @@ exports.addUserToFirestoreAfterAccountCreation = functions.auth.user().onCreate(
 exports.searchUsers = functions.https.onRequest((req, res) => {
 	cors(req, res, () => {
 		let search = req.query.name
+		search = search.toLowerCase()
+		console.log(1, search)
 		let type = req.query.type
 		let users = []
 		let promise = new Promise((resolve, reject) => {
@@ -546,6 +553,7 @@ exports.searchUsers = functions.https.onRequest((req, res) => {
 			.get()
 			.then((snapshot) => {
 			snapshot.docs.forEach(doc => {
+				console.log(doc.data().firstName ,doc.data().uid)
 				let user = {
 					firstName: doc.data().firstName || '',
 					lastName: doc.data().lastName || '',

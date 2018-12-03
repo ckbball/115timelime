@@ -41,14 +41,11 @@ export default {
   },
   methods: {
     editProfileImage: function(){
-      console.log("request to change profile picture")
     },
     changeProfileImage: function(){
-      console.log("hey! someone REALLY wants to edit this profile picture :)")
       this.$emit("editPhoto")
     },
     changeBio: function(){
-      console.log("hey! someone REALLY wants to edit this profile! :)")
       this.$emit("editBio")
     },
     ...mapMutations(['updateUser']),

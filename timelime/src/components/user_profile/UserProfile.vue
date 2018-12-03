@@ -79,24 +79,9 @@ export default {
       this.fetchUserInfo(to.params.uid)
     },
 
-    // otherUsersInfo: function() {
-    //   console.log(2, this.otherUsersInfo)
-    //   if(this.otherUsersInfo === null){
-    //     this.show = false
-    //     console.log('show = false')
-    //   }
-    //   if(this.otherUsersInfo !== null){
-    //     this.show = true
-    //     console.log('show = true')
-
-    //   }
-    // }
   },
   mounted() {
-    console.log(1, this.$route.params.uid)
-
     this.fetchUserInfo(this.$route.params.uid)
-
   }
 
   

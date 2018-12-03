@@ -71,14 +71,33 @@ export default {
               }
           }
       },
+      pushToComments: function(newComment) {
+        if(this.comments.length === 0) {
+            this.comments.push(newComment)
+            return
+        }
+        if(this.comments[0].time_sent > newComment.time_sent) {
+            this.comments.unshift(newComment)
+            return
+        }
+        if(this.comments[this.comments.length-1].time_sent < newComment.time_sent) {
+            this.comments.push(newComment)
+            return
+        }
+        for(let i = 0; i < this.comments.length;  i++){
+            if(this.comments[i].time_sent > newComment.time_sent){
+            this.comments.splice(i, 0, newComment)
+            return
+            }
+        }
+      },
       fetchComments: function() {
           db.collection('comments')
           .where('parent_id', '==', this.post.post_id)
           .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
             snapshot.docChanges().forEach(change => {
                 if (change.type === 'added') {
-                    this.comments.push(change.doc.data())
-                    
+                    this.pushToComments(change.doc.data())                    
                 }
             })
           })

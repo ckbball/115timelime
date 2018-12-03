@@ -1,30 +1,41 @@
 <template>
-    <sui-card class="FriendCard scroll">
+    <sui-table>
+        <sui-table-header>
+            <sui-table-row>
+                <sui-table-header-cell textAlign="center">
+                    Friends
+                </sui-table-header-cell>
+            </sui-table-row>
+        </sui-table-header>
+        <sui-table-body>
+            <ul class="scroll2">
+                <sui-table-row v-for="(friend, n) in this.getFriendsMessaged" :key="n +'friendtomessage'"
+                    @click="selectConversation(friend)">
+                    <FriendsToMessageItem 
+                        @click="selectConversation(friend)"
+                        :friend="friend">
+                    </FriendsToMessageItem>
+                </sui-table-row>
+            </ul>
+        </sui-table-body>
+    </sui-table>
+    <!-- <sui-card class="FriendCard scroll2">
     <sui-table padded>
+
         <sui-table-header>
           <sui-table-row>
-            <sui-table-header-cell >
-                
+            <sui-table-header-cell textAlign="center">
                 <span class="FriendHeader">Friends</span>
             </sui-table-header-cell>
           </sui-table-row>
         </sui-table-header>
-        <sui-table-body>
-
-
-
-
-
-<!-- okay, so now we need a new value, which is number or unread friends and we also need friends to have
-an unread value so that way we can color based off that  -->
-
-
-          <sui-table-row v-for="(friend,n) in this.getFriendsMessaged" :key="n"> 
-
+        <sui-table-body >
+            <sui-table-row v-for="(friend,n) in this.getFriendsMessaged" :key="n"                     
+                v-on:click="selectConversation(friend)"
+> 
                 <sui-table-cell 
                     v-if="friend.unread != '' && friend.unread != friend.uid"  
                     negative 
-                    v-on:click="requestMessages(friend)"
                 >
                     <sui-grid :columns="2">
                       <sui-grid-column :width="3">
@@ -34,14 +45,14 @@ an unread value so that way we can color based off that  -->
                         </MessageAvatar>
                       </sui-grid-column>
                       <sui-grid-column :width="13">
-                        <span class="FriendName">{{friend.name}}</span>
+                        <span class="FriendName">{{nameCase(friend.name)}}
+                        </span>
                       </sui-grid-column>
                     </sui-grid>
                 </sui-table-cell>
 
                 <sui-table-cell
                     v-if="friend.unread == '' || friend.unread == friend.uid"  
-                    v-on:click="requestMessages(friend)"
                 >
                     <sui-grid :columns="2">
                       <sui-grid-column :width="3">
@@ -51,7 +62,8 @@ an unread value so that way we can color based off that  -->
                         </MessageAvatar>
                       </sui-grid-column>
                       <sui-grid-column :width="13">
-                        <span class="FriendName">{{friend.name}}</span>
+                        <span class="FriendName">{{nameCase(friend.name)}}
+                        </span>
                       </sui-grid-column>
                     </sui-grid>
                 </sui-table-cell>
@@ -61,7 +73,7 @@ an unread value so that way we can color based off that  -->
 
         </sui-table-body>
     </sui-table>
-</sui-card>
+</sui-card> -->
 </template>
 
 <script> 
@@ -69,6 +81,7 @@ import db from '@/firebase/init'
 import { mapGetters, mapActions } from 'vuex'
 
 import MessageAvatar from '@/components/messages/MessageAvatar'
+import FriendsToMessageItem from '@/components/messages/FriendsToMessageItem'
 export default {
     name: 'FriendsToMessage',
     props: {
@@ -76,7 +89,8 @@ export default {
       openFriends: Boolean
     },
     components: {
-      'MessageAvatar': MessageAvatar
+      'MessageAvatar': MessageAvatar,
+      'FriendsToMessageItem': FriendsToMessageItem
     },
     data() {
       return{
@@ -96,15 +110,27 @@ export default {
             'fetchMyMessageStatuses',
             'readMessage'
         ]),
-        requestMessages(friend){
-            this.readMessage({my_uid: this.getUserInfo.uid, friend: friend})
-            // TODO: mia create a firebase function that checks if that message was read or not and change the relations
-            this.$emit("changeLoadedMessages", friend)
+        nameCase: function(arg) {
+            if(!arg) return 'undefined';
+            arg = arg.toLowerCase().split(' ')
+            .map((word) => {
+                return (word.charAt(0).toUpperCase() + word.slice(1))
+            })
+            return arg.join(' ')
         },
+
+        selectConversation: function(friend) {
+            this.$emit('selectedConversation', friend)
+        },
+
+        // requestMessages(friend){
+        //     this.readMessage({my_uid: this.getUserInfo.uid, friend: friend})
+        //     // TODO: mia create a firebase function that checks if that message was read or not and change the relations
+        //     this.$emit("changeLoadedMessages", friend)
+        // },
     },
     update: {
         getAllFriends: function() {
-
             this.fetchMyMessageStatuses({my_uid: this.getUserInfo.uid, allMyFriends: this.getAllFriends})
         }
   },
@@ -115,7 +141,6 @@ export default {
 .FriendHeader {
     font-weight: 400;
     font-size: 15pt;
-    left: 90px;
     position: relative;
  }
  .FriendName {
@@ -131,6 +156,19 @@ export default {
     max-height: 700px;
     overflow-y: auto;
 }
+.scroll2{
+    /* height: 88vh;
+    max-height:88vh;
+    overflow:scroll; */
+      width: 100%;
+  overflow-y:auto;
+  overflow-x:hidden;
+  height: 77vh;
+  list-style: none;
+  padding-left:0;
+}
+
+
 </style>
 
 

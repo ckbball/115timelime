@@ -2,7 +2,7 @@
     <a is="sui-dropdown-item">
 
 
-    <sui-dropdown icon="big universal access" class="requestDropdown" floating >
+    <sui-dropdown icon="big universal access" class="requestDropdown" floating multiple>
         <sui-dropdown-menu scrolling="true" class="left menu dropMenuReq maxheight" >
             <sui-dropdown-header content="Friend Requests:"/>
                 <FriendRequest v-for="(req,n) in this.getAllFriendsRequests" :key="n"
@@ -52,11 +52,11 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.requestButton {
-  position: absolute;
+.requestDropdown {
+  position: relative;
   width: 40px;
   height: 40px;
-  right: 15px;
+  top: 8px;
 }
 .dropMenuReq {
   width: 400px;
