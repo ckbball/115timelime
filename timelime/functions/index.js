@@ -65,13 +65,15 @@ exports.main = functions.https.onRequest(main);
 
 /* ------ Writing the scheduling code -----*/
 var rule = new schedule.RecurrenceRule();
-rule.minute = 10;
+rule.seconds = 5
 
 var j = schedule.scheduleJob(rule, function(){
+	console.log('deleting docs...')
     var endTime = Date.now()
     db.collection('posts').where('expire_time', '<', endTime).get()
         .then((querySnapshot) => {
             querySnapshot.forEach((doc) => {
+            	console.log('deleting',doc)
               db.collection('posts').doc(doc.id).delete().then(function() {
                 
               })
@@ -465,6 +467,7 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 
 
 exports.addNewPost = functions.https.onRequest((req, res) => {
+	console.log('adding a new post!')
 	cors(req, res, () => {
 		let parent_id = req.body.parent_id
 		let author_uid = req.body.author_uid
@@ -475,7 +478,8 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 		let photo_URL = req.body.photo_URL
         let is_photo_post = req.body.is_photo_post
 		let upload_time = req.body.upload_time
-        let expire_time = upload_time + 2678400000
+		let duration = req.body.duration
+        let expire_time = upload_time + duration
 
 		let promise = new Promise ((resolve, reject) => {
 			db.collection('posts').add({
@@ -490,6 +494,7 @@ exports.addNewPost = functions.https.onRequest((req, res) => {
 				whoSees: whoSees,
 				commentIDs: [],
 				upload_time: upload_time,
+				duration: duration,
                 expire_time: expire_time,
 			})
 			.then(docRef => {
