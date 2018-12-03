@@ -22,7 +22,6 @@ export default {
   },
   methods: {
     open() {
-      console.log("hey! someone wants to edit this profile photo! :)")
       this.$emit("editPhoto")
     },
   },

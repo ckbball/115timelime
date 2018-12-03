@@ -12,17 +12,17 @@
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i> 
-              <input type="text" v-model="email" placeholder="Email">
+              <input id="user_email" type="text" v-model="email" placeholder="Email">
             </div>
           </div>
           <div class="field">
             <div class="ui left icon input">
               <i class="lock icon"></i>
-              <input type="password" v-model="password" placeholder="Password">
+              <input id ="user_password" type="password" v-model="password" placeholder="Password">
             </div>  
           </div>
-          <button class="ui large fluid grey button" type="button" v-on:click="signIn">
-            Squeeze!
+          <button class="ui large fluid grey button" id="login_button" type="button" v-on:click="signIn">
+            Log In
           </button>
         </div>
 
@@ -42,7 +42,7 @@
 
 <script>
   import { mapActions } from 'vuex'
-  
+
   export default {
     name: 'Login',
     data () {
@@ -62,6 +62,9 @@
       ]),
       signIn() {
         this.authenticateUser({email: this.email, password: this.password})
+        .then( cred => {
+          this.$router.push('Home')
+        })
         .catch(err => {
           this.invalidEmail = false
           this.invalidPassword = false
@@ -71,6 +74,22 @@
             this.invalidPassword = true
         })
       }
+    },
+    mounted() {
+        var mail = document.getElementById("user_email");
+        mail.addEventListener("keyup", function(event) {
+          event.preventDefault();
+          if (event.keyCode === 13) {
+            document.getElementById("login_button").click();
+          }
+        });
+        var pass = document.getElementById("user_password");
+        pass.addEventListener("keyup", function(event) {
+          event.preventDefault();
+          if (event.keyCode === 13) {
+            document.getElementById("login_button").click();
+          }
+        });
     }
   }
 

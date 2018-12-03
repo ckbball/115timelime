@@ -1,128 +1,94 @@
-<template lang="html">
-  <div>
-    <sui-grid :columns="3" :centered=false divided>
+<template>
+
+  <div >
+    <sui-loader :active="loading"
+    ></sui-loader>
+    <sui-grid :columns="3" :centered=false divided v-if="this.otherUsersInfo">
       <sui-grid-column :width="3">
       </sui-grid-column>
 
       <sui-grid-column :width="7">
-        <UserFeed fluid/>
+        <UserFeed fluid
+          :uid="otherUsersInfo.uid"
+        />
       </sui-grid-column>
       <sui-grid-column  :width="5">
         <UserSideBar
-        @editBio="toggle()"
-        @editPhoto="togglePhoto()"
+        :userInfo="otherUsersInfo"
+        v-on:showFriends="toggleFriendsModal()"
         />
       </sui-grid-column>
+      <FriendsListModal
+        :uid="otherUsersInfo.uid"
+        :openFriends="openFriends" 
+      ></FriendsListModal>
     </sui-grid>
 
 
-    <sui-modal 
-    v-model="open"
-    >
-      <sui-modal-header> Edit Bio </sui-modal-header>
-      <sui-modal-content>
-        <sui-modal-description>
-          <textarea 
-           v-model="newBio" class="fucku" maxlength="200"
-           />
-        </sui-modal-description>
-      </sui-modal-content>
-        
-      <sui-modal-actions>
-        Characters remaining: {{textRemaining}}
-        <sui-button negative @click.native="toggle">
-          Cancel
-        </sui-button>
-        <sui-button positive @click.native="savePost">
-          Save
-        </sui-button>
-      </sui-modal-actions>
-      
-    </sui-modal>
+  </div>
 
-
-    <sui-modal 
-    v-model="openPhoto"
-    >
-      <sui-modal-header> Change Profile Photo </sui-modal-header>
-      <sui-modal-content>
-        <sui-modal-description>
-          
-        </sui-modal-description>
-      </sui-modal-content>
-        
-      <sui-modal-actions>
-        Characters remaining: {{textRemaining}}
-        <sui-button negative @click.native="togglePhoto">
-          Cancel
-        </sui-button>
-        <sui-button positive @click.native="savePhoto">
-          Save
-        </sui-button>
-      </sui-modal-actions>
-      
-    </sui-modal>
-
-
-
-</div>
 </template>
-
 <script>
-export default {
-  name: 'CelledExample',
-};
-</script>
-
-<script>
-  import {mapGetters, mapMutations} from 'vuex'
-
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 import UserFeed from '@/components/posts/UserFeed'
-import EditProfileInfo from '@/components/user_profile/EditProfileInfo'
-import EditProfilePicture from '@/components/user_profile/EditProfileInfo'
 import UserSideBar from '@/components/user_profile/UserSideBar'
-import FriendButton from '@/components/user_profile/FriendButton'
+import FriendsListModal from '@/components/user_profile/FriendsListModal'
+
+import firebase from 'firebase'
+import db from '@/firebase/init'
+
 export default {
   name: 'UserProfile',
-  data() {
-    return { 
-      icon: "photo",
-      open: false,
-      openPhoto: false,
-      newBio: "this.getUser.Bio"
-    };
-  },
-  computed: {
-    ...mapGetters(['getUser']),
-    textRemaining: function(){
-        return 200 - this.newBio.length
-      },
-  },
   components: {
     "UserSideBar": UserSideBar,
-    "FriendButton": FriendButton,
-    "EditProfileInfo": EditProfileInfo,
-    "UserFeed": UserFeed
+    "UserFeed": UserFeed,
+    'FriendsListModal': FriendsListModal
   },
+  data() {
+    return {
+      otherUsersInfo: null,
+      openFriends: false,
+      show: false,
+      loading: false,
+    }
+  },
+  
   methods: {
-    toggle: function(){
-      console.log("toggling the modal")
-      this.open = !this.open;
+
+    toggleFriendsModal: function(){
+      this.openFriends = !this.openFriends;
     },
-    ...mapMutations(['updateUser']),
-    savePost(text){
-      this.$store.commit('updateUser')
-      this.open = !this.open;
+    fetchUserInfo: function(uid) {
+      this.loading = true
+      db.collection('users').doc(uid).get()
+      .then(doc => {
+        this.otherUsersInfo = doc.data()
+        this.loading = false
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      
     },
-    togglePhoto: function(){
-      console.log("toggling the modal")
-      this.openPhoto = !this.openPhoto;
-    },
-    savePhoto(){
-      this.openPhoto = !this.openPhoto;
-    },
+ 
+
+
   },
-};
+  watch: {
+    $route: function(to, from) {
+      this.fetchUserInfo(to.params.uid)
+    },
+
+  },
+  mounted() {
+    this.fetchUserInfo(this.$route.params.uid)
+  }
+
+  
+
+
+
+}
 
 </script>
 

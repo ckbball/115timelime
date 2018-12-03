@@ -1,5 +1,7 @@
 <template lang="html">
-  <div>
+ 
+</style>
+ <div>
     </object>
     <sui-button :color="color" :icon="icon" size="small" :basic="this.pressed"
         @click="clicked()">
@@ -18,29 +20,27 @@
 </template>
 
 <script>
-export default {
-  name: 'LikeButton',
-  data () {
-    return {
-    	likeCount:0,
-    	pressed:false
-    }
-  },
-  props: {
-  	color: String,
-  	icon: String,
-  	counter: Number,
-  },
-  methods: {
-	clicked: function() {
-		this.pressed=!this.pressed
-		this.$emit("clickEvent")
-	}
-  } 
-}
+// export default {
+//   name: 'Button',
+//   data () {
+//     return {
+//     	likeCount:0,
+//     	pressed:false
+//     }
+//   },
+//   props: {
+//   	color: String,
+//   	icon: String,
+//   	counter: Number,
+//   },
+//   methods: {
+//   	clicked: function() {
+//   		this.pressed=!this.pressed
+//   		this.$emit("clickEvent")
+//   	}
+//   } 
+// }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-</style>

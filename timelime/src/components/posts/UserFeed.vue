@@ -1,65 +1,82 @@
 <template>
-  <div >
+  <div>
+  <div>
+    <StandInPost 
+      v-if="this.posts.length === 0" 
+      @writePost="clickWriteButton()"
+      :uid="this.$route.params.uid"
+    />
 
-  <div class="posts" v-for="post in posts">
-      <Post
-      :content="post.text"
-      name="Name Name"
-      />
   </div>
 
-</div>
-
+  <div v-if="this.posts.length > 0" >
+    <post class="posts" v-for="(p,n) in this.posts" :key="n"
+      :post="p"
+    />
+  </div>
+  </div>
 </template>
 
 <script>
+
 import Post from '@/components/posts/Post'
+import StandInPost from '@/components/posts/StandInPost'
+
 import firebase from 'firebase'
 import db from '@/firebase/init'
 
 export default {
   name: 'UserFeed',
+  components: {
+    "Post": Post,
+    "StandInPost": StandInPost,
+  },
   data () {
     return {
-      textPost: '',
       posts: [],
     }
   }, 
-  components: {
-    "Post": Post,
-  },
   methods: {
-    submit() {
-      db.collection('posts').add({
-        text: this.textPost,
-      })
-      .then(docRef => {
-        db.collection('posts').doc(docRef.id).update({id: docRef.id})
-      })
-      .catch(err => {
-        console.log("failed with error: " + err)
-      })
-    }, 
-    getPosts() {
-      db.collection('posts').get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          let data = {
-            'id': doc.id,
-            'text': doc.data().text
+    clickWriteButton: function() {
+      this.$emit("writePost")
+    },
+    getPostsOfAUser: function(uid) {
+      this.posts = []
+      db.collection('posts').where('parent_id', '==', uid)
+      .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+        snapshot.docChanges().forEach(change => {
+          if (change.type === 'added') {
+            this.posts.push(change.doc.data())
+            function compareUploadTime(post1, post2) {
+              if (post1.upload_time > post2.upload_time)
+                  return -1
+              if (post1.upload_time < post2.upload_time)
+                  return 1
+              return 0
+            }
+            this.posts.sort(compareUploadTime)
           }
-          this.posts.push(data)
+          if (change.type === 'modified') {
+            this.posts.forEach(post => {
+              if(post.post_id === change.doc.data().post_id){
+                post.whoLikes = change.doc.data().whoLikes
+                post.commentIDs = change.doc.data().commentIDs
+                post.author_image = change.doc.data().author_image
+              }
+            })
+          }
         })
       })
-      .catch(err => {
-        console.log("failed with error: " + err)
-      })
-      console.log(this.posts)
     }
   },
-  created () {
-    this.getPosts()
-    console.log(this.posts[0])
+
+  watch: {
+    $route: function(to, from) {
+      this.getPostsOfAUser(to.params.uid)
+    }
+  },
+  mounted() {
+    this.getPostsOfAUser(this.$route.params.uid)
   }
 }
 </script>

@@ -1,5 +1,75 @@
-<template>
-  <div class="ui middle aligned center aligned grid">
+<template lang="html">
+
+
+
+<sui-card fluid class="maxwidth raised"  >
+  <sui-dimmer :active="dimmerActive">
+    <sui-loader>{{loaderContent}}</sui-loader>
+  </sui-dimmer>
+  <sui-card-header>
+    <h2 class="ui grey image header">    
+      <img :src="images.lemon" class="image">
+      <div class="content">
+        {{headerContent}}
+      </div>
+    </h2>
+  </sui-card-header>
+  <sui-card-content v-if="state==='addInfo'">
+    <sui-form>
+      <sui-form-field inline>
+        <label>Name</label>
+        <input v-model="firstName" placeholder="First">
+        <input v-model="lastName" placeholder="Last">
+      </sui-form-field>
+      <sui-form-field>
+        <textarea v-model="bio" placeholder="Tell us about yourself"></textarea>
+      </sui-form-field>
+
+
+    </sui-form>
+
+  </sui-card-content>
+  <sui-card-content v-if="state==='register'">
+    <sui-form>
+      <sui-form-field>
+        <input placeholder="Email..." v-model="email">
+      </sui-form-field>
+      <sui-form-field>
+        <input placeholder="Password..." v-model="password" type="password">
+      </sui-form-field>
+      <sui-form-field>
+        <input placeholder="Confirm Password...." v-model="rePassword" type="password">
+      </sui-form-field>
+      <sui-form-field>
+        <sui-checkbox v-model="termsCheck" label="I agree to the terms and conditions"></sui-checkbox>
+      </sui-form-field>
+    </sui-form>
+  </sui-card-content >
+  <sui-card-content v-if="invalidEmail || emailInUse || invalidPassword || invalidRePassword || invalidTermsCheck">
+    <sui-message color="red">
+      <sui-message-item v-if="invalidTermsCheck">
+      You must agree to the terms & conditions!
+      </sui-message-item>
+      <sui-message-item v-if="invalidEmail">
+        Please enter a valid email!
+      </sui-message-item>
+      <sui-message-item v-if="emailInUse">
+        This email is already in use!
+      </sui-message-item>
+      <sui-message-item v-if="invalidPassword">
+        Password must be 6 or more characters!
+      </sui-message-item>
+      <sui-message-item v-if="invalidRePassword">
+        Passwords do not match!
+      </sui-message-item>
+    </sui-message>
+  </sui-card-content>
+  <sui-button attached="bottom" @click="buttonHandler()">
+    {{buttonContent}} 
+  </sui-button>
+</sui-card>
+
+   <!-- <div class="ui middle aligned center aligned grid" >
     <div class="column">
       <h2 class="ui grey image header">    
         <img :src="images.lemon" class="image">
@@ -29,7 +99,9 @@
           </div>
           <div class="field">
             <div class="ui left icon input">  
-              <input type="checkbox" v-model="termsCheck">I agree to the <router-link to="/terms-and-conditions">terms & conditions</router-link>
+              <input type="checkbox" v-model="termsCheck">
+              I agree to the&nbsp;
+              <router-link to="/terms-and-conditions"> terms & conditions</router-link>
             </div>
           </div>
           <button class="ui large fluid grey button" type="button" v-on:click="signUp">
@@ -51,7 +123,10 @@
       </div>
 
     </div>
-  </div>
+  </div>  -->
+
+
+
 </template>
 
 <script>
@@ -61,6 +136,7 @@
     name: 'SignUp',
     data () {
       return{
+        user: {},
         email: '',
         password: '',
         rePassword: '',
@@ -68,17 +144,69 @@
         images: {
           lemon: require('@/assets/lemon.png')
         },
+
         invalidEmail: false,
         emailInUse: false,
         invalidPassword: false,
         invalidRePassword: false,
-        invalidTermsCheck: false
+        invalidTermsCheck: false,
+
+        headerContent: 'Create a new account!',
+        loaderContent: 'Registering...',
+        buttonContent: 'Register',
+        dimmerActive: false,
+
+        state: 'register',
+
+        firstName: '', 
+        lastName: '',
+        bio: '',
       }
+
     },
     methods: {
       ...mapActions([
-        'registerNewUser'
+        'registerNewUser',
+        'updateUserInfo'
       ]),
+      changeState: function(state) {
+        this.state = state
+        if(state === 'register'){
+          this.headerContent = 'Create a new account'
+          this.buttonContent = 'Register'
+        }
+        if (state === 'addInfo'){
+          this.headerContent = 'Tell us about yourself!'
+          this.buttonContent = 'Update Bio'
+        }
+      },
+      setLoading: function(bool) {
+        if(bool === 'true'){
+          this.loading = true
+          this.dimmerActive =true;
+        }
+        if(bool === 'false') {
+          this.loading = false
+          this.dimmerActive = false
+        }
+      },
+      buttonHandler: function() {
+        if(this.state === 'register') this.signUp()
+        if(this.state === 'addInfo'){
+          this.updateUserInfo({
+            uid: this.user.uid,
+            update: {
+              firstName: this.firstName,
+              lastName: this.lastName,
+              bio: this.bio
+            }
+          })
+          .then(() => {
+            this.$router.push('/home')
+          })
+        }
+      },
+
       signUp() {
         this.invalidEmail = false
         this.emailInUse = false
@@ -90,11 +218,18 @@
         if (!this.termsCheck)
           this.invalidTermsCheck = true;
         if (!this.invalidRePassword && !this.invalidTermsCheck) {
+          this.setLoading('true')
+
           this.registerNewUser({email: this.email, password: this.password})
           .then(user => {
-            alert('Your account has been created!')
+            this.user = user
+            this.setLoading('false')
+            this.changeState('addInfo')
+            
+
           })
           .catch(err => {
+            this.setLoading('false')
             if (err.code == "auth/invalid-email")
               this.invalidEmail = true
             else if (err.code == "auth/weak-password")
@@ -121,4 +256,9 @@
     margin: auto;
     margin-top: 20px;
   }
+  .maxwidth{
+    width:600px;
+    margin:auto;
+  }
+
 </style>

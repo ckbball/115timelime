@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <sui-card class="raised">
+    <sui-card class="raised" v-if="isAuthUser || isFriend == 'true'">
       <sui-card-content>
         <sui-button icon="edit"/>
         <sui-button icon="camera retro"/>
@@ -19,7 +19,11 @@ export default {
     }
   },
   methods: {
-  } 
+  },
+  props: {
+    isAuthUser: Boolean,
+    isFriend: String
+  }  
 }
 </script>
 

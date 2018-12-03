@@ -1,25 +1,22 @@
 <template>
   <div>
-    <post/>
   </div>
 </template>
 
 <script>
-import post from '@/components/posts/PostText'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'KenjiTest',
   components: {
-    'post': post
   },
   data () {
-    return {}
-  }, 
-  
-   
+    return {
+    }
+  },
+  methods: {},
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 </style>

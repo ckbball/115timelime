@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import firebase from 'firebase'
-import Home from '@/components/Home'
 
+import Home from '@/components/home/Home'
+import User from '@/components/User'
 import Login from '@/components/auth/Login'
+import MessagePage from '@/components/messages/MessagePage'
 import SignUp from '@/components/auth/SignUp'
 import TermsAndConditions from '@/components/auth/TermsAndConditions'
 import Post from '@/components/posts/PostText'
@@ -32,7 +34,22 @@ const router = new Router({
         requiresAuth: true
       }
     },
-
+    {
+      path: '/messages',
+      name: 'Messages',
+      component: MessagePage,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/user/:uid',
+      name: 'User',
+      component: User,
+      meta: {
+        requiresAuth: true
+      }
+    },
     {
       path: '/Login',
       name: 'LogIn',
@@ -63,10 +80,10 @@ const router = new Router({
       name: 'CaesarTest',
       component: CaesarTest
     },
-        {
+    {
       path: '/kenjitest',
       name: 'KenjiTest',
-      component: KenjiTest
+      component: KenjiTest,
     },
   ]
 })
@@ -74,7 +91,7 @@ const router = new Router({
 // router.beforeEach((to, from, next) => {
 //   let requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 //   if (requiresAuth && !auth.isLoggedIn) next('login')
-//   else if (!requiresAuth && auth.isLoggedIn) next('hello')
+//   else if (!requiresAuth && auth.isLoggedIn) next('home')
 //   else next()
 // })
 

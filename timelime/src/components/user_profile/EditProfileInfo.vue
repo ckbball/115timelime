@@ -4,76 +4,31 @@
       :icon="this.icon"
       v-on:clicked="open"
     ></ButtonColor>
-   <!--  <sui-modal v-model="open">
-      <sui-modal-header>{{Header}}</sui-modal-header>
-      <sui-modal-content>
-
-        <sui-modal-description>
-          <textarea 
-            v-model="newBio"  class="fucku" maxlength="200"/>
-        </sui-modal-description>
-      </sui-modal-content>
-        
-      <sui-modal-actions>
-        Characters remaining: {{textRemaining}}
-        <sui-button negative @click.native="toggle">
-          Cancel
-        </sui-button>
-        <sui-button positive @click.native="savePost">
-          Save
-        </sui-button>
-      </sui-modal-actions>
-    
-    </sui-modal> -->
   </div>
 </template>
 
 
 <script>
-import ButtonColor from '@/components/user_profile/ButtonColor'
-import {mapGetters, mapMutations} from 'vuex'
-export default {
-  name: 'EditProfileInfo',
-  data() {
-    return { 
-      icon: "write",
-      // open: false,
-      // text: "",
-      // maxlength: 200,
-      // newBio: this.Bio
-    };
-  },
-  // computed: {
-  //   textRemaining: function(){
-  //       return 200 - this.newBio.length
-  //     },
-  //   ...mapGetters(['getUser'])
-  // },
-  components: {
-    "ButtonColor": ButtonColor,
-  },
-  // props: {
-  //   Header: String,
-  //   Bio: String,
-  //   Prexisting: String,
-  // },
-  methods: {
-    open() {
-      console.log("hey! someone wants to edit this profile! :)")
-      this.$emit("editBio")
-    },
-    // savePost(){
-    //   this.$emit("inputEvent", this.newBio)
-    //   this.open = !this.open;
-    //   this.text = ""
-    // },
-    // calculateRemaining() {
-    //   console.log("fuck u")
-    //   // this.remaining = this.maxlength - val.value.length;
-    // },
-    // ...mapMutations(['setUser']),
-  },
-};
+// import ButtonColor from '@/components/user_profile/ButtonColor'
+// import {mapGetters, mapMutations} from 'vuex'
+// export default {
+//   name: 'EditProfileInfo',
+//   data() {
+//     return { 
+//       icon: "write",
+//     };
+//   },
+
+//   components: {
+//     "ButtonColor": ButtonColor,
+//   },
+
+//   methods: {
+//     open() {
+//       this.$emit("editBio")
+//     },
+//   },
+// };
 </script>
 
 <style scoped>
