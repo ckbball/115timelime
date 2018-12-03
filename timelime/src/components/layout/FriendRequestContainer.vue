@@ -54,9 +54,9 @@ export default {
 <style scoped>
 .requestDropdown {
   position: relative;
-  width: 40px;
-  height: 40px;
-  top: 8px;
+  width: 30px;
+  height: 30px;
+  top: 0px;
 }
 .dropMenuReq {
   width: 400px;
