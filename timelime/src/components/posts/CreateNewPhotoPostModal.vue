@@ -23,6 +23,11 @@
 
       </sui-modal-content>
       <sui-modal-actions>
+        <span class='timeDuration'> Post Duration: </span>
+        <span class='timeFields'> Days, Hours, Minutes </span>
+        <sui-input class='timeInput' placeholder='31' v-model="days"/>,
+        <sui-input class='timeInput' placeholder='0' v-model="hours"/>,
+        <sui-input class='timeInput' placeholder='0' v-model="minutes"/>
         <sui-button negative @click.native="CancelPhotoPost">
           Cancel
         </sui-button>
@@ -52,6 +57,9 @@ export default {
       PostContent: "",
       selectedFile: null,
       url: null,
+      days: 31,
+      hours: 0,
+      minutes: 0
     };
   },
   computed: {
@@ -65,6 +73,9 @@ export default {
     PostPhotoToFB: function(downloadURL) {
       let whosees = this.getMyFriends.map(friend => friend.uid)
       whosees.push(this.getUserInfo.uid)
+
+      let miliseconds = 60000*this.minutes+3600000*this.hours+86400000*this.days
+
       this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
         parent_id: this.userInfo.uid, // 
         author_uid: this.getUserInfo.uid, //
@@ -74,11 +85,15 @@ export default {
         photo_URL: downloadURL,
         is_photo_post: "true",
         upload_time: Date.now(),
+        duration: miliseconds,
         whoSees: whosees
 
       })
       .then(response => {
           this.PostContent = ''
+          this.days = 31
+          this.hours = 0
+          this.minutes = 0
       })
       .catch(err => {
           console.log(err)
@@ -115,7 +130,6 @@ export default {
           this.url = downloadURL
         });
       });
-
         this.url = null;
         this.selectedFile = null;
     },
@@ -123,6 +137,9 @@ export default {
       // shuts modal in whoever is opening it
       this.PostContent = ''
       this.selectedFile = null
+      this.days = 31
+      this.hours = 0
+      this.minutes = 0
       this.$emit("ContinuePhotoPost")
     },
     uploadPhoto: function (event) {
@@ -143,6 +160,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.timeInput{
+  width: 5%;
+}
+.timeFields {
+  font-weight: -12
+}
+.timeDuration {
+  font-weight: 710;
+  font-size: 11pt;
+  position: relative;
+}
 .PhotoUpload{
   position: relative;
   margin-right: 1000px;

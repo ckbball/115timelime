@@ -16,6 +16,11 @@
         </sui-modal-description>
       </sui-modal-content>
       <sui-modal-actions>
+        <span class='timeDuration'> Post Duration: </span>
+        <span class='timeFields'> Days, Hours, Minutes </span>
+        <sui-input class='timeInput' placeholder='31' v-model="days"/>,
+        <sui-input class='timeInput' placeholder='0' v-model="hours"/>,
+        <sui-input class='timeInput' placeholder='0' v-model="minutes"/>
         <sui-button negative @click.native="CancelTextPost">
           Cancel
         </sui-button>
@@ -41,7 +46,10 @@ export default {
   data() {
     return { 
       open: true,
-      PostContent: ""
+      PostContent: "",
+      days: 31,
+      hours: 0,
+      minutes: 0
     };
   },
   computed: {
@@ -57,6 +65,9 @@ export default {
       let whosees=this.getMyFriends.map(friend => friend.uid)
       whosees.push(this.getUserInfo.uid)
 
+      let miliseconds = 60000*this.minutes+3600000*this.hours+86400000*this.days
+      console.log(this.days,this.hours,this.minutes)
+
       this.axios.post('https://us-central1-timelime-96d47.cloudfunctions.net/addNewPost', {
             parent_id: this.userInfo.uid, // 
             author_uid: this.getUserInfo.uid, //
@@ -66,11 +77,15 @@ export default {
             photo_URL: "",
             is_photo_post: "false",
             upload_time: Date.now(),
+            duration: miliseconds,
             whoSees: whosees//this.getMyFriends.map(friend => friend.uid)
 
         })
         .then(response => {
             this.PostContent = ''
+            this.days = 31
+            this.hours = 0
+            this.minutes = 0
         })
         .catch(err => {
             console.log(err)
@@ -79,6 +94,9 @@ export default {
     CancelTextPost: function() {
       // shuts modal in whoever is opening it
       this.PostContent = ''
+      this.days = 31
+      this.hours = 0
+      this.minutes = 0
       this.$emit("ContinueTextPost")
     }
   },
@@ -89,6 +107,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.timeInput{
+  width: 5%;
+}
+.timeFields {
+  font-weight: -12
+}
+.timeDuration {
+  font-weight: 710;
+  font-size: 11pt;
+  position: relative;
+}
 .FriendButton{
   position: relative;
   z-index: 2;

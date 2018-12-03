@@ -1,15 +1,26 @@
 <template>
+  <div>
+  <div>
+    <StandInPost 
+      v-if="this.posts.length === 0" 
+      @writePost="clickWriteButton()"
+      :uid="this.$route.params.uid"
+    />
+
+  </div>
+
   <div v-if="this.posts.length > 0" >
     <post class="posts" v-for="(p,n) in this.posts" :key="n"
       :post="p"
     />
   </div>
+  </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 
 import Post from '@/components/posts/Post'
+import StandInPost from '@/components/posts/StandInPost'
 
 import firebase from 'firebase'
 import db from '@/firebase/init'
@@ -18,13 +29,17 @@ export default {
   name: 'UserFeed',
   components: {
     "Post": Post,
+    "StandInPost": StandInPost,
   },
   data () {
     return {
       posts: [],
     }
-  },  
+  }, 
   methods: {
+    clickWriteButton: function() {
+      this.$emit("writePost")
+    },
     getPostsOfAUser: function(uid) {
       this.posts = []
       db.collection('posts').where('parent_id', '==', uid)

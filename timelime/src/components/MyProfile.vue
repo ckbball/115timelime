@@ -60,15 +60,18 @@
       <CreateNewPhotoPostModal @ContinuePhotoPost="togglePhotoPost" :userInfo="getUserInfo" />
     </sui-modal>
 
-      <sui-modal v-model="openFriends" size="mini">
+      <sui-modal v-model="openFriends" size="tiny">
         <sui-modal-header>Friends!</sui-modal-header>
 
           <sui-table padded>
-            <sui-table-row v-for="(friend,n) in this.getAllFriends" :key="n"> 
+            <sui-table-row v-for="(friend,n) in this.getAllFriends" :key="n+'friendsModal'"> 
+              <sui-table-cell >
               <FriendBox
                 :friend="friend">
               </FriendBox>
+              </sui-table-cell>
             </sui-table-row>
+          
           </sui-table>
 
         <sui-modal-actions>

@@ -4,6 +4,7 @@
    <StandInPost 
     v-if="this.getTimelime.length == 0" 
     @writePost="clickWriteButton()"
+    :uid="getUserInfo.uid"
   />
 
     <div class="posts" v-for="(p,n) in this.getTimelime" :key="n+'timelime'">
