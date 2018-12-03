@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-      <sui-card class="UserPost">
+      <sui-card  v-if="uid === this.getUserInfo.uid || uid === '' "  class="UserPost">
         <sui-card-content>
           <span class="top"> YOU HAVE NO POSTS :( </span>
           <p>create a new post using <sui-button icon="pencil alternate" @click="clickWriteButton()"/> in your side bar </p>
@@ -16,10 +16,28 @@
 
         </sui-card-content>
       </sui-card>
+
+
+      <sui-card  v-if="uid != this.getUserInfo.uid"  class="UserPost">
+        <sui-card-content>
+          <span class="top"> THIS USER HAS NO POSTS :( </span>
+          <br/>
+          <sui-image 
+            src="https://art.pixilart.com/94b0fa92bfcf878.png"
+            size="medium"
+          />
+
+
+        </sui-card-content>
+      </sui-card>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
+import firebase from 'firebase'
+import db from '@/firebase/init'
 
 export default {
   name: 'StandInPost',
@@ -27,6 +45,15 @@ export default {
     return {
 
     }
+  },
+  computed: {
+    ...mapGetters([
+      'getUserInfo',
+      'getAllFriends'
+    ]),
+  },
+  props: { 
+    uid: String,
   },
   methods: {
     clickWriteButton: function() {

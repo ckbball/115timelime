@@ -1,4 +1,4 @@
-<template>
+  <template>
   <router-link :to="{path: '/'}">
     <sui-image 
       :src="image"

@@ -1,15 +1,18 @@
 <template lang="html">
   <div class="box">
-          <span class="avatar">
+
+
+          <sui-grid :columns="2">
+            <sui-grid-column :width="3">
             <MessageAvatar
               :uid="friend_uid"
               :image="friend_image">
             </MessageAvatar> 
-          </span>
-          <span class="name">
-            {{ friend_name }}
-          </span>
-
+            </sui-grid-column>
+            <sui-grid-column :width="13">
+              <span class="FriendName">{{friend_name}}</span>
+            </sui-grid-column>
+          </sui-grid>
 
 
   </div>
@@ -84,7 +87,12 @@ export default {
   margin: 0px;
   display: inline-block;
 }
-
+   .FriendName {
+    font-size: .9em;
+    position: relative;
+    top: .5em;
+    left: -1em;
+ }
 .name {
   margin: 0px;
   display: inline-block;

@@ -38,6 +38,7 @@ export default function configureModerator (store) {
 				store.commit('unsetFriendsNotMessaged')
 				store.commit('unsetfriendsWithUnreadMessages')
 				store.commit('unsetTimelime')
+				store.commit('unsetNotifications')
 			 	return router.replace('Login')
 	
 		}

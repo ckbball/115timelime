@@ -68,7 +68,20 @@ export default {
         var days_left = Math.floor(time_left / 86400000)
         var hours_left = Math.floor((time_left - (days_left * 86400000)) / 3600000)
         var minutes_left = Math.floor((time_left - (days_left * 86400000) - (hours_left * 3600000)) / 60000)
-        var time = days_left + " days, " + hours_left + " hours, " + minutes_left + " minutes"
+        var time = ""
+        // this happens when the post is in queue to be deleted
+        if (time_left <= 0){
+          return "less than a minute"
+        }
+        if (days_left > 0){
+          time = days_left + " days"
+        } else if (hours_left > 0){
+          time = hours_left + " hours"
+        } else if (minutes_left > 0){
+          time = minutes_left + " minutes"
+        } else {
+          time = "less than a minute"
+        }
         return time
         //.format('days h:mm')
     },
