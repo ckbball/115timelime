@@ -21,6 +21,7 @@
       <FriendsListModal
         :uid="otherUsersInfo.uid"
         :openFriends="openFriends" 
+        :friend="friends"
       ></FriendsListModal>
     </sui-grid>
 
@@ -50,6 +51,7 @@ export default {
       openFriends: false,
       show: false,
       loading: false,
+      friends: [],
     }
   },
   
@@ -57,6 +59,22 @@ export default {
 
     toggleFriendsModal: function(){
       this.openFriends = !this.openFriends;
+      this.fetchFriends()
+    },
+    fetchFriends: function() {
+      this.friends = []
+      var param = 'uid_' + this.otherUsersInfo.uid
+      db.collection('relations').where(param, '>=', 'a' )
+      .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+            snapshot.docChanges().forEach(change => {
+              if (change.type === 'added') {
+                this.friends.push(change.doc.data())
+              }
+              if (change.type === 'modified') {
+              }
+            })
+      })
+
     },
     fetchUserInfo: function(uid) {
       this.loading = true
@@ -70,8 +88,6 @@ export default {
       })
       
     },
- 
-
 
   },
   watch: {

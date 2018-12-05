@@ -17,19 +17,13 @@
               </sui-table-header>
               <sui-table-body>
 
-              <sui-table-row v-for="friend in friends" :key="friend.id"> 
+              <sui-table-row v-for="friend in friend" :key="friend.id"> 
                 <sui-table-cell >
 
-                    <sui-grid :columns="2">
-                      <sui-grid-column :width="3">
-                        <CommentAvatarButton>
-                            :uid="friend.id"
-                        </CommentAvatarButton>
-                      </sui-grid-column>
-                      <sui-grid-column :width="13">
-                        <span class="FriendName">{{friend.data().firstName}} {{friend.data().lastName}}</span>
-                      </sui-grid-column>
-                    </sui-grid>
+                  <FriendBox
+                  :friend="friend">
+                  </FriendBox>
+
                 </sui-table-cell>
 
 
@@ -45,18 +39,23 @@
 <script>
 import db from '@/firebase/init'
 import CommentAvatarButton from '@/components/layout/CommentAvatarButton'
+import FriendBox from '@/components/FriendBox'
+
 export default {
   name: 'FriendsListModal',
   props: {
       uid: String,
-      openFriends: Boolean
+      openFriends: Boolean,
+      friend: Array,
   },
   components: {
-      'CommentAvatarButton': CommentAvatarButton
+      'CommentAvatarButton': CommentAvatarButton,
+      'FriendBox': FriendBox
   },
   data() {
       return{
-          friends: []
+          friends: [],
+          open: false,
 
       }
   },
@@ -65,6 +64,24 @@ export default {
           db.collection('relations').where('uid_'+this.uid, '==', 'true').get()
           .then((snapshot) => {
               snapshot.docs.forEach(doc => {
+                  this.friends.push(doc)
+              })
+          })
+      }
+  },
+  mounted(){
+      this.fetchThisPersonsFriends()
+  },
+  
+}
+  </script>
+<style scoped>
+   .FriendName {
+    font-size: 11pt;
+    position: relative;
+    top: 12px;
+ }
+</style>snapshot.docs.forEach(doc => {
                   this.friends.push(doc)
               })
           })

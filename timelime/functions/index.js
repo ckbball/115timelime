@@ -319,8 +319,8 @@ exports.updateSearchableName = functions.firestore
 exports.issueNotificationOnNewComment = functions.firestore
 .document('comments/{commentId}').onCreate((snapshot, context) => {
 	let promise = new Promise((resolve, reject) => {
-		var post_author_uid = db.collection('posts').doc(newValue.parent_id).author_uid
 		const newValue = snapshot.data()
+		var post_author_uid = db.collection('posts').doc(newValue.parent_id).author_uid
 		if (post_author_uid !== newValue.author_uid){
 			db.collection('notifications').add({
 				parent_id: newValue.parent_id, 
@@ -344,8 +344,8 @@ exports.issueNotificationOnNewComment = functions.firestore
 exports.issueNotificationOnNewLike = functions.firestore
 .document('likes/{likeId}').onCreate((snapshot, context) => {
 	let promise = new Promise((resolve, reject) => {
-		var post_author_uid = db.collection('posts').doc(newValue.parent_id).author_uid
 		const newValue = snapshot.data()
+		var post_author_uid = db.collection('posts').doc(newValue.parent_id).author_uid
 		if (post_author_uid !== newValue.author_uid){
 			db.collection('notifications').add({
 				parent_id: newValue.parent_id, 
