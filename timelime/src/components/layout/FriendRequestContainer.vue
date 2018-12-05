@@ -1,25 +1,22 @@
 <template>
     <a is="sui-dropdown-item">
+        <sui-dropdown icon="big universal access" class="requestDropdown" floating multiple>
+            <sui-dropdown-menu scrolling="true" class="left menu dropMenuReq maxheight" >
+                <sui-dropdown-header content="Friend Requests:"/>
+                    <FriendRequest v-for="(req,n) in this.getAllFriendsRequests" :key="n"
+                        :request="req.data()"
+                        class="friendreq"
+                    ></FriendRequest>
+                    
+            </sui-dropdown-menu>
+            <sui-label v-if="this.getAllFriendsRequests.length > 0"
+                floating 
+                :size="size"
+                circular  
+                color="red"
+            >{{this.getAllFriendsRequests.length}}</sui-label>
 
-
-    <sui-dropdown icon="big universal access" class="requestDropdown" floating multiple>
-        <sui-dropdown-menu scrolling="true" class="left menu dropMenuReq maxheight" >
-            <sui-dropdown-header content="Friend Requests:"/>
-                <FriendRequest v-for="(req,n) in this.getAllFriendsRequests" :key="n"
-                    :request="req.data()"
-                    class="friendreq"
-                ></FriendRequest>
-                
-        </sui-dropdown-menu>
-        <sui-label 
-            v-if="this.getAllFriendsRequests > 0"
-            floating 
-            size="mini" 
-            circular  
-            color="red"
-        >{{this.getAllFriendsRequests.length}}</sui-label>
-
-    </sui-dropdown>
+        </sui-dropdown>
     </a>
  
 </template>
@@ -34,7 +31,7 @@ export default {
     },
     data () {
         return{
-    
+            size:"mini"
         }
     },
     methods: {
