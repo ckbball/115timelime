@@ -67,7 +67,7 @@
             <sui-table-row v-for="(friend,n) in this.getAllFriends" :key="n+'friendsModal'"> 
               <sui-table-cell >
               <FriendBox
-                :friend="friend">
+                :friend="friend.data()">
               </FriendBox>
               </sui-table-cell>
             </sui-table-row>

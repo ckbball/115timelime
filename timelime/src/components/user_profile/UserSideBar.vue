@@ -6,7 +6,7 @@
         <sui-button
           icon="users"
           content="friends"
-          @click="$emit('showFriends')"
+          @click="showFriends()"
         ></sui-button>
       </sui-card-content>
     </sui-card>

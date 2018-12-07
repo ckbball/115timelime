@@ -20,7 +20,7 @@
               <sui-table-row v-for="friend in this.friends" :key="friend.friend_uid"> 
                 <sui-table-cell >
                   <FriendBox
-                    :friend="friend">
+                    :friend="friend.data()">
                   </FriendBox>
 
                 </sui-table-cell>
@@ -53,7 +53,7 @@ export default {
   },
   data() {
       return{
-          friends: [],
+          //friends: [],
           open: false, 
       }
   },
@@ -79,17 +79,7 @@ export default {
     position: relative;
     top: 12px;
  }
-</style>snapshot.docs.forEach(doc => {
-                  this.friends.push(doc)
-              })
-          })
-      }
-  },
-  mounted(){
-      this.fetchThisPersonsFriends()
-  }
-}
-  </script>
+</style>
 <style scoped>
    .FriendName {
     font-size: 11pt;

@@ -21,7 +21,7 @@
       <FriendsListModal
         :uid="otherUsersInfo.uid"
         :openFriends="openFriends" 
-        :friend="this.friends"
+        :friends="this.friends"
       ></FriendsListModal>
     </sui-grid>
 
@@ -62,18 +62,14 @@ export default {
       this.fetchFriends()
     },
     fetchFriends: function() {
-      console.log(1)
       this.friends = []
       db.collection('relationships').where('parent_id', '==', this.$route.params.uid)
       .where('status', '==', 'friends').get()
       .then(snapshot => {
-              console.log(2)
 
         snapshot.docs.forEach(doc => {
-                console.log(3)
 
-          this.friends.push(doc.data())
-                console.log(4, this.friends)
+          this.friends.push(doc)
 
         })
       })

@@ -5,12 +5,12 @@
           <sui-grid :columns="2">
             <sui-grid-column :width="3">
             <MessageAvatar
-              :uid="friend_uid"
-              :image="friend_image">
+              :uid="this.friend.friend_uid"
+              :image="this.friend.friend_image">
             </MessageAvatar> 
             </sui-grid-column>
             <sui-grid-column :width="13">
-              <span class="FriendName">{{friend_name}}</span>
+              <span class="FriendName">{{this.friend.friend_name}}</span>
             </sui-grid-column>
           </sui-grid>
 
