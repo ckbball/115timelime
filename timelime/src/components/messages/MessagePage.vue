@@ -98,7 +98,6 @@ export default {
         this.selectedConversation = event
         this.messages = []
         this.noConversationSelected = false
-
         this.fetchConversation(event)
       }
     },
@@ -123,13 +122,14 @@ export default {
       }
     },
     fetchConversation: function(conversation) {
-      var conv_id = ""
-         if(this.getUserInfo.uid < conversation.friend_uid){
-            conv_id = this.getUserInfo.uid + "_" + conversation.friend_uid
-        } else {
-            conv_id = conversation.friend_uid + "_" + this.getUserInfo.uid
-        }
-        db.collection('messages') .where('conversation_id', '==', conv_id)
+      this.messages = []
+      // var conv_id = ""
+      //    if(this.getUserInfo.uid < conversation.friend_uid){
+      //       conv_id = this.getUserInfo.uid + "_" + conversation.friend_uid
+      //   } else {
+      //       conv_id = conversation.friend_uid + "_" + this.getUserInfo.uid
+      //   }
+        db.collection('messages') .where('conversation_id', '==', conversation.conversation_id)
         .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
           snapshot.docChanges().forEach((change) =>{
             if (change.type === 'added') {
