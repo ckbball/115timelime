@@ -1,6 +1,7 @@
 import * as firebase from 'firebase'
 import db from '@/firebase/init'
 import { store } from '..';
+import { get } from 'https';
 
 
 const state = {   
@@ -237,7 +238,16 @@ const actions = {
         })
         .then(docRef => {
             db.collection('messages').doc(docRef.id).update({self_id: docRef.id})
-        })  
+        }) 
+        db.collection('conversations').where('conversation_id','==', conversation.conversation_id).get()
+        .then(snapshot => {
+            snapshot.docs.forEach(doc => {
+                db.collection('conversations').doc(doc.id).update({
+                    lastEntry_time: Date.now(),
+                    lastEntry_content: messageContent
+                })
+            })
+        }) 
 
 
         // grab the relation and change the readUID
