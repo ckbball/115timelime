@@ -70,37 +70,6 @@ const mutations = {
             }
         }
 
-
-        // if(state.timelime.length === 0) {
-        //     state.timelime.push(payload)
-        //     return
-        //   }
-        //   if(state.timelime[state.timelime.length -1].upload_time > payload.upload_time) {
-        //       state.timelime.push(payload)
-        //       return
-        //   }
-        //   if(state.timelime[state.timelime.length-1].upload_time < payload.upload_time) {
-        //       state.timelime.unshift(payload)
-        //       return
-        //   }
-        //   for(let i =0; i < state.timelime.length;  i++){
-        //     if(state.timelime[i].upload_time > payload.upload_time){
-        //       state.timelime.splice(i, 0, payload)
-        //       return
-        //     }
-        //   }
-        
-
-
-        // state.timelime.push(payload)
-        // function compareUploadTime(post1, post2) {
-        //     if (post1.upload_time > post2.upload_time)
-        //         return -1
-        //     if (post1.upload_time < post2.upload_time)
-        //         return 1
-        //     return 0
-        // }
-        // state.timelime.sort(compareUploadTime)
     },
     unsetTimelime: (state, payload) => {
         state.timelime = []

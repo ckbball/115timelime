@@ -56,7 +56,7 @@ const mutations = {
           }
           for(let i = 0; i < state.conversationList.length;  i++){
             if(state.conversationList[i].data().lastEntry_time > payload.data().lastEntry_time){
-              stateconversationList.splice(i, 0, payload)
+              state.conversationList.splice(i, 0, payload)
               return
             }
           }    
