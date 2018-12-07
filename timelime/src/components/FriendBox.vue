@@ -23,12 +23,12 @@ import MessageAvatar from '@/components/messages/MessageAvatar'
 import {mapActions, mapGetters, mapMutations} from 'vuex'
 
 export default {
-  name: 'MyMessageBox',
+  name: 'FriendBox',
   components: {
     "MessageAvatar": MessageAvatar,
   },
   props: {
-    friend: Object
+    friend : Object
 
   },
   computed: {
