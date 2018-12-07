@@ -18,8 +18,8 @@
       </div>
       <FriendsMessageBox
         :message="message"
-        :image="friend.image"
-        :uid="friend.uid">
+        :image="conversation.friend_image"
+        :uid="conversation.friend_uid">
       </FriendsMessageBox>
     </div>   
 </template>
@@ -40,7 +40,7 @@ export default {
   },
   props: {
     userInfo: Object,
-    friend: Object,
+    conversation: Object,
     message: {
       type: Object,
     }

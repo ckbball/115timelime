@@ -1,8 +1,6 @@
 <template lang="html">
   <div>
-   <UserIcon 
-      :userInfo="userInfo"
-    />
+   <UserIcon :userInfo="userInfo" />
     <sui-card>
       <sui-card-content>
         <sui-button
@@ -14,9 +12,6 @@
     </sui-card>
     <FriendButton 
     v-bind:userInfo="userInfo" 
-    v-bind:isFriend="isFriend"
-    v-on:pendFriend="setFriendshipStatus('pending')"
-    v-on:notFriend="setFriendshipStatus('false')"
     />
   </div>
 </template>
@@ -60,39 +55,9 @@ export default {
     showFriends: function(){
       this.$emit("showFriends")
     },
-    areFriends: function() {
-      this.getAllRelations.forEach(friend => {
-        var accepted = friend.data()['uid_'+this.userInfo.uid]
-        if (accepted !== undefined) {
-          if (accepted == 'true') {
-            this.setFriendshipStatus('true')
-          } else if (accepted == 'false') {
-            this.setFriendshipStatus('pending')
-          } else {
-            this.setFriendshipStatus('false')
-          }
-        }
-      })
-    },
-    setFriendshipStatus: function(status) {
-      if(status === 'true') {
-        this.isFriend = 'true'
-      }
-      if(status === 'pending') {
-        this.isFriend = 'pending'
-
-      }
-      if (status === 'false') {
-        this.isFriend = 'false'
-
-      }
-    }
+  
   },
-  watch: {
-    getAllRelations: function () {
-      this.areFriends()
-    }
-  },
+
 };
 
 </script>

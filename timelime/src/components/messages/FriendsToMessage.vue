@@ -9,71 +9,16 @@
         </sui-table-header>
         <sui-table-body>
             <ul class="scroll2">
-                <sui-table-row v-for="(friend, n) in this.getFriendsMessaged" :key="n +'friendtomessage'"
-                    @click="selectConversation(friend)">
+                <sui-table-row v-for="(conversation, n) in this.getConversationList" :key="n +'friendtomessage'"
+                    @click="selectConversation(conversation.data())">
                     <FriendsToMessageItem 
-                        @click="selectConversation(friend)"
-                        :friend="friend">
+                        @click="selectConversation(conversation.data())"
+                        :conversation="conversation.data()">
                     </FriendsToMessageItem>
                 </sui-table-row>
             </ul>
         </sui-table-body>
     </sui-table>
-    <!-- <sui-card class="FriendCard scroll2">
-    <sui-table padded>
-
-        <sui-table-header>
-          <sui-table-row>
-            <sui-table-header-cell textAlign="center">
-                <span class="FriendHeader">Friends</span>
-            </sui-table-header-cell>
-          </sui-table-row>
-        </sui-table-header>
-        <sui-table-body >
-            <sui-table-row v-for="(friend,n) in this.getFriendsMessaged" :key="n"                     
-                v-on:click="selectConversation(friend)"
-> 
-                <sui-table-cell 
-                    v-if="friend.unread != '' && friend.unread != friend.uid"  
-                    negative 
-                >
-                    <sui-grid :columns="2">
-                      <sui-grid-column :width="3">
-                        <MessageAvatar
-                            :uid="friend.uid"
-                            :image="friend.image">
-                        </MessageAvatar>
-                      </sui-grid-column>
-                      <sui-grid-column :width="13">
-                        <span class="FriendName">{{nameCase(friend.name)}}
-                        </span>
-                      </sui-grid-column>
-                    </sui-grid>
-                </sui-table-cell>
-
-                <sui-table-cell
-                    v-if="friend.unread == '' || friend.unread == friend.uid"  
-                >
-                    <sui-grid :columns="2">
-                      <sui-grid-column :width="3">
-                        <MessageAvatar
-                            :uid="friend.uid"
-                            :image="friend.image">
-                        </MessageAvatar>
-                      </sui-grid-column>
-                      <sui-grid-column :width="13">
-                        <span class="FriendName">{{nameCase(friend.name)}}
-                        </span>
-                      </sui-grid-column>
-                    </sui-grid>
-                </sui-table-cell>
-
-
-            </sui-table-row>
-
-        </sui-table-body>
-    </sui-table>
-</sui-card> -->
 </template>
 
 <script> 
@@ -103,6 +48,7 @@ export default {
             'getMyFriends',
             'getAllFriends',
             'getFriendsMessaged',
+            'getConversationList'
         ])
     },
     methods: {
@@ -119,8 +65,8 @@ export default {
             return arg.join(' ')
         },
 
-        selectConversation: function(friend) {
-            this.$emit('selectedConversation', friend)
+        selectConversation: function(conversation) {
+            this.$emit('selectedConversation', conversation)
         },
 
         // requestMessages(friend){

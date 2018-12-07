@@ -14,14 +14,14 @@
       </sui-grid-column>
       <sui-grid-column  :width="5">
         <UserSideBar
-        :userInfo="otherUsersInfo"
-        v-on:showFriends="toggleFriendsModal()"
+          :userInfo="otherUsersInfo"
+          v-on:showFriends="toggleFriendsModal()"
         />
       </sui-grid-column>
       <FriendsListModal
         :uid="otherUsersInfo.uid"
         :openFriends="openFriends" 
-        :friend="friends"
+        :friend="this.friends"
       ></FriendsListModal>
     </sui-grid>
 
@@ -62,17 +62,20 @@ export default {
       this.fetchFriends()
     },
     fetchFriends: function() {
+      console.log(1)
       this.friends = []
-      var param = 'uid_' + this.otherUsersInfo.uid
-      db.collection('relations').where(param, '>=', 'a' )
-      .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-            snapshot.docChanges().forEach(change => {
-              if (change.type === 'added') {
-                this.friends.push(change.doc.data())
-              }
-              if (change.type === 'modified') {
-              }
-            })
+      db.collection('relationships').where('parent_id', '==', this.$route.params.uid)
+      .where('status', '==', 'friends').get()
+      .then(snapshot => {
+              console.log(2)
+
+        snapshot.docs.forEach(doc => {
+                console.log(3)
+
+          this.friends.push(doc.data())
+                console.log(4, this.friends)
+
+        })
       })
 
     },

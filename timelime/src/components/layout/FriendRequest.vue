@@ -1,19 +1,17 @@
 <template>
 	<sui-card class="uglyfoot">
 	  <sui-card-content>
-	  	<!-- 
-	    :src="photo" -->
 	    <sui-image 
-	    :src="requester.image"
+	    :src="request.data().sender_image"
 	    class="squarePhoto"
 	    />
-	    <span class="username">{{requester.name}}</span>
+	    <span class="username">{{request.data().sender_name}}</span>
 	    <sui-button id="togglee1" 
 	    	:disabled="answered" 
 	    	class="squareButton" 
 	    	icon="remove" 
 	    	size="tiny" 
-	    	@click="respond('false')"/> 
+	    	@click="respond('declined')"/> 
 
 	    <sui-button id="togglee2"  
 	    	:disabled="answered" 
@@ -21,7 +19,7 @@
 	    	icon="add user" 
 	    	color="olive" 
 	    	size="tiny" 
-	    	@click="respond('true')"
+	    	@click="respond('accepted')"
 	    > Add </sui-button>
 
 	    <span class="butthole">{{this.result}}</span>
@@ -59,31 +57,21 @@ export default {
 	    }
   	},
   	methods: {
-  		...mapActions(['grabRequester', 'respondToRequest']),
-	    respond(requestAnswer){
-	    	this.accepted = true
-	    	// accepted = true
-	    	this.answered = true
+			...mapActions([
+				'grabRequester', 
+				'respondToRequest',
+				'respondToFriendRequest'
+			]),
+			respond: function(response) {
+				this.respondToFriendRequest({response: response, request: this.request})
+			},
 
-	    	this.respondToRequest({
-	    		request: this.request,
-	    		response: {
-	    			uid: this.getUserInfo.uid,
-	    			accept: requestAnswer
-	    			}
-	    		})
-	    	this.result = "Accepted!"
-	    	
-	    },
  	},
  	computed: {
  		...mapGetters(['getUserInfo'])
  	},
  	mounted () {
- 			this.grabRequester({my_uid: this.getUserInfo.uid, request: this.request})
- 			.then((retObj) => {
- 				this.requester = retObj
- 			})
+
  	},
 }
    

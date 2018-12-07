@@ -43,14 +43,7 @@ const mutations = {
         state.friends = []
     },
     pushToFriends: (state, payload) => {
-        var friendInfo = {}
-
-        for(var property in payload.data() ) {
-            friendInfo[property] = payload.data()[property]
-        }
-
-        friendInfo['relation_id'] = payload.id
-        state.friends.push(friendInfo)
+        state.friends.push(payload)
     },
     setMyFriends: (state, payload) => {
         state.myFriends = payload
@@ -81,6 +74,23 @@ const mutations = {
         state.friendRequests = payload
     },
     /* -----End Boilerplate functions ---- */
+    updateFriends: (state, payload) => {
+        console.log(1)
+        if (payload.data().status !== 'friends') {
+            for(var i = 0; i < state.friends.length; i++) {
+                if(state.friends[i].id === payload.id) {
+                    state.friends.splice(i, 1 )
+                }
+            }
+        }
+        if (payload.data().status === 'friends') {
+            var contains = false
+            state.friends.forEach(friend => {
+                if(friend.id === payload.id) contains = true
+            })
+            if (contains == false) state.friends.push(payload)
+        }
+    },
     updateRelations: (state, payload) => {
         state.allRelations.forEach( relation => {
             if (relation.id === payload.id) relation = payload  
@@ -94,34 +104,58 @@ const mutations = {
             }
         }
     },
-    removeFromRequests: (state, payload) => {
+    removeFromFriendRequests: (state, payload) => {
         for(let index = 0; index < state.friendRequests.length; index++){
             if(state.friendRequests[index].id === payload.id){
                 state.friendRequests.splice(index,1)
                 return
             }
         }        
-    }
-}
-const actions = {
-    updateRequests: ({commit, getters}, {change, my_uid}) => {
-        let contains = false
-        getters.getAllFriendsRequests.forEach(request => {
-            if(request.id === change.id){
-                contains = true
-                if(changeTypeIsFriendship(request, change)){
-                    if(isRequest(change, my_uid)) commit('pushToRequests', change)
-                    if(!isRequest(change, my_uid)) commit ('removeFromRequests',change)
-                } else {
-                    request = change
-                }
+    },
+    updateRequests: (state, change) => {
+        state.friendRequests.forEach(request => {
+            if(request.self_id === change.self_id){
+                request = change
             } 
         })
-        if (contains === false ) {
-            if(isRequest(change, my_uid)) commit('pushToRequests', change)
-        }
 
     },
+}
+const actions = {
+
+    fetchAllFriends: ({commit}, payload) => {
+        db.collection('relationships').where('parent_id', '==', payload)
+        .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+            snapshot.docChanges().forEach(change => {
+              if (change.type === 'added') {
+                  if (change.doc.data().status === 'friends')
+                    commit('pushToFriends', change.doc )
+              }
+              if (change.type === 'modified') {
+                  console.log('1a')
+                commit('updateFriends', change.doc)
+                console.log('1b')
+              }
+            })
+          })
+    },
+
+    fetchAllFriendRequests: ({commit}, payload) => {
+        db.collection('friendRequests').where('receiver_uid', '==', payload)
+        .where('status', '==', 'pending')
+        .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+            snapshot.docChanges().forEach(change => {
+              if (change.type === 'added') {
+
+                commit('pushToRequests', change.doc )
+              }
+              if (change.type === 'modified') {
+                commit('updateRequests', change.doc)
+              }
+            })
+          })
+    },
+
     updateFriends: ({commit, getters}, payload) => {
         let contains = false
         getters.getAllFriends.forEach(friend => {
@@ -145,10 +179,10 @@ const actions = {
     },
     sortRelation: ({commit}, {change, my_uid}) => {
         if(isRequest(change, my_uid)) {
-            commit('pushToRequests', change)
+            //commit('pushToRequests', change)
         }
         if(isFriend(change)){
-            commit('pushToFriends', change)
+            //commit('pushToFriends', change)
 
             var friend = {}
             for(var property in change.data() ) {
@@ -169,7 +203,7 @@ const actions = {
     },
     handleChanges: ({dispatch}, {change, my_uid}) => {
         dispatch('updateFriends', change)
-        dispatch('updateRequests', {change: change, my_uid: my_uid})
+        //dispatch('updateRequests', {change: change, my_uid: my_uid})
     },
     fetchAllRelations: ({commit, dispatch}, payload) => {
         db.collection('relations').where(fbUID(payload), '>=', 'a' )
@@ -186,38 +220,77 @@ const actions = {
             })
           })
     },
-    issueFriendRequest: (context, {requester, requestee}) => {
-        db.collection('relations').add({
-            type: 'friend',
-            conversation_id: requester.uid + '_' + requestee.uid,
-
-            message_history: -1,   // this holds when they last messaged each other 
-            unread_message: '',         // this will be a UID saying who needs to read mesages
-
-            [fbUID(requester.uid)]: 'true',
-            [fbName(requester.uid)]: requester.firstName + ' ' + requester.lastName,
-            [fbImage(requester.uid)]: requester.image,
-
-            [fbUID(requestee.uid)]: 'false',
-            [fbName(requestee.uid)]: requestee.firstName + ' ' + requestee.lastName,
-            [fbImage(requestee.uid)]: requestee.image,
-
-            date_requested: Date.now()
+    cancelFriendRequest: (context, payload) => {
+        db.collection('friendRequests').doc(payload).update({
+            status: 'canceled'
         })
-        .then(docRef => {
-            db.collection('relations').doc(docRef.id).update({self_id: docRef.id})
+    },
+
+    unfriendAUser: (context, payload) => {
+        //payload is a relationship object
+        const firstDoc = payload.parent_id + '_' + payload.friend_uid
+        const secondDoc = payload.friend_uid + '_' + payload.parent_id
+
+        db.collection('relationships').doc(firstDoc).update({status: 'not friends'})
+        db.collection('relationships').doc(secondDoc).update({status: 'not friends'})
+
+
+    },
+
+
+
+    issueFriendRequest: (context, {requester, requestee}) => {
+        //TODO: 
+        //first check friends >> perhaps you can return early and save the request.
+
+        //check for outstanding friend requests
+        const docID = requester.uid+'_'+requestee.uid
+        console.log(docID)
+        db.collection('relationships').doc(docID).get()
+        .then((snapshot) => {
+            console.log(snapshot)
+                if(snapshot.data().status !== 'not friends' ) return;
+                
+                db.collection('friendRequests').add({
+                    sender_uid: requester.uid, 
+                    sender_name: requester.firstName + ' ' + requester.lastName,
+                    sender_image: requester.image,
+        
+                    receiver_uid: requestee.uid,
+                    receiver_name: requestee.firstName + ' ' + requestee.lastName,
+                    receiver_image: requestee.image,
+        
+                    status: 'pending',
+                    involves: [requester.uid, requestee.uid] ,
+                    self_id: null,     
+                })
+                .then(docRef => {
+                    db.collection('friendRequests').doc(docRef.id).update({self_id: docRef.id})
+                })
+            
         })
     },
     // response - string "true" or "false"
     // request - the doc.data() being responded to
     // responder - the entire data for the person, to grab their uid
-    respondToFriendRequest: (context, {response, request, responder}) => { 
-        thisUserUID = fbUID(responder.uid)
-        if(response == "true"){
-            db.collection('relations').doc(request.self_id).update({[thisUserUID]: response})
-            db.collection('relations').doc(request.self_id).add({date_accepted: Date.now()})
-        } else {
-            db.collection('relations').doc(request.self_id).delete()
+    respondToFriendRequest: ({commit}, {response, request}) => {
+        let req = request.data() 
+        db.collection('friendRequests').doc(request.id).update({
+            status: response
+        })
+        .then(() => {
+            commit('removeFromFriendRequests', request)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        if (response === 'accepted'){
+            db.collection('users').doc(req.sender_uid).update({
+                "friendsList": firebase.firestore.FieldValue.arrayUnion(req.receiver_uid)
+            })
+            db.collection('users').doc(req.receiver_uid).update({
+                "friendsList": firebase.firestore.FieldValue.arrayUnion(req.sender_uid)
+            })
         }
     },
 

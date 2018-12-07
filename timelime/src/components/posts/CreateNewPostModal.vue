@@ -55,14 +55,15 @@ export default {
   computed: {
       ...mapGetters([
         'getUserInfo',
-        'getMyFriends'  
+        'getMyFriends',
+        'getAllFriends'  
     ]),
   },
   methods: {
     ConfirmTextPost: function() {
       // shuts modal in whoever is opening it
       this.$emit("ContinueTextPost")
-      let whosees=this.getMyFriends.map(friend => friend.uid)
+      let whosees=this.getAllFriends.map(friend => friend.data().friend_uid )
       whosees.push(this.getUserInfo.uid)
 
       let miliseconds = 60000*this.minutes+3600000*this.hours+86400000*this.days
@@ -78,7 +79,7 @@ export default {
             is_photo_post: "false",
             upload_time: Date.now(),
             duration: miliseconds,
-            whoSees: whosees//this.getMyFriends.map(friend => friend.uid)
+            whoSees: whosees
 
         })
         .then(response => {

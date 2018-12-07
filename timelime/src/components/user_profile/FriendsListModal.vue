@@ -17,11 +17,10 @@
               </sui-table-header>
               <sui-table-body>
 
-              <sui-table-row v-for="friend in friend" :key="friend.id"> 
+              <sui-table-row v-for="friend in this.friends" :key="friend.friend_uid"> 
                 <sui-table-cell >
-
                   <FriendBox
-                  :friend="friend">
+                    :friend="friend">
                   </FriendBox>
 
                 </sui-table-cell>
@@ -46,7 +45,7 @@ export default {
   props: {
       uid: String,
       openFriends: Boolean,
-      friend: Array,
+      friends: Array,
   },
   components: {
       'CommentAvatarButton': CommentAvatarButton,
@@ -55,23 +54,22 @@ export default {
   data() {
       return{
           friends: [],
-          open: false,
-
+          open: false, 
       }
   },
-  methods: {
-      fetchThisPersonsFriends: function() {
-          db.collection('relations').where('uid_'+this.uid, '==', 'true').get()
-          .then((snapshot) => {
-              snapshot.docs.forEach(doc => {
-                  this.friends.push(doc)
-              })
-          })
-      }
-  },
-  mounted(){
-      this.fetchThisPersonsFriends()
-  },
+//   methods: {
+//       fetchThisPersonsFriends: function() {
+//           db.collection('relations').where('uid_'+this.uid, '==', 'true').get()
+//           .then((snapshot) => {
+//               snapshot.docs.forEach(doc => {
+//                   this.friends.push(doc)
+//               })
+//           })
+//       }
+//   },
+//   mounted(){
+//       this.fetchThisPersonsFriends()
+//   },
   
 }
   </script>

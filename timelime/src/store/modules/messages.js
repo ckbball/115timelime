@@ -16,8 +16,15 @@ const state = {
     myMessages: [],        // list of all messages belonging to a user
     friendsMessages: [],
 
+
+
+    conversationList: []
+
 }
 const getters = {
+    getConversationList: (state) => {
+        return state.conversationList
+    },
     getFriendsMessaged: (state) => {
         return state.friendsMessaged
     },
@@ -31,6 +38,12 @@ const getters = {
     },
 }
 const mutations = {
+    pushToConversationList: (state, payload) => {
+        state.conversationList.push(payload)
+    },
+    unsetConversationList: (state, payload) => {
+        state.conversationList = []
+    },
     /* ----- Boilerplate functions -------*/
     setFriendsMessaged: (state, payload) => {
         state.friendsMessaged = payload
@@ -96,6 +109,24 @@ const mutations = {
 
 }
 const actions = {
+    fetchConversationList: ({commit}, payload) => {
+        db.collection('conversations').where('parent_id', '==', payload)
+        .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+            snapshot.docChanges().forEach(change => {
+                if (change.type === 'added') {
+                    commit('pushToConversationList', change.doc)
+                }
+                if (change.type === 'modified') {
+                    // modified can mean require reordering of list,
+                    // if a new message comes from a different person
+                }
+            })
+          })
+    },
+
+
+
+
      fetchMyMessageStatuses: ({commit, dispatch}, {my_uid, allMyFriends}) => {
         commit('unsetUnreadMessageCount')
         commit('unsetFriendsMessaged')
@@ -182,26 +213,26 @@ const actions = {
     },
 
 
-    issueMessage: (context, {messager, messagee, messageContent}) => {
-        var conv_id = ""
-        if(messager.uid > messagee.uid){
-            conv_id = messager.uid + "_" + messagee.uid
-        } else {
-            conv_id = messagee.uid + "_" + messager.uid
-        }
+    issueMessage: (context, {messager, conversation, messageContent}) => {
+        //var conv_id = ""
+        // if(messager.uid > messagee.uid){
+        //     conv_id = messager.uid + "_" + conversation.friend_uid
+        // } else {
+        //     conv_id = conversation.uid + "_" + messager.uid
+        // }
         var moment = require('moment');
         db.collection('messages').add({ 
 
-            conversation_id: conv_id,
+            conversation_id: conversation.conversation_id,
             // time_sent: moment(Date.now()).format("dddd h:mm A, MMMM Do YYYY"),
             time_sent: Date.now(),
             message_content: messageContent,
             sender_uid: messager.uid,
             sender_name: messager.firstName + ' ' +messager.lastName,
             sender_image: messager.image,
-            receiver_uid: messagee.uid,
-            receiver_name: messagee.name,
-            receiver_image: messagee.image,
+            receiver_uid: conversation.friend_uid,
+            receiver_name: conversation.friend_name,
+            receiver_image: conversation.friend_image,
             read: "false"
         })
         .then(docRef => {
@@ -211,11 +242,11 @@ const actions = {
 
         // grab the relation and change the readUID
 
-       db.collection('relations').doc(messagee.relation).update(
-        {
-            unread_message: messagee.uid,
-            message_history: Date.now(),
-        })
+    //    db.collection('relations').doc(messagee.relation).update(
+    //     {
+    //         unread_message: messagee.uid,
+    //         message_history: Date.now(),
+    //     })
        
 
         // TODO: Mia change the friend doc to have messaged and change who needs to read it

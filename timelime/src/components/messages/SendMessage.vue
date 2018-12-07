@@ -20,6 +20,9 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'SendMessage',
+  props: {
+    conversation: Object
+  },
   data () {
     return {
       messageContent: "",
@@ -40,7 +43,7 @@ export default {
     sendMessage() {
       this.issueMessage({
         messager: this.getUserInfo, 
-        messagee: this.friend, 
+        conversation: this.conversation, 
         messageContent: this.messageContent
       })
       this.messageContent = ""
@@ -55,9 +58,7 @@ export default {
       }
     }
   },
-  props: {
-    friend: Object
-  }
+
 }
 </script>
 

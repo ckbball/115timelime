@@ -3,12 +3,12 @@
         <sui-grid :columns="2">
             <sui-grid-column :width="4">
                 <MessageAvatar
-                    :uid="friend.uid"
-                    :image="friend.image">
+                    :uid="conversation.friend_uid"
+                    :image="conversation.friend_image">
                 </MessageAvatar>
             </sui-grid-column>
                 <sui-grid-column :width="12">
-                <span class="FriendName">{{nameCase(friend.name)}}
+                <span class="FriendName">{{nameCase(conversation.friend_name)}}
                 </span>
                 </sui-grid-column>
             </sui-grid>
@@ -19,7 +19,7 @@ import MessageAvatar from '@/components/messages/MessageAvatar'
 export default {
     name: 'FriendsToMessageItem',
     props: {
-        friend:{
+        conversation:{
             type: Object
         }
     },

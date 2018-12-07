@@ -1,30 +1,12 @@
 <template lang="html">
   <div>
     <sui-card class="raised">
-      <sui-card-content>
-        <div is="sui-button" animated="fade" v-on:click="changeFriendStatus()">
-            <sui-button-content visible v-if="isFriend == 'true'">
-              Remove Friend
-            </sui-button-content>
-            <sui-button-content hidden v-if="isFriend == 'true'">
-              <i class="user times icon"></i>
-            </sui-button-content>
-
-            <sui-button-content visible v-if="isFriend == 'false'">
-              Add Friend
-            </sui-button-content>
-            <sui-button-content hidden v-if="isFriend == 'false'">
-              <i class="user plus icon"></i>
-            </sui-button-content>
-
-            <sui-button-content visible v-if="isFriend == 'pending'">
-              Cancel Friend Request
-            </sui-button-content>
-            <sui-button-content hidden v-if="isFriend == 'pending'">
-              <i class="user times icon"></i>
-            </sui-button-content>
-        </div>
-      </sui-card-content>
+      <!-- <sui-card-content> -->
+        <sui-button animated="fade" v-on:click="changeFriendStatus()">
+            <sui-icon :name="icon"/>
+            {{this.buttonContent}}
+        </sui-button>
+      <!-- </sui-card-content> -->
     </sui-card>
   </div>
 </template>
@@ -35,10 +17,16 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   name: 'FriendButton',
+  props: {
+    userInfo: Object
+  } ,
   data () {
     return {
-      input:"",
-      // desiredAction: ""
+      buttonContent: 'Add Friend',
+      icon: 'user plus',
+      currentSubscription: null,
+      relationship: {}
+
     }
   },
   computed: {
@@ -49,43 +37,76 @@ export default {
   methods: {
     ...mapActions([
       'issueFriendRequest',
+      'cancelFriendRequest',
+      'unfriendAUser'
       ]),
-    changeFriendStatus() {
-      var us1 = 'uid_'+this.getUserInfo.uid
-      var us2 = 'uid_'+this.userInfo.uid
+      changeFriendStatus() {
+        const requester = this.getUserInfo
+        const requestee = this.userInfo
 
-      if (this.isFriend === "false") {
-        this.issueFriendRequest({requester: this.getUserInfo, requestee: this.userInfo})
-        this.$emit('pendFriend')
-      } else if (this.isFriend === "true") {
-        db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'true').get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            doc.ref.delete()
-          })
-          this.$emit('notFriend')
+        if (this.relationship.status === 'not friends') {
+          this.issueFriendRequest({requester: requester, requestee: requestee})
+        }
+        if (this.relationship.status === 'friends' ) {
+          this.unfriendAUser(this.relationship)
+        }
+        if (this.relationship.status === 'pending') {
+          this.setButtonContent('loading')
+          this.cancelFriendRequest(this.relationship.lastRequest)
+        }
+        
+      },
+      setButtonContent(status){
+        if(status === 'pending') {
+          this.buttonContent = "Cancel Friend Request"
+          this.icon = "user times icon"
+        }
+        if(status === 'friends') {
+          this.buttonContent= "Remove Friend"
+          this.icon = "user times icon"
+        }
+        if(status === 'not friends') {
+          this.buttonContent = 'Add Friend'
+          this.icon = 'user plus'
+        }
+        if(status === 'loading') {
+          this.icon = 'loading spinner'
+        }
+
+      },
+      getRelationship(friend) {
+        const docID = this.getUserInfo.uid + "_" + friend
+        this.currentSubscription = db.collection('relationships').doc(docID)
+        .onSnapshot({includeMetadataChanges: true}, doc => {
+
+          if(!doc.exists) {
+            this.setButtonContent('not friends')
+          } else {
+            this.setButtonContent(doc.data().status)
+            this.relationship = doc.data()
+}
         })
-        .catch((err) => {
-          console.log(err)
-        })
-      } else {
-        db.collection('relations').where(us1, "==", 'true').where(us2, "==", 'false').get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            doc.ref.delete()
-          })
-          this.$emit('notFriend')
-        })
-        .catch((err) => {
-          console.log(err)
-        })
-      }        
-    }
+      }
+
   },
-  props: {
-    isFriend: String,
-    userInfo: Object
-  } 
+  mounted() {
+    /* This feels hackish... basically just guessing that 1.5 sec is enough time for 
+        getUserInfo to fetch from server
+    */
+   setTimeout(() => {
+      this.getRelationship(this.$route.params.uid)
+   },1500)
+
+
+  },
+  watch: {
+    $route: function(to, from) {
+      if(this.currentSubscription) this.currentSubscription()
+      this.getRelationship(to.params.uid)
+    }
+  }
+
+
 }
 </script>
 

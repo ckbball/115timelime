@@ -68,7 +68,6 @@ var rule = new schedule.RecurrenceRule();
 rule.seconds = 5
 
 var j = schedule.scheduleJob(rule, function(){
-	console.log('deleting docs...')
     var endTime = Date.now()
     db.collection('posts').where('expire_time', '<', endTime).get()
         .then((querySnapshot) => {
@@ -96,6 +95,216 @@ var j = schedule.scheduleJob(rule, function(){
 
 
 /* ----- Write new Firebase functions down here ---- */
+exports.updateWhoSeesOnRelationshipChange = functions.firestore
+.document('relationships/{relationshipID}').onUpdate((change, context) => {
+	const newValue = change.after.data()
+	const oldValue = change.before.data()
+	const allPromises = []
+	var operation // arrayRemove or arrayUnion depending on the status
+	if(oldValue.status !== newValue.status) { // a change in the status happened 
+		if(newValue.status !== "pending") {  // don't need to handle pending
+			if(newValue.status == 'not friends') operation = 'arrayRemove'
+			if(newValue.status == 'friends') operation = 'arrayUnion'
+
+			db.collection('posts').where('author_uid', '==', newValue.parent_id).get()
+			.then((snapshot) => {
+				const innerPromises = []
+
+				if(snapshot.size > 0) {
+					snapshot.docs.forEach(doc => {
+						const p = db.collection('posts').doc(doc.id).update({
+							"whoSees": admin.firestore.FieldValue[operation](newValue.friend_uid)
+						})
+						innerPromises.push(p)
+					})
+				}
+				return Promise.all(innerPromises)
+			})
+		}
+	}
+	return Promise.all(allPromises)
+})
+
+
+
+
+
+exports.updateRelationshipDocumentOnFriendRequestResponse = functions.firestore
+.document('friendRequests/{requestID}').onUpdate((change, context) => {
+	const newValue = change.after.data()
+	const oldValue = change.before.data()
+	const allPromises = []
+
+	const firstDocID = newValue.sender_uid + "_" + newValue.receiver_uid
+	const secondDocID = newValue.receiver_uid + "_" + newValue.sender_uid
+	var status
+	if (newValue.status === 'accepted') status = 'friends'
+	if (newValue.status === 'declined') status = 'not friends'
+	if (newValue.status === 'pending' ) status = 'pending'
+	if (newValue.status === 'canceled') status = 'not friends'
+
+
+	const p1 = db.collection('relationships').doc(firstDocID).update({
+		status: status,
+		lastRequest: change.after.id
+	})
+	const p2 = db.collection('relationships').doc(secondDocID).update({
+		status: status,
+		lastRequest:change.after.id
+
+	})
+	allPromises.push(p1)
+	allPromises.push(p2)
+
+	return Promise.all(allPromises)
+})
+
+exports.createNewConversationDocumentOnFriendship = functions.firestore
+.document('friendRequests/{requestID}').onUpdate((change, context) => {
+	//first check if conversation document exists
+	// each person has their own document
+	const newValue = change.after.data()
+	const allPromises = []
+	var masterID
+	// const firstDocID = newValue.sender_uid + "_" + newValue.receiver_uid
+	// const secondDocID = newValue.receiver_uid + "_" + newValue.sender_uid
+
+	if (newValue.sender_uid < newValue.receiver_id) {
+		masterID = newValue.sender_uid + "_" + newValue.receiver_uid
+	} else {
+		masterID = newValue.receiver_uid + "_" + newValue.sender_uid
+	}
+
+
+	if(newValue.status == 'accepted') {// only do this is the request was accepted
+
+		const p1 = db.collection('conversationMasters').doc(masterID).get()
+		.then(doc => {
+			if(!doc.exists) {
+				var inner = []
+
+				const p0 = db.collection('conversationMasters').doc(masterID).set({
+					'self': masterID
+				})
+				
+				const p1 = db.collection('conversations').add({
+					parent_id: newValue.sender_uid,
+					friend_uid: newValue.receiver_uid,
+					friend_name: newValue.receiver_name,
+					friend_image: newValue.receiver_image,
+					conversation_id: masterID
+				})
+				const p2 = db.collection('conversations').add({
+					parent_id: newValue.receiver_uid,
+					friend_uid: newValue.sender_uid,
+					friend_name: newValue.sender_name,
+					friend_image: newValue.sender_image,
+					conversation_id: masterID
+				})
+				inner.push(p0)
+
+				inner.push(p1)
+				inner.push(p2)
+				return Promise.all(inner)
+
+			}
+		})
+		allPromises.push(p1)
+
+
+
+
+		// let p1 = db.collection('conversations').doc(firstDocID).get()
+		// .then(doc => {
+		// 	if(!doc.exists) {
+		// 		let pa = db.collection('conversations').doc(firstDocID).set({
+		// 			parent_id: newValue.sender_uid,
+		// 			friend_uid: newValue.receiver_uid,
+		// 			friend_name: newValue.receiver_name,
+		// 			friend_image: newValue.receiver_image,
+		// 		})
+		// 		return pa
+		// 	}
+		// })
+		// allPromises.push(p1)
+		// let p2 = db.collection('conversations').doc(secondDocID).get()
+		// .then(doc => {
+		// 	if(!doc.exists) {
+		// 		let pb = db.collection('conversations').doc(secondDocID).set({
+		// 			parent_id: newValue.receiver_uid,
+		// 			friend_uid: newValue.sender_uid,
+		// 			friend_name: newValue.sender_name,
+		// 			friend_image: newValue.sender_image,
+		// 		})
+		// 		return pb
+		// 	}
+		// })
+		// allPromises.push(p2)
+
+		// let p3 = db.collection('conversationMaster').add({
+		// 	involves: [newValue.sender_uid, newValue.receiver_uid ]
+		// })
+		// .then((docRef) => {
+		// 	const innerPromises = []
+		// 	const inner1 = db.collection('conversations').doc(firstDocID).update({
+		// 		'conversationMaser': docRef.id
+		// 	})
+		// 	const inner2 = db.collection('conversations').doc(secondDocID).update({
+		// 		'conversationMaser': docRef.id
+		// 	})
+		// 	innerPromises.push(inner1)
+		// 	innerPromises.push(inner2)
+		// 	return Promise.all(innerPromises)
+
+		// })
+		// allPromises.push(p3)
+
+	}
+	return Promise.all(allPromises)
+})
+
+
+exports.createNewRelationshipDocumentOnFriendRequest = functions.firestore
+.document('friendRequests/{requestID}').onCreate((snapshot, context) => {
+	const newValue = snapshot.data()
+	const allPromises = []
+	const firstDocID = newValue.sender_uid + "_" + newValue.receiver_uid
+	const secondDocID = newValue.receiver_uid + "_" + newValue.sender_uid
+	
+	let p1 = db.collection('relationships').doc(firstDocID).get()
+	.then(doc => {
+		if(!doc.exists) {
+			let pa = db.collection('relationships').doc(firstDocID).set({
+				parent_id: newValue.sender_uid,
+				friend_uid: newValue.receiver_uid,
+				friend_name: newValue.receiver_name,
+				friend_image: newValue.receiver_image,
+				status: 'pending'
+			})
+			return pa
+		}
+	})
+	allPromises.push(p1)
+	let p2 = db.collection('relationships').doc(secondDocID).get()
+	.then(doc => {
+		if(!doc.exists) {
+			let pb = db.collection('relationships').doc(secondDocID).set({
+				parent_id: newValue.receiver_uid,
+				friend_uid: newValue.sender_uid,
+				friend_name: newValue.sender_name,
+				friend_image: newValue.sender_image,
+				status: 'pending'
+			})
+			return pb
+		}
+	})
+	allPromises.push(p2)
+	return Promise.all(allPromises)
+
+})
+
+
+
 exports.changeProfilePhotoAcrossData = functions.firestore
 .document('users/{uid}').onUpdate((change, context) => {
 	//return a promise :(
@@ -226,7 +435,6 @@ exports.editWhoSeesOnRelationChange = functions.firestore
 		}
 		return answer
 	}
-
 	var isUID = (arg) => {
 		let answer = false
 		if (arg.substring(0,4)== 'uid_') {
@@ -318,10 +526,12 @@ exports.updateSearchableName = functions.firestore
 
 exports.issueNotificationOnNewComment = functions.firestore
 .document('comments/{commentId}').onCreate((snapshot, context) => {
+
 	let promise = new Promise((resolve, reject) => {
 		const newValue = snapshot.data()
-		var post_author_uid = db.collection('posts').doc(newValue.parent_id).author_uid
-		if (post_author_uid !== newValue.author_uid){
+		if(newValue.postAuthor_uid === newValue.author_uid){
+			resolve()
+		} else{
 			db.collection('notifications').add({
 				parent_id: newValue.parent_id, 
 				recipient: newValue.postAuthor_uid,
@@ -345,8 +555,9 @@ exports.issueNotificationOnNewLike = functions.firestore
 .document('likes/{likeId}').onCreate((snapshot, context) => {
 	let promise = new Promise((resolve, reject) => {
 		const newValue = snapshot.data()
-		var post_author_uid = db.collection('posts').doc(newValue.parent_id).author_uid
-		if (post_author_uid !== newValue.author_uid){
+		if (newValue.postAuthor_uid === newValue.author_uid) {
+			resolve()
+		} else {
 			db.collection('notifications').add({
 				parent_id: newValue.parent_id, 
 				recipient: newValue.postAuthor_uid,
@@ -434,14 +645,15 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
  			})
 			.then(docRef => {
 				console.log(docRef.id)
- 				db.collection('likes').doc(docRef.id).update({likeid: docRef.id})
- 				resolve(res.send('post liked!'))
+ 				return db.collection('likes').doc(docRef.id).update({likeid: docRef.id})
+ 				//resolve(res.send('post liked!'))
  			})
  			.catch(err => {
  				console.log(err)
  				reject(res.status(500).send(err))
  			})
- 		})
+		 })
+		return promise
  	})
  })
 

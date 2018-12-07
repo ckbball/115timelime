@@ -12,9 +12,12 @@ export default function configureModerator (store) {
 			case 'setAuthenticatedUser':
 				if(store.getters.getAuthenticatedUser){
 					store.dispatch('fetchUserInfo', store.getters.getAuthenticatedUser.uid)
-					store.dispatch('fetchAllRelations', store.getters.getAuthenticatedUser.uid)
+					//store.dispatch('fetchAllRelations', store.getters.getAuthenticatedUser.uid)
 					store.dispatch('fetchAllNotifications', store.getters.getAuthenticatedUser.uid)
 					store.dispatch('fetchTimelime', store.getters.getAuthenticatedUser.uid)
+					store.dispatch('fetchAllFriendRequests', store.getters.getAuthenticatedUser.uid)
+					store.dispatch('fetchAllFriends', store.getters.getAuthenticatedUser.uid )
+					store.dispatch('fetchConversationList', store.getters.getAuthenticatedUser.uid )
 
 					// store.dispatch('fetchMyPosts', store.getters.getAuthenticatedUser.uid)
 				}
@@ -35,8 +38,8 @@ export default function configureModerator (store) {
 				store.commit('unsetAllRelations')
 				store.commit('unsetFriends')
 				store.commit('unsetFriendsMessaged')
-				store.commit('unsetFriendsNotMessaged')
-				store.commit('unsetfriendsWithUnreadMessages')
+				// store.commit('unsetFriendsNotMessaged')
+				// store.commit('unsetfriendsWithUnreadMessages')
 				store.commit('unsetTimelime')
 				store.commit('unsetNotifications')
 			 	return router.replace('Login')

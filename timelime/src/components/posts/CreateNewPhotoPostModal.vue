@@ -71,7 +71,7 @@ export default {
   methods: {
 
     PostPhotoToFB: function(downloadURL) {
-      let whosees = this.getMyFriends.map(friend => friend.uid)
+      let whosees=this.getAllFriends.map(friend => friend.data().friend_uid)
       whosees.push(this.getUserInfo.uid)
 
       let miliseconds = 60000*this.minutes+3600000*this.hours+86400000*this.days

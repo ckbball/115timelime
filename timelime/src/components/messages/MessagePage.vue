@@ -12,7 +12,8 @@
             <sui-table-header>
               <sui-table-row>
                 <sui-table-header-cell textAlign="center" class="HeaderText">
-                  <p v-if="this.selectedFriend.name">{{ this.nameCase(this.selectedFriend.name) }}</p>
+                  <p v-if="this.selectedConversation.friend_name">
+                    {{ this.nameCase(this.selectedConversation.friend_name) }}</p>
                 </sui-table-header-cell>
               </sui-table-row>
             </sui-table-header>
@@ -21,7 +22,7 @@
                     <li v-for="(p, n) in this.messages" :key="n +'message'">
                       <MessageContainer  
                           :userInfo="getUserInfo"
-                          :friend="selectedFriend"
+                          :conversation="selectedConversation"
                           :message="p"
                       />
                     </li>
@@ -30,8 +31,8 @@
              <sui-table-footer>
               <sui-table-row>
                 <sui-table-header-cell>
-                  <SendMessage v-if="!noFriendSelected" :friend="selectedFriend"/>
-                  <p v-if="noFriendSelected">Click a friend on the left to start messaging!</p>
+                  <SendMessage v-if="!noConversationSelected" :conversation="selectedConversation"/>
+                  <p v-if="noConversationSelected">Click a friend on the left to start messaging!</p>
 
                 </sui-table-header-cell>
               </sui-table-row>
@@ -69,14 +70,15 @@ export default {
       ...mapGetters([
         'getUserInfo',
         'getOurMessages',
+        'getConversationList'
       ]),
   },
   data () {
     return {
-      friend: {},
-      selectedFriend: {},
+      conversation: {},
+      selectedConversation: {},
       messages: [],
-      noFriendSelected: true
+      noConversationSelected: true
     }
   },
   methods: {
@@ -92,10 +94,10 @@ export default {
       return arg.join(' ')
     },
     onSelectedConversation: function(event) {
-      if (event.uid !== this.selectedFriend.uid) {
-        this.selectedFriend = event
+      if (event.friend_uid !== this.selectedConversation.friend_uid) {
+        this.selectedConversation = event
         this.messages = []
-        this.noFriendSelected = false
+        this.noConversationSelected = false
 
         this.fetchConversation(event)
       }
@@ -120,12 +122,12 @@ export default {
         }
       }
     },
-    fetchConversation: function(friend) {
+    fetchConversation: function(conversation) {
       var conv_id = ""
-         if(this.getUserInfo.uid > friend.uid){
-            conv_id = this.getUserInfo.uid + "_" + friend.uid
+         if(this.getUserInfo.uid < conversation.friend_uid){
+            conv_id = this.getUserInfo.uid + "_" + conversation.friend_uid
         } else {
-            conv_id = friend.uid + "_" + this.getUserInfo.uid
+            conv_id = conversation.friend_uid + "_" + this.getUserInfo.uid
         }
         db.collection('messages') .where('conversation_id', '==', conv_id)
         .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
