@@ -11,10 +11,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')({
   origin: '*',
-    // origin: '*',
-	// allowedHeaders: ['Content-Type', 'Authorization', 'Content-Length', 'X-Requested-With', 'Accept'],
-	// methods: ['GET', 'PUT', 'POST', 'DELETE', 'OPTIONS'],
-	// optionsSuccessStatus: 200
+
 });
 
 
@@ -404,7 +401,6 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
 			})
 			.then(docRef => {
 				console.log(docRef.id)
-				//db.collection('comments').doc(docRef.id).update({comment_id: docRef.id})
 				resolve(res.send('comment added'))
 			})
 			.catch(err => {
@@ -445,30 +441,30 @@ exports.addNewComment = functions.https.onRequest((req, res) => {
  	})
  })
 
-// exports.removeLike = functions.https.onRequest((req, res) => {
-// 	cors(req, res, () => {
-// 		let author_uid = req.body.author_uid
-// 		let parent_id = req.body.parent_id
+ exports.removeLike = functions.https.onRequest((req, res) => {
+ 	cors(req, res, () => {
+ 		let author_uid = req.body.author_uid
+ 		let parent_id = req.body.parent_id
 
-// 		let promise = new Promise ((resolve, reject) => {
-// 			db.collection('likes').where('parent_id', '==', parent_id).where('author_uid', '==', author_uid).get()
-//             .then((querySnapshot) => {
-//                 querySnapshot.forEach((doc) => {
-//                   db.collection('likes').doc(doc.id).delete().then(function() {
-// 					resolve(res.send('like removed'))
-//                   })
-//                   .catch(err => {
-//                     reject(res.status(500).send(err))
-//                   })
-//                 })
-//             })
-//             .catch(err => {
-//               console.log("failed with error: " + err)
-//             })
+ 		let promise = new Promise ((resolve, reject) => {
+ 			db.collection('likes').where('parent_id', '==', parent_id).where('author_uid', '==', author_uid).get()
+             .then((querySnapshot) => {
+                 querySnapshot.forEach((doc) => {
+                   db.collection('likes').doc(doc.id).delete().then(function() {
+ 					resolve(res.send('like removed'))
+                   })
+                   .catch(err => {
+                     reject(res.status(500).send(err))
+                   })
+                 })
+             })
+             .catch(err => {
+               console.log("failed with error: " + err)
+             })
 			
-// 		})
-// 	})
-// })
+ 		})
+ 	})
+})
 
 
 exports.addNewPost = functions.https.onRequest((req, res) => {
