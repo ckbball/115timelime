@@ -25,7 +25,8 @@ export default {
       buttonContent: 'Add Friend',
       icon: 'user plus',
       currentSubscription: null,
-      relationship: {}
+      relationship: {},
+      
 
     }
   },
@@ -48,9 +49,11 @@ export default {
           this.issueFriendRequest({requester: requester, requestee: requestee})
         }
         if (this.relationship.status === 'friends' ) {
+
           this.unfriendAUser(this.relationship)
         }
         if (this.relationship.status === 'pending') {
+
           this.setButtonContent('loading')
           this.cancelFriendRequest(this.relationship.lastRequest)
         }
@@ -81,6 +84,8 @@ export default {
 
           if(!doc.exists) {
             this.setButtonContent('not friends')
+            this.relationship.status = 'not friends'
+
           } else {
             this.setButtonContent(doc.data().status)
             this.relationship = doc.data()
@@ -94,14 +99,17 @@ export default {
         getUserInfo to fetch from server
     */
    setTimeout(() => {
+
+      console.log(1, this.$route.params.uid)
       this.getRelationship(this.$route.params.uid)
-   },1500)
+   },3500)
 
 
   },
   watch: {
     $route: function(to, from) {
       if(this.currentSubscription) this.currentSubscription()
+      console.log(2, to.params.uid)
       this.getRelationship(to.params.uid)
     }
   }

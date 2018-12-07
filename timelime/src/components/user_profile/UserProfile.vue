@@ -66,7 +66,6 @@ export default {
       db.collection('relationships').where('parent_id', '==', this.$route.params.uid)
       .where('status', '==', 'friends').get()
       .then(snapshot => {
-
         snapshot.docs.forEach(doc => {
 
           this.friends.push(doc)

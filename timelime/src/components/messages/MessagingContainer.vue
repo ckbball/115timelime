@@ -3,12 +3,12 @@
         <a is="sui-dropdown-item" @click="navigateTo()">
             <sui-dropdown icon="big envelope outline" class="requestDropdown" @click="navigateTo()" floating>
             
-                <sui-label v-if="this.getUnreadMessageCount > 0"
+                <sui-label v-if="this.count > 0"
                     floating 
                     size="mini" 
                     circular  
                     color="red"
-                >{{this.getUnreadMessageCount}}</sui-label>
+                >{{this.count}}</sui-label>
 
             </sui-dropdown>
         </a>
@@ -19,11 +19,13 @@
 
 <script> 
 import { mapGetters } from 'vuex'
+import db from '@/firebase/init'
+
 export default {
     name: 'MessagingContainer',
     data () {
         return{
-    
+            count: 0
         }
     },
     methods: {
@@ -34,12 +36,27 @@ export default {
                 instead
             */
             this.$router.push({ path: '/messages' })
+        },
+        getCount: function() {
+            db.collection('messages').where('receiver_uid', '==', this.getUserInfo.uid) 
+            .where('read', '==', 'false')
+            .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+                console.log(snapshot.size)
+                this.count = snapshot.size
+           })
         }
     },
     computed: {
         ...mapGetters([
-            'getUnreadMessageCount'
+            'getUnreadMessageCount',
+            'getUserInfo'
         ])
+    },
+    mounted() {
+        setTimeout(() => {
+            this.getCount()
+
+        }, 1500)
     }
 }
 

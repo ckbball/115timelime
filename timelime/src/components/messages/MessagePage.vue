@@ -133,33 +133,31 @@ export default {
         .onSnapshot({includeMetadataChanges: true}, (snapshot) => {
           snapshot.docChanges().forEach((change) =>{
             if (change.type === 'added') {
+              if(change.doc.data().read === 'false' && change.doc.data().receiver_uid == this.getUserInfo.uid){
+                change.doc.data().read = 'true'
+                db.collection('messages').doc(change.doc.id).update({
+                  read: 'true'
+                })
+              }
               this.pushToMessages(change.doc.data())
+
+            }
+            if (change.type === 'modified') {
+              //find the old message and replace with new
             }
           })
         })
         
 
     },
-
-
-    // changeLoadedMessages(friend){
-    //   this.noFriendSelected = false
-    //   this.friend = friend 
-    //   this.getMessages()
-    // },
-    // getMessages: function() {
-    //   this.fetchMessages({
-    //     messager: this.getUserInfo, 
-    //     messagee: this.friend, 
-    //   })
-    //   setTimeout(this.computeOurMessage, 500)
-
-    // },
-    // computeOurMessage: function() {
-    //     this.sortMessages({my_uid: this.getUserInfo, allMyFriends: this.getOurMessages})
-    // },
     
   },
+  watch: {
+    $route(to, from) {
+    },
+
+  },
+
 }
 
 </script>

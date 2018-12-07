@@ -75,7 +75,6 @@ const mutations = {
     },
     /* -----End Boilerplate functions ---- */
     updateFriends: (state, payload) => {
-        console.log(1)
         if (payload.data().status !== 'friends') {
             for(var i = 0; i < state.friends.length; i++) {
                 if(state.friends[i].id === payload.id) {
@@ -132,9 +131,7 @@ const actions = {
                     commit('pushToFriends', change.doc )
               }
               if (change.type === 'modified') {
-                  console.log('1a')
                 commit('updateFriends', change.doc)
-                console.log('1b')
               }
             })
           })
@@ -156,70 +153,70 @@ const actions = {
           })
     },
 
-    updateFriends: ({commit, getters}, payload) => {
-        let contains = false
-        getters.getAllFriends.forEach(friend => {
-            if(friend.id === payload.id){
-                contains = true
-                if(changeTypeIsFriendship(friend, payload)){
-                    if(isFriend(payload) && state.friends.indexOf(payload) < 0) {
-                        commit('pushToFriends', payload)
-                    }
-                    if (!isFriend(payload)) commit('removeFromFriends', payload)
-                } else {
-                    friend = payload
-                }
-            }
-        })
-        if (contains == false) {
-            if(isFriend(payload)){
-                commit('pushToFriends', payload)
-            } 
-        }
-    },
-    sortRelation: ({commit}, {change, my_uid}) => {
-        if(isRequest(change, my_uid)) {
-            //commit('pushToRequests', change)
-        }
-        if(isFriend(change)){
-            //commit('pushToFriends', change)
+    // updateFriends: ({commit, getters}, payload) => {
+    //     let contains = false
+    //     getters.getAllFriends.forEach(friend => {
+    //         if(friend.id === payload.id){
+    //             contains = true
+    //             if(changeTypeIsFriendship(friend, payload)){
+    //                 if(isFriend(payload) && state.friends.indexOf(payload) < 0) {
+    //                     commit('pushToFriends', payload)
+    //                 }
+    //                 if (!isFriend(payload)) commit('removeFromFriends', payload)
+    //             } else {
+    //                 friend = payload
+    //             }
+    //         }
+    //     })
+    //     if (contains == false) {
+    //         if(isFriend(payload)){
+    //             commit('pushToFriends', payload)
+    //         } 
+    //     }
+    // },
+    // sortRelation: ({commit}, {change, my_uid}) => {
+    //     if(isRequest(change, my_uid)) {
+    //         //commit('pushToRequests', change)
+    //     }
+    //     if(isFriend(change)){
+    //         //commit('pushToFriends', change)
 
-            var friend = {}
-            for(var property in change.data() ) {
-                if(belongToOtherUser(property, my_uid)) {
-                    if(getPrefix(property) == 'uid'){
-                        friend[getPrefix(property)] = getUID(property)
-                    } else {
-                        friend[getPrefix(property)] = change.data()[property]
-                    }
-                }
-                if (property == "conversation_id"){
-                    friend[property]=change.data()[property]
-                }
-            }
-            commit('pushToMyFriends', friend)
+    //         var friend = {}
+    //         for(var property in change.data() ) {
+    //             if(belongToOtherUser(property, my_uid)) {
+    //                 if(getPrefix(property) == 'uid'){
+    //                     friend[getPrefix(property)] = getUID(property)
+    //                 } else {
+    //                     friend[getPrefix(property)] = change.data()[property]
+    //                 }
+    //             }
+    //             if (property == "conversation_id"){
+    //                 friend[property]=change.data()[property]
+    //             }
+    //         }
+    //         commit('pushToMyFriends', friend)
 
-        }
-    },
-    handleChanges: ({dispatch}, {change, my_uid}) => {
-        dispatch('updateFriends', change)
-        //dispatch('updateRequests', {change: change, my_uid: my_uid})
-    },
-    fetchAllRelations: ({commit, dispatch}, payload) => {
-        db.collection('relations').where(fbUID(payload), '>=', 'a' )
-		.onSnapshot({includeMetadataChanges: true}, (snapshot) => {
-            snapshot.docChanges().forEach(change => {
-              if (change.type === 'added') {
-                commit('pushToAllRelations', change.doc)
-                dispatch('sortRelation', {change: change.doc, my_uid: payload}) 
-              }
-              if (change.type === 'modified') {
-                commit('updateRelations', change.doc)
-                dispatch('handleChanges', {change: change.doc, my_uid: payload})
-              }
-            })
-          })
-    },
+    //     }
+    // },
+    // handleChanges: ({dispatch}, {change, my_uid}) => {
+    //     dispatch('updateFriends', change)
+    //     //dispatch('updateRequests', {change: change, my_uid: my_uid})
+    // },
+    // fetchAllRelations: ({commit, dispatch}, payload) => {
+    //     db.collection('relations').where(fbUID(payload), '>=', 'a' )
+	// 	.onSnapshot({includeMetadataChanges: true}, (snapshot) => {
+    //         snapshot.docChanges().forEach(change => {
+    //           if (change.type === 'added') {
+    //             commit('pushToAllRelations', change.doc)
+    //             dispatch('sortRelation', {change: change.doc, my_uid: payload}) 
+    //           }
+    //           if (change.type === 'modified') {
+    //             commit('updateRelations', change.doc)
+    //             dispatch('handleChanges', {change: change.doc, my_uid: payload})
+    //           }
+    //         })
+    //       })
+    // },
     cancelFriendRequest: (context, payload) => {
         db.collection('friendRequests').doc(payload).update({
             status: 'canceled'
@@ -245,12 +242,9 @@ const actions = {
 
         //check for outstanding friend requests
         const docID = requester.uid+'_'+requestee.uid
-        console.log(docID)
         db.collection('relationships').doc(docID).get()
-        .then((snapshot) => {
-            console.log(snapshot)
-                if(snapshot.data().status !== 'not friends' ) return;
-                
+        .then((doc) => {
+            if(!doc.exists || doc.data().status || 'not friends') {
                 db.collection('friendRequests').add({
                     sender_uid: requester.uid, 
                     sender_name: requester.firstName + ' ' + requester.lastName,
@@ -267,6 +261,7 @@ const actions = {
                 .then(docRef => {
                     db.collection('friendRequests').doc(docRef.id).update({self_id: docRef.id})
                 })
+            }
             
         })
     },
