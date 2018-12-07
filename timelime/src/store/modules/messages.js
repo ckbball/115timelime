@@ -40,7 +40,26 @@ const getters = {
 }
 const mutations = {
     pushToConversationList: (state, payload) => {
-        state.conversationList.push(payload)
+        console.log('payloadd', payload.data())
+        if(state.conversationList.length === 0) {
+            state.conversationList.push(payload)
+            return
+          }
+          if(state.conversationList[0].data().lastEntry_time > payload.data().lastEntry_time) {
+              state.conversationList.unshift(payload)
+              return
+          }
+          if(state.conversationList[state.conversationList.length-1].data().lastEntry_time
+             < payload.data().lastEntry_time) {
+              state.conversationList.push(payload)
+              return
+          }
+          for(let i = 0; i < state.conversationList.length;  i++){
+            if(state.conversationList[i].data().lastEntry_time > payload.data().lastEntry_time){
+              stateconversationList.splice(i, 0, payload)
+              return
+            }
+          }    
     },
     unsetConversationList: (state, payload) => {
         state.conversationList = []
@@ -99,7 +118,6 @@ const mutations = {
         state.friendsMessaged = (state.friendsMessaged).sort(compare);
 
     },
-
     unsetUnreadMessageCount: (state, payload) => {
         state.unreadMessageCount = 0
     },

@@ -192,14 +192,18 @@ exports.createNewConversationDocumentOnFriendship = functions.firestore
 					friend_uid: newValue.receiver_uid,
 					friend_name: newValue.receiver_name,
 					friend_image: newValue.receiver_image,
-					conversation_id: masterID
+					conversation_id: masterID,
+					lastEntry_time: Date.now(),
+					lastEntry_content: 'New conversation with ' + newValue.receiver_name
 				})
 				const p2 = db.collection('conversations').add({
 					parent_id: newValue.receiver_uid,
 					friend_uid: newValue.sender_uid,
 					friend_name: newValue.sender_name,
 					friend_image: newValue.sender_image,
-					conversation_id: masterID
+					conversation_id: masterID,
+					lastEntry_time: Date.now(),
+					lastEntry_content: 'New conversation with ' + newValue.sender_name
 				})
 				inner.push(p0)
 
