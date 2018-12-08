@@ -47,6 +47,7 @@ export default {
 
         if (this.relationship.status === 'not friends') {
           this.issueFriendRequest({requester: requester, requestee: requestee})
+          this.setButtonContent('loading')
         }
         if (this.relationship.status === 'friends' ) {
 
@@ -100,7 +101,6 @@ export default {
     */
    setTimeout(() => {
 
-      console.log(1, this.$route.params.uid)
       this.getRelationship(this.$route.params.uid)
    },3500)
 
@@ -109,7 +109,6 @@ export default {
   watch: {
     $route: function(to, from) {
       if(this.currentSubscription) this.currentSubscription()
-      console.log(2, to.params.uid)
       this.getRelationship(to.params.uid)
     }
   }

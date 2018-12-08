@@ -65,7 +65,8 @@ export default {
   computed: {
       ...mapGetters([
         'getUserInfo',  
-        'getMyFriends',  
+        'getMyFriends',
+        'getAllFriends'  
     ]),
   },
   methods: {
