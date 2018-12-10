@@ -68,12 +68,6 @@ export default {
         selectConversation: function(conversation) {
             this.$emit('selectedConversation', conversation)
         },
-
-        // requestMessages(friend){
-        //     this.readMessage({my_uid: this.getUserInfo.uid, friend: friend})
-        //     // TODO: mia create a firebase function that checks if that message was read or not and change the relations
-        //     this.$emit("changeLoadedMessages", friend)
-        // },
     },
     update: {
         getAllFriends: function() {

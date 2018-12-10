@@ -20,26 +20,7 @@
 </template>
 
 <script>
-// export default {
-//   name: 'Button',
-//   data () {
-//     return {
-//     	likeCount:0,
-//     	pressed:false
-//     }
-//   },
-//   props: {
-//   	color: String,
-//   	icon: String,
-//   	counter: Number,
-//   },
-//   methods: {
-//   	clicked: function() {
-//   		this.pressed=!this.pressed
-//   		this.$emit("clickEvent")
-//   	}
-//   } 
-// }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

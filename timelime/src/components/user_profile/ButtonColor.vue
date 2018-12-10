@@ -9,30 +9,7 @@
 
 
 <script>
-//   import { mapGetters } from 'vuex'
-// export default {
-//   name: 'ButtonColor',
-//   data () {
-//     return {
-//     }
-//   },
-//   props: {
-//     icon: String,
-//     status: Boolean,
-//   },
-//   methods: {
-//     clickButton: function() {
-//       this.$emit("clicked")
-//     }
-//   },
-//   computed: {
-//     ...mapGetters([
-//       'getColor'
-//     ])
-//   } 
-  
-  
-// }
+
 </script>
 
 

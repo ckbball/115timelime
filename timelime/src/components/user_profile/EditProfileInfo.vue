@@ -9,26 +9,6 @@
 
 
 <script>
-// import ButtonColor from '@/components/user_profile/ButtonColor'
-// import {mapGetters, mapMutations} from 'vuex'
-// export default {
-//   name: 'EditProfileInfo',
-//   data() {
-//     return { 
-//       icon: "write",
-//     };
-//   },
-
-//   components: {
-//     "ButtonColor": ButtonColor,
-//   },
-
-//   methods: {
-//     open() {
-//       this.$emit("editBio")
-//     },
-//   },
-// };
 </script>
 
 <style scoped>

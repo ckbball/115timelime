@@ -90,7 +90,8 @@ export default {
           } else {
             this.setButtonContent(doc.data().status)
             this.relationship = doc.data()
-}
+          }
+          console.log(this.relationship.status)
         })
       }
 
@@ -102,7 +103,7 @@ export default {
    setTimeout(() => {
 
       this.getRelationship(this.$route.params.uid)
-   },3500)
+   },1500)
 
 
   },

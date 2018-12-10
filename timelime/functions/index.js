@@ -65,7 +65,7 @@ exports.main = functions.https.onRequest(main);
 
 /* ------ Writing the scheduling code -----*/
 var rule = new schedule.RecurrenceRule();
-rule.seconds = 5
+rule.hours = 1
 
 var j = schedule.scheduleJob(rule, function(){
     var endTime = Date.now()

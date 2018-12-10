@@ -11,41 +11,7 @@
 </template>
 
 <script>
-// import { mapGetters, mapActions } from 'vuex'
 
-// import Post from '@/components/posts/Post'
-// import StandInPost from '@/components/posts/StandInPost'
-
-// import firebase from 'firebase'
-// import db from '@/firebase/init'
-
-// export default {
-//   name: 'MyFeed',
-//   props: {
-//     uid: {
-//       type: String,
-//     }
-//   },
-//   data () {
-//     return {
-//     }
-//   },  
-//   computed: {
-//     ...mapGetters([
-//       'getAllMyPosts'
-//     ]),
-//   },
-//   components: {
-//     "Post": Post,
-//     "StandInPost": StandInPost,
-//   },
-//   methods: {
-//       clickWriteButton: function() {
-//         this.$emit("writePost")
-//     },
-    
-//   },
-// }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

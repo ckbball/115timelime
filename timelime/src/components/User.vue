@@ -30,30 +30,7 @@ export default {
     ...mapGetters([
       'getUserInfo'
     ])
-  },
-  // methods: {
-  //   fetchOtherUsersInfo: function() {
-  //     db.collection('users').doc(this.uid).get()
-  //       .then((doc) => {
-  //           this.otherUsersInfo = doc.data()
-  //         })
-  //   },
-
-  // },
-  // watch: {
-  //   '$route' (to, from) {
-  //     if(to.params.uid != this.getUserInfo.uid){
-  //       this.fetchOtherUsersInfo()
-  //     }
-  //   }
-  // },
-  // mounted() {
-  //   this.fetchOtherUsersInfo()
-  // }
-
-
-
-  
+  },  
 }
 </script>
 

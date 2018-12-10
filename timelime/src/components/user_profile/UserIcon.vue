@@ -18,17 +18,9 @@ export default {
   },
   data () {
     return {
-      //userImageLocation: ""
     }
   },
-  // methods: {
-  //   userImagePropToVariable() {
-  //     this.userImageLocation = this.userInfo.image
-  //   }
-  // },
-  // beforeUpdate() {
-  //   this.userImagePropToVariable()
-  // }
+
 }
 </script>
 

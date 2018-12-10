@@ -53,23 +53,10 @@ export default {
   },
   data() {
       return{
-          //friends: [],
           open: false, 
       }
   },
-//   methods: {
-//       fetchThisPersonsFriends: function() {
-//           db.collection('relations').where('uid_'+this.uid, '==', 'true').get()
-//           .then((snapshot) => {
-//               snapshot.docs.forEach(doc => {
-//                   this.friends.push(doc)
-//               })
-//           })
-//       }
-//   },
-//   mounted(){
-//       this.fetchThisPersonsFriends()
-//   },
+
   
 }
   </script>
